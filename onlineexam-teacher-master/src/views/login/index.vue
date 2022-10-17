@@ -1,12 +1,25 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="loginRules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+    >
       <h3 class="title">在线考试系统教师端</h3>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input v-model="loginForm.username" name="username" type="text" auto-complete="on" placeholder="请输入教工号" />
+        <el-input
+          v-model="loginForm.username"
+          name="username"
+          type="text"
+          auto-complete="on"
+          placeholder="请输入教工号"
+        />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
@@ -18,18 +31,24 @@
           name="password"
           auto-complete="on"
           placeholder="请输入密码"
-          @keyup.enter.native="handleLogin" />
+          @keyup.enter.native="handleLogin"
+        />
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
+        <el-button
+          :loading="loading"
+          type="primary"
+          style="width: 100%"
+          @click.native.prevent="handleLogin"
+        >
           登录
         </el-button>
       </el-form-item>
       <div class="tips">
-        <span style="margin-right:20px;">教工号: 123456</span>
+        <span style="margin-right: 20px">教工号: 123456</span>
         <span> 密码: 123456</span>
       </div>
     </el-form>
@@ -62,7 +81,9 @@ export default {
         password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        username: [
+          { required: true, trigger: 'blur', validator: validateUsername }
+        ],
         password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       loading: false,
@@ -98,7 +119,10 @@ export default {
       })
     },
     async teacherLogin() {
-      const result = await reqLogin(this.loginForm.username, this.loginForm.password)
+      const result = await reqLogin(
+        this.loginForm.username,
+        this.loginForm.password
+      )
       if (result.statu === 0) {
         this.loading = false
         this.$store.dispatch('recordUserInfo', result.data)
@@ -122,8 +146,8 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" type="text/scss">
-$bg:#2d3a4b;
-$light_gray:#eee;
+$bg: #2d3a4b;
+$light_gray: #eee;
 
 /* reset element-ui css */
 .login-container {
@@ -131,6 +155,7 @@ $light_gray:#eee;
     display: inline-block;
     height: 47px;
     width: 85%;
+
     input {
       background: transparent;
       border: 0px;
@@ -139,12 +164,14 @@ $light_gray:#eee;
       padding: 12px 5px 12px 15px;
       color: $light_gray;
       height: 47px;
+
       &:-webkit-autofill {
         -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
         -webkit-text-fill-color: #fff !important;
       }
     }
   }
+
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
@@ -152,21 +179,22 @@ $light_gray:#eee;
     color: #454545;
   }
 }
-
 </style>
 
 <style type="text/scss" rel="stylesheet/scss" lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+$bg: #2d3a4b;
+$dark_gray: #889aa4;
+$light_gray: #eee;
+
 .login-container {
   position: fixed;
   height: 100%;
   width: 100%;
   background-color: $bg;
-  background-image: url("http://qiniu.maweitao.top/backend-bg-img-min.png");
+  background-image: url('http://qiniu.maweitao.top/backend-bg-img-min.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
+
   .login-form {
     position: absolute;
     left: 0;
@@ -175,19 +203,22 @@ $light_gray:#eee;
     max-width: 100%;
     padding: 35px 35px 15px 35px;
     margin: 120px auto;
-    background-color: rgba(0,0,0,.5);
+    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 20px;
   }
+
   .tips {
     font-size: 14px;
     color: #fff;
     margin-bottom: 10px;
+
     span {
       &:first-of-type {
         margin-right: 16px;
       }
     }
   }
+
   .svg-container {
     padding: 6px 5px 6px 15px;
     color: $dark_gray;
@@ -195,6 +226,7 @@ $light_gray:#eee;
     width: 30px;
     display: inline-block;
   }
+
   .title {
     font-size: 26px;
     font-weight: 400;
@@ -203,6 +235,7 @@ $light_gray:#eee;
     text-align: center;
     font-weight: bold;
   }
+
   .show-pwd {
     position: absolute;
     right: 10px;

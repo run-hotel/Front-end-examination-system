@@ -1,7 +1,18 @@
 <template>
-  <div :class="['dashboard-container',{'dashboard-padding' : device !=='mobile'}]">
+  <div
+    :class="[
+      'dashboard-container',
+      { 'dashboard-padding': device !== 'mobile' }
+    ]"
+  >
     <div class="admin_info">
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 7}" :xl="{span: 7}">
+      <el-col
+        :xs="{ span: 24 }"
+        :sm="{ span: 12 }"
+        :md="{ span: 12 }"
+        :lg="{ span: 7 }"
+        :xl="{ span: 7 }"
+      >
         <box-card />
       </el-col>
       <!--<pan-thumb :image="admImg" style="float: left">
@@ -10,7 +21,7 @@
     </div>
 
     <div>
-      <img :src="emptyGif" class="emptyGif">
+      <img :src="emptyGif" class="emptyGif" />
     </div>
   </div>
 </template>
@@ -33,27 +44,24 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'userInfo',
-      'device'
-    ])
+    ...mapGetters(['userInfo', 'device'])
   }
 }
 </script>
 
 <style type="text/scss" rel="stylesheet/scss" lang="scss" scoped>
-  .emptyGif {
-    display: block;
-    width: 45%;
-    margin: 0 auto;
+.emptyGif {
+  display: block;
+  width: 45%;
+  margin: 0 auto;
+}
+.dashboard {
+  &-container {
+    background-color: #e3e3e3;
+    min-height: 93vh;
   }
-  .dashboard {
-    &-container {
-      background-color: #e3e3e3;
-      min-height: 93vh;
-    }
-    &-padding {
-      padding: 50px 60px 0px;
-    }
+  &-padding {
+    padding: 50px 60px 0px;
   }
+}
 </style>

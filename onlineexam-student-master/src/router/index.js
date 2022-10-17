@@ -3,10 +3,10 @@
 */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-VueRouter.prototype.goBack = function () {
-  this.isBack = true;
+VueRouter.prototype.goBack = function() {
+  this.isBack = true
   window.history.go(-1)
-};
+}
 // 引入路由组件文件夹下的组件
 // import Home from '../pages/Home/Home.vue'
 // import Wrong from '../pages/Wrong/Wrong.vue'
@@ -52,7 +52,7 @@ export default new VueRouter({
     },
     {
       path: '/home',
-      name:'Home',
+      name: 'Home',
       component: Home,
       // 此时的Home等都是返回路由组件的函数，只有请求对应的路由路径时(第一次)才会执行此函数并加载路由组件
       // 标识此路由是否显示FooterGuide
@@ -61,17 +61,17 @@ export default new VueRouter({
       }
     },
     {
-      path:'/home/paper/:langId',
-      component:HomePaper
+      path: '/home/paper/:langId',
+      component: HomePaper
     },
     {
-      path:'/home/paper/detail/:paperId',
-      component:HomePaperDetail
+      path: '/home/paper/detail/:paperId',
+      component: HomePaperDetail
     },
     {
-      path:'/home/paper/detail/start/:paperId',
-      component:HomePaperStart,
-/*      children:[
+      path: '/home/paper/detail/start/:paperId',
+      component: HomePaperStart
+      /*      children:[
         {
           path:'papercontainer',
           component:PaperContainer
@@ -88,9 +88,9 @@ export default new VueRouter({
     },
 
     {
-      path:'/wrong',
-      name:'Wrong',
-      component:Wrong,
+      path: '/wrong',
+      name: 'Wrong',
+      component: Wrong,
       meta: {
         showFooter: true
       }
@@ -101,18 +101,18 @@ export default new VueRouter({
     },
 
     {
-      path:'/search',
-      name:'Search',
-      component:Search,
+      path: '/search',
+      name: 'Search',
+      component: Search,
       meta: {
         showFooter: true
       }
     },
 
     {
-      path:'/profile',
-      name:'Profile',
-      component:Profile,
+      path: '/profile',
+      name: 'Profile',
+      component: Profile,
       meta: {
         showFooter: true
       }
@@ -146,33 +146,33 @@ export default new VueRouter({
       component: FillCollection
     },
     {
-      path:'/profile/stuscore/detail/:paperId',
-      component:ProfileScoreDetail
+      path: '/profile/stuscore/detail/:paperId',
+      component: ProfileScoreDetail
     },
     {
-      path:'/profile/pswchange',
-      component:ProfilePswChange
+      path: '/profile/pswchange',
+      component: ProfilePswChange
     },
     {
-      path:'/profile/infochange',
-      component:ProfileInfoChange
+      path: '/profile/infochange',
+      component: ProfileInfoChange
     },
     {
-      path:'/profile/feedback',
-      component:ProfileFeedback
+      path: '/profile/feedback',
+      component: ProfileFeedback
     },
     {
-      path:'/profile/replydetail',
-      component:ProfileReplyDetail
+      path: '/profile/replydetail',
+      component: ProfileReplyDetail
     },
     {
-      path:'/profile/examcalendar',
-      component:ProfileExamCalendar
+      path: '/profile/examcalendar',
+      component: ProfileExamCalendar
     },
 
     {
       path: '/login',
-      name:'Login',
+      name: 'Login',
       component: Login
     }
   ]

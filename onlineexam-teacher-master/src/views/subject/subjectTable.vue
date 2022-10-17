@@ -2,21 +2,44 @@
   <div class="app-container">
     <div class="filter-container">
       <el-input
-        v-model="listQuery.imgTitle"
-        placeholder="搜索图片标题"
+        v-model="listQuery.langName"
+        placeholder="搜索科目名称"
         clearable
         style="width: 200px;margin-right: 15px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
       <el-input
-        v-model="listQuery.admName"
-        placeholder="搜索管理员姓名"
+        v-model="listQuery.langDesc"
+        placeholder="搜索科目描述"
         clearable
         style="width: 200px;margin-right: 15px;"
         class="filter-item"
         @keyup.enter.native="handleFilter"
       />
+      <el-input
+        v-model="listQuery.langCreatedBy"
+        placeholder="搜索科目创建者"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-select
+        v-model="listQuery.isRecommend"
+        placeholder="搜索科目是否被推荐"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="item in recommendOptions"
+          :key="item.key"
+          :label="item.label"
+          :value="item.key"
+        />
+      </el-select>
       <el-button
         v-waves
         class="filter-item"
@@ -37,16 +60,6 @@
       >
         添加
       </el-button>
-      <el-button
-        v-waves
-        style="margin-left: 0;margin-right: 10px;"
-        class="filter-item"
-        type="primary"
-        icon="el-icon-picture"
-        @click="handlePreview"
-      >
-        轮播图预览
-      </el-button>
     </div>
 
     <el-table
@@ -64,50 +77,67 @@
         prop="tno"
         sortable
         align="center"
-        width="140"
+        width="100"
       >
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="图片标题" align="center">
+      <el-table-column label="科目名称" align="center" width="100">
         <template slot-scope="scope">
-          <span>{{ scope.row.imgTitle }}</span>
+          <span>{{ scope.row.langName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="轮播图片" align="center">
+      <el-table-column label="科目描述" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.langDesc }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="科目图像" align="center" width="100">
         <template slot-scope="scope">
           <viewer>
-            <img
-              :src="scope.row.imgSrc"
-              style="width: 120px;height: 60px;border-radius: 5px"
-            />
+            <img :src="scope.row.langImgSrc" style="width: 40px;height: 40px" />
           </viewer>
+        </template>
+      </el-table-column>
+      <el-table-column label="科目创建者" align="center" width="100">
+        <template slot-scope="scope">
+          <span>{{ scope.row.langCreatedBy }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="科目最后更新者" align="center" width="140">
+        <template slot-scope="scope">
+          <span>{{ scope.row.langLastChanger || '暂无更新记录' }}</span>
         </template>
       </el-table-column>
       <el-table-column
         prop="imgCreateTime"
         sortable
-        label="轮播图创建时间"
+        label="科目最后更新时间"
         align="center"
+        width="160"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.imgCreateTime | date_format }}</span>
+          <span v-if="scope.row.langChangeTime">{{
+            scope.row.langChangeTime | date_format
+          }}</span>
+          <span v-else>暂无更新记录</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="是否显示推荐" align="center" width="120">
+        <template slot-scope="scope">
+          <span>{{ scope.row.isRecommend === '1' ? '是' : '否' }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        prop="ano"
+        prop="paperCount"
         sortable
-        label="创建轮播图的管理员号"
+        label="发布试卷数"
         align="center"
+        width="120"
       >
         <template slot-scope="scope">
-          <span>{{ scope.row.ano }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="创建轮播图的管理员姓名" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.admName }}</span>
+          <span>{{ scope.row.paperCount }}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -131,7 +161,7 @@
             type="danger"
             icon="el-icon-delete"
             size="mini"
-            @click="confirmDeleteRotationImg(row)"
+            @click="confirmDeleteSubject(row)"
           >
             删除
           </el-button>
@@ -156,10 +186,13 @@
         label-width="120px"
         style="width: 400px; margin-left:50px;"
       >
-        <el-form-item label="图片标题" prop="imgTitle">
-          <el-input v-model="temp.imgTitle" :rows="5" type="textarea" />
+        <el-form-item label="科目名称" prop="langName">
+          <el-input v-model="temp.langName" />
         </el-form-item>
-        <el-form-item label="轮播图片" prop="imgSrc">
+        <el-form-item label="科目描述" prop="langDesc">
+          <el-input v-model="temp.langDesc" />
+        </el-form-item>
+        <el-form-item label="科目图像" prop="langImgSrc">
           <el-upload
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
@@ -167,12 +200,12 @@
             class="avatar-uploader"
             action="/api/teacher/uploadPicture"
           >
-            <img v-if="temp.imgSrc" :src="temp.imgSrc" class="avatar" />
+            <img v-if="temp.langImgSrc" :src="temp.langImgSrc" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
           <el-button
             v-waves
-            :disabled="!temp.imgSrc"
+            :disabled="!temp.langImgSrc"
             type="danger"
             icon="el-icon-delete"
             size="mini"
@@ -180,6 +213,16 @@
           >
             删除
           </el-button>
+        </el-form-item>
+        <el-form-item label="是否显示推荐" prop="isRecommend">
+          <el-select v-model="temp.isRecommend" class="filter-item">
+            <el-option
+              v-for="item in recommendOptions"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -207,7 +250,7 @@
     </el-tooltip>
 
     <el-dialog :visible.sync="dialogRotationImgVisible" title="轮播图预览">
-      <el-carousel :interval="4000" arrow="always">
+      <el-carousel :interval="4000">
         <el-carousel-item v-for="item in list" :key="item.imgId">
           <img :src="item.imgSrc" style="width: 100%;height: 100%" />
           <h3>{{ item.imgTitle }}</h3>
@@ -219,17 +262,17 @@
 
 <script>
 import {
-  reqGetRotationImgsList,
-  reqSearchRotationImgsList,
-  reqInsertRotationImgInfo,
-  reqUpdateRotationImgInfo,
-  reqDeleteRotationImg
-} from '@/api/rotationImg'
+  reqGetSubjectsList,
+  reqSearchSubjectsList,
+  reqDeleteSubject,
+  reqInsertSubjectInfo,
+  reqUpdateSubjectInfo
+} from '@/api/subject'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import BackToTop from '@/components/BackToTop'
 export default {
-  name: 'RotationTable',
+  name: 'SubjectTable',
   components: { Pagination, BackToTop },
   directives: { waves },
   data() {
@@ -242,22 +285,33 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        imgTitle: undefined,
-        admName: undefined
+        langName: undefined,
+        langDesc: undefined,
+        langCreatedBy: undefined,
+        isRecommend: undefined
       },
+      recommendOptions: [{ label: '是', key: '1' }, { label: '否', key: '0' }],
       temp: {
-        imgTitle: '',
-        imgSrc: ''
+        langName: '',
+        langDesc: '',
+        langImgSrc: '',
+        isRecommend: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
       dialogRotationImgVisible: false,
       rules: {
-        imgTitle: [
-          { required: true, message: '图片标题为必填项', trigger: 'change' }
+        langName: [
+          { required: true, message: '科目名称为必填项', trigger: 'change' }
         ],
-        imgSrc: [
-          { required: true, message: '请上传轮播图片', trigger: 'change' }
+        langDesc: [
+          { required: true, message: '科目描述为必填项', trigger: 'change' }
+        ],
+        langImgSrc: [
+          { required: true, message: '请上传科目图像', trigger: 'change' }
+        ],
+        isRecommend: [
+          { required: true, message: '是否显示推荐为必选项', trigger: 'change' }
         ]
       },
       myBackToTopStyle: {
@@ -277,7 +331,7 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true
-      const result = await reqGetRotationImgsList()
+      const result = await reqGetSubjectsList()
       if (result.statu === 0) {
         this.total = result.data.length
         this.list = result.data.filter(
@@ -291,19 +345,30 @@ export default {
         this.listLoading = false
       }, 500)
     },
-    confirmDeleteRotationImg(row) {
-      this.$confirm('确定删除该轮播图吗?', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
+    confirmDeleteSubject(row) {
+      this.$confirm(
+        '确定删除该科目吗?若该科目下已有发布试卷则无法删除',
+        '提示',
+        {
+          confirmButtonText: '确定删除',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      )
         .then(() => {
-          this.handleDeleteRotationImg(row)
+          if (row.paperCount > 0) {
+            this.$message({
+              message: '该科目已有发布试卷，无法删除',
+              type: 'error'
+            })
+          } else {
+            this.deleteSubject(row)
+          }
         })
         .catch(() => {})
     },
-    async handleDeleteRotationImg(row) {
-      const result = await reqDeleteRotationImg(row.imgId)
+    async deleteSubject(row) {
+      const result = await reqDeleteSubject(row.langId)
       if (result.statu === 0) {
         this.$message({
           message: '删除成功',
@@ -320,9 +385,18 @@ export default {
     async handleFilter() {
       this.listQuery.page = 1
       this.listLoading = true
-      const result = await reqSearchRotationImgsList(
-        this.listQuery.imgTitle,
-        this.listQuery.admName
+      let isRecommend = this.listQuery.isRecommend
+      if (
+        this.listQuery.isRecommend === null ||
+        this.listQuery.isRecommend === undefined
+      ) {
+        isRecommend = undefined
+      }
+      const result = await reqSearchSubjectsList(
+        this.listQuery.langName,
+        this.listQuery.langDesc,
+        this.listQuery.langCreatedBy,
+        isRecommend
       )
       if (result.statu === 0) {
         this.total = result.data.length
@@ -339,8 +413,10 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        imgTitle: '',
-        imgSrc: ''
+        langName: '',
+        langDesc: '',
+        langImgSrc: '',
+        isRecommend: ''
       }
     },
     handleUpdate(row) {
@@ -354,12 +430,15 @@ export default {
     updateData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          this.handleUpdateRotationImg()
+          this.handleUpdateSubject()
         }
       })
     },
-    async handleUpdateRotationImg() {
-      const result = await reqUpdateRotationImgInfo(this.temp)
+    async handleUpdateSubject() {
+      const temp = this.temp
+      const admin = this.$store.state.teacher.userInfo
+      temp.langLastChanger = admin.admName
+      const result = await reqUpdateSubjectInfo(temp)
       if (result.statu === 0) {
         this.dialogFormVisible = false
         this.$message({
@@ -385,16 +464,15 @@ export default {
     createData() {
       this.$refs['dataForm'].validate(valid => {
         if (valid) {
-          this.insertRotationImgInfo()
+          this.insertSubjectInfo()
         }
       })
     },
-    async insertRotationImgInfo() {
+    async insertSubjectInfo() {
       const temp = this.temp
-      const admin = this.$store.state.admin.userInfo
-      temp.ano = admin.ano
-      temp.admName = admin.admName
-      const result = await reqInsertRotationImgInfo(temp)
+      const admin = this.$store.state.teacher.userInfo
+      temp.langCreatedBy = admin.admName
+      const result = await reqInsertSubjectInfo(temp)
       if (result.statu === 0) {
         this.dialogFormVisible = false
         this.$notify({
@@ -413,16 +491,9 @@ export default {
         })
       }
     },
-    async handlePreview() {
-      const result = await reqGetRotationImgsList()
-      if (result.statu === 0) {
-        this.previewList = result.data
-      }
-      this.dialogRotationImgVisible = true
-    },
     handleAvatarSuccess(res, file) {
       // this.temp.pictureSrc = URL.createObjectURL(file.raw)
-      this.temp.imgSrc = res.data
+      this.temp.langImgSrc = res.data
     },
     beforeAvatarUpload(file) {
       const isType =
@@ -440,7 +511,7 @@ export default {
       return isType && isLt4M
     },
     deletePictureSrc() {
-      this.temp.imgSrc = ''
+      this.temp.langImgSrc = ''
     }
   }
 }
@@ -459,13 +530,13 @@ export default {
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 280px;
+  width: 80px;
   height: 80px;
   line-height: 80px;
   text-align: center;
 }
 .avatar {
-  width: 280px;
+  width: 80px;
   height: 80px;
   display: block;
 }

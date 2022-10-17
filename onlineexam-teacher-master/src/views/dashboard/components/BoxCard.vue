@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card-component">
     <div slot="header" class="box-card-header">
-      <img src="@/assets/images/info_tab_img.png">
+      <img src="@/assets/images/info_tab_img.png" />
     </div>
     <div style="position:relative;">
       <pan-thumb :image="teaImg" class="panThumb" />
@@ -44,7 +44,7 @@
       <div class="progress-item">
         <div class="info_item">
           <span>最近登录时间</span>
-          <span>{{ userInfo.teaLastLoginTime | date-format }}</span>
+          <span>{{ userInfo.teaLastLoginTime | date_format }}</span>
         </div>
         <el-progress :percentage="100" status="success" />
       </div>
@@ -79,17 +79,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'userInfo'
-    ])
+    ...mapGetters(['userInfo'])
   }
 }
 </script>
 
-<style lang="scss" >
-.box-card-component{
+<style lang="scss">
+.box-card-component {
   .el-card__header {
-    padding: 0px!important;
+    padding: 0px !important;
   }
 }
 </style>
@@ -117,17 +115,17 @@ export default {
   }
   .panThumb {
     z-index: 100;
-    height: 70px!important;
-    width: 70px!important;
-    position: absolute!important;
+    height: 70px !important;
+    width: 70px !important;
+    position: absolute !important;
     top: -45px;
     left: 0px;
     border: 5px solid #ffffff;
     background-color: #fff;
     margin: auto;
-    box-shadow: none!important;
+    box-shadow: none !important;
     /deep/ .pan-info {
-      box-shadow: none!important;
+      box-shadow: none !important;
     }
   }
   .progress-item {

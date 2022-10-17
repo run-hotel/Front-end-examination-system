@@ -1,21 +1,77 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.sno" placeholder="搜索学号" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.stuName" placeholder="搜索姓名" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.stuSex" placeholder="搜索性别" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in stuSexOptions" :key="item.key" :label="item.label" :value="item.key" />
+      <el-input
+        v-model="listQuery.sno"
+        placeholder="搜索学号"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-input
+        v-model="listQuery.stuName"
+        placeholder="搜索姓名"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-select
+        v-model="listQuery.stuSex"
+        placeholder="搜索性别"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="item in stuSexOptions"
+          :key="item.key"
+          :label="item.label"
+          :value="item.key"
+        />
       </el-select>
-      <el-button v-waves class="filter-item" style="margin-right: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button
+        v-waves
+        class="filter-item"
+        style="margin-right: 10px;"
+        type="primary"
+        icon="el-icon-search"
+        @click="handleFilter"
+      >
         搜索
       </el-button>
-      <el-button v-waves class="filter-item" style="margin-left: 0;margin-right: 10px;" type="primary" icon="el-icon-circle-plus-outline" @click="handleCreate">
+      <el-button
+        v-waves
+        class="filter-item"
+        style="margin-left: 0;margin-right: 10px;"
+        type="primary"
+        icon="el-icon-circle-plus-outline"
+        @click="handleCreate"
+      >
         添加
       </el-button>
-      <el-button v-waves :loading="downloadLoading" style="margin-left: 0;margin-right: 10px;" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+      <el-button
+        v-waves
+        :loading="downloadLoading"
+        style="margin-left: 0;margin-right: 10px;"
+        class="filter-item"
+        type="primary"
+        icon="el-icon-download"
+        @click="handleDownload"
+      >
         导出当前页学生信息
       </el-button>
-      <el-button v-waves :loading="downloadLoading" style="margin-left: 0;" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownloadAll">
+      <el-button
+        v-waves
+        :loading="downloadLoading"
+        style="margin-left: 0;"
+        class="filter-item"
+        type="primary"
+        icon="el-icon-download"
+        @click="handleDownloadAll"
+      >
         导出全部学生信息
       </el-button>
     </div>
@@ -24,13 +80,19 @@
       v-loading="listLoading"
       :key="tableKey"
       :data="list"
-      :default-sort = "{prop: 'sno', order: 'ascending'}"
+      :default-sort="{ prop: 'sno', order: 'ascending' }"
       border
       fit
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="学号" prop="sno" sortable align="center" width="140">
+      <el-table-column
+        label="学号"
+        prop="sno"
+        sortable
+        align="center"
+        width="140"
+      >
         <template slot-scope="scope">
           <span>{{ scope.row.sno }}</span>
         </template>
@@ -43,7 +105,12 @@
       <el-table-column label="头像" align="center">
         <template slot-scope="scope">
           <viewer>
-            <img :src="scope.row.stuImgSrc || require('@/assets/images/profile.jpg')" style="width: 40px;height: 40px;border-radius: 5px">
+            <img
+              :src="
+                scope.row.stuImgSrc || require('@/assets/images/profile.jpg')
+              "
+              style="width: 40px;height: 40px;border-radius: 5px"
+            />
           </viewer>
         </template>
       </el-table-column>
@@ -62,46 +129,103 @@
           <span>{{ scope.row.stuPhone || '暂无绑定手机号' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="stuCreateTime" sortable label="注册时间" align="center" width="160">
+      <el-table-column
+        prop="stuCreateTime"
+        sortable
+        label="注册时间"
+        align="center"
+        width="160"
+      >
         <template slot-scope="scope">
-          <span>{{ scope.row.stuCreateTime | date-format }}</span>
+          <span>{{ scope.row.stuCreateTime | date_format }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="stuLastLoginTime" sortable label="最近登录时间" align="center" width="160">
+      <el-table-column
+        prop="stuLastLoginTime"
+        sortable
+        label="最近登录时间"
+        align="center"
+        width="160"
+      >
         <template slot-scope="scope">
-          <span v-if="scope.row.stuLastLoginTime">{{ scope.row.stuLastLoginTime | date-format }}</span>
+          <span v-if="scope.row.stuLastLoginTime">{{
+            scope.row.stuLastLoginTime | date_format
+          }}</span>
           <span v-else>暂无最近登录记录</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding" width="120">
-        <template slot-scope="{row}">
-          <el-button v-waves type="primary" icon="el-icon-setting" size="mini" @click="confirmUpdatePsw(row)">
+      <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding"
+        width="120"
+      >
+        <template slot-scope="{ row }">
+          <el-button
+            v-waves
+            type="primary"
+            icon="el-icon-setting"
+            size="mini"
+            @click="confirmUpdatePsw(row)"
+          >
             重置密码
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column label="登录权限" align="center" class-name="small-padding" width="120">
-        <template slot-scope="{row}">
+      <el-table-column
+        label="登录权限"
+        align="center"
+        class-name="small-padding"
+        width="120"
+      >
+        <template slot-scope="{ row }">
           <!--<el-switch
             v-if="row.stuStatus == '1'"
             value="row.stuStatus == '1'"
             active-color="#13ce66"
             inactive-color="#ff4949"/>
           <span :style="{ color: row.stuStatus === '1' ? 'green' : 'red', fontWeight:'bold' }">{{ row.stuStatus === '1'?'已启用':'已禁用' }}</span>-->
-          <el-button v-waves v-if="row.stuStatus=='1'" size="mini" icon="el-icon-success" type="success" @click="handleModifyStatus(row,'0')">
+          <el-button
+            v-waves
+            v-if="row.stuStatus == '1'"
+            size="mini"
+            icon="el-icon-success"
+            type="success"
+            @click="handleModifyStatus(row, '0')"
+          >
             启用状态
           </el-button>
-          <el-button v-waves v-if="row.stuStatus=='0'" size="mini" icon="el-icon-error" type="danger" @click="handleModifyStatus(row,'1')">
+          <el-button
+            v-waves
+            v-if="row.stuStatus == '0'"
+            size="mini"
+            icon="el-icon-error"
+            type="danger"
+            @click="handleModifyStatus(row, '1')"
+          >
             禁用状态
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList"/>
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
 
     <el-dialog :visible.sync="dialogFormVisible" title="添加">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="temp"
+        label-position="left"
+        label-width="70px"
+        style="width: 400px; margin-left:50px;"
+      >
         <el-form-item label="学号" prop="sno">
           <el-input v-model="temp.sno" />
         </el-form-item>
@@ -113,7 +237,12 @@
         </el-form-item>
         <el-form-item label="性别" prop="stuSex">
           <el-select v-model="temp.stuSex" class="filter-item">
-            <el-option v-for="item in stuSexOptions" :key="item.key" :label="item.label" :value="item.key" />
+            <el-option
+              v-for="item in stuSexOptions"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -130,14 +259,24 @@
     <!--可自定义按钮的样式、show/hide临界点、返回的位置  -->
     <!--如需文字提示，可在外部添加element的<el-tooltip></el-tooltip>元素  -->
     <el-tooltip placement="top" content="返回顶部">
-      <back-to-top :custom-style="myBackToTopStyle" :visibility-height="300" :back-position="50" transition-name="fade" />
+      <back-to-top
+        :custom-style="myBackToTopStyle"
+        :visibility-height="300"
+        :back-position="50"
+        transition-name="fade"
+      />
     </el-tooltip>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
-import { reqGetStudentsList, reqUpdateStudentInfo, reqSearchStudentsList, reqInsertStudentInfo } from '@/api/student'
+import {
+  reqGetStudentsList,
+  reqUpdateStudentInfo,
+  reqSearchStudentsList,
+  reqInsertStudentInfo
+} from '@/api/student'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -165,14 +304,29 @@ export default {
         sno: '',
         stuPsw: '123456',
         stuName: '',
-        stuSex:'男'
+        stuSex: '男'
       },
       dialogFormVisible: false,
       rules: {
-        sno: [{ required: true, message: '学号为必填项', trigger: 'blur' },{ min: 12, max: 12, message: '学号必须为12位数字', trigger: 'blur' }],
-        stuPsw: [{ required: true, message: '密码为必填项，默认设置密码为123456', trigger: 'blur' }],
+        sno: [
+          { required: true, message: '学号为必填项', trigger: 'blur' },
+          { min: 12, max: 12, message: '学号必须为12位数字', trigger: 'blur' }
+        ],
+        stuPsw: [
+          {
+            required: true,
+            message: '密码为必填项，默认设置密码为123456',
+            trigger: 'blur'
+          }
+        ],
         stuName: [{ required: true, message: '姓名为必填项', trigger: 'blur' }],
-        stuSex: [{ required: true, message: '性别为必填项，默认选择男', trigger: 'blur' }]
+        stuSex: [
+          {
+            required: true,
+            message: '性别为必填项，默认选择男',
+            trigger: 'blur'
+          }
+        ]
       },
       downloadLoading: false,
       myBackToTopStyle: {
@@ -182,7 +336,7 @@ export default {
         height: '40px',
         'border-radius': '4px',
         'line-height': '45px', // 请保持与高度一致以垂直居中 Please keep consistent with height to center vertically
-        background: '#e7eaf1'// 按钮的背景颜色 The background color of the button
+        background: '#e7eaf1' // 按钮的背景颜色 The background color of the button
       }
     }
   },
@@ -193,9 +347,13 @@ export default {
     async getList() {
       this.listLoading = true
       let result = await reqGetStudentsList()
-      if (result.statu === 0){
+      if (result.statu === 0) {
         this.total = result.data.length
-        this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+        this.list = result.data.filter(
+          (item, index) =>
+            index < this.listQuery.limit * this.listQuery.page &&
+            index >= this.listQuery.limit * (this.listQuery.page - 1)
+        )
       }
       // 延迟0.5秒等待请求数据
       setTimeout(() => {
@@ -205,8 +363,8 @@ export default {
     async handleModifyStatus(row, status) {
       row.stuStatus = status
       let result = await reqUpdateStudentInfo(row)
-      if (result.statu === 0){
-        if (status === '1'){
+      if (result.statu === 0) {
+        if (status === '1') {
           this.$message({
             message: '启用成功',
             type: 'success'
@@ -217,8 +375,7 @@ export default {
             type: 'error'
           })
         }
-      }
-      else {
+      } else {
         this.$message({
           message: result.msg,
           type: 'error'
@@ -230,15 +387,16 @@ export default {
         confirmButtonText: '确定重置',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        this.handleUpdatePsw(row)
-      }).catch(() => {
       })
+        .then(() => {
+          this.handleUpdatePsw(row)
+        })
+        .catch(() => {})
     },
     async handleUpdatePsw(row) {
       row.stuPsw = '123456'
       let result = await reqUpdateStudentInfo(row)
-      if (result.statu === 0){
+      if (result.statu === 0) {
         this.$message({
           message: '重置密码成功，默认密码为123456',
           type: 'success'
@@ -250,44 +408,52 @@ export default {
         })
       }
     },
-    async handleFilter(){
+    async handleFilter() {
       this.listQuery.page = 1
       this.listLoading = true
-      let result = await reqSearchStudentsList(this.listQuery.sno, this.listQuery.stuName, this.listQuery.stuSex)
-      if (result.statu === 0){
+      let result = await reqSearchStudentsList(
+        this.listQuery.sno,
+        this.listQuery.stuName,
+        this.listQuery.stuSex
+      )
+      if (result.statu === 0) {
         this.total = result.data.length
-        this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+        this.list = result.data.filter(
+          (item, index) =>
+            index < this.listQuery.limit * this.listQuery.page &&
+            index >= this.listQuery.limit * (this.listQuery.page - 1)
+        )
       }
       // 延迟一秒等待请求数据
       setTimeout(() => {
         this.listLoading = false
       }, 500)
     },
-    resetTemp(){
+    resetTemp() {
       this.temp = {
         sno: '',
         stuPsw: '123456',
         stuName: '',
-        stuSex:'男'
+        stuSex: '男'
       }
     },
-    handleCreate(){
+    handleCreate() {
       this.resetTemp()
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    createData(){
-      this.$refs['dataForm'].validate((valid) => {
+    createData() {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
           this.insertStudentInfo()
         }
       })
     },
-    async insertStudentInfo(){
+    async insertStudentInfo() {
       let result = await reqInsertStudentInfo(this.temp)
-      if (result.statu === 0){
+      if (result.statu === 0) {
         this.dialogFormVisible = false
         this.$notify({
           title: '成功',
@@ -305,11 +471,29 @@ export default {
         })
       }
     },
-    handleDownload(){
+    handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['学号', '姓名', '性别', '邮箱', '手机号', '注册时间', '最近登录时间', '登录权限']
-        const filterVal = ['sno', 'stuName', 'stuSex', 'stuEmail', 'stuPhone', 'stuCreateTime', 'stuLastLoginTime', 'stuStatus']
+        const tHeader = [
+          '学号',
+          '姓名',
+          '性别',
+          '邮箱',
+          '手机号',
+          '注册时间',
+          '最近登录时间',
+          '登录权限'
+        ]
+        const filterVal = [
+          'sno',
+          'stuName',
+          'stuSex',
+          'stuEmail',
+          'stuPhone',
+          'stuCreateTime',
+          'stuLastLoginTime',
+          'stuStatus'
+        ]
         const data = this.formatJson(filterVal, this.list)
         excel.export_json_to_excel({
           header: tHeader,
@@ -319,13 +503,31 @@ export default {
         this.downloadLoading = false
       })
     },
-    async handleDownloadAll(){
+    async handleDownloadAll() {
       this.downloadLoading = true
       let result = await reqGetStudentsList()
       let list = result.data
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['学号', '姓名', '性别', '邮箱', '手机号', '注册时间', '最近登录时间', '登录权限']
-        const filterVal = ['sno', 'stuName', 'stuSex', 'stuEmail', 'stuPhone', 'stuCreateTime', 'stuLastLoginTime', 'stuStatus']
+        const tHeader = [
+          '学号',
+          '姓名',
+          '性别',
+          '邮箱',
+          '手机号',
+          '注册时间',
+          '最近登录时间',
+          '登录权限'
+        ]
+        const filterVal = [
+          'sno',
+          'stuName',
+          'stuSex',
+          'stuEmail',
+          'stuPhone',
+          'stuCreateTime',
+          'stuLastLoginTime',
+          'stuStatus'
+        ]
         const data = this.formatJson(filterVal, list)
         excel.export_json_to_excel({
           header: tHeader,
@@ -336,24 +538,25 @@ export default {
       })
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'stuCreateTime' || j === 'stuLastLoginTime') {
-          if (v[j] !== null) {
-            return parseTime(v[j])
+      return jsonData.map(v =>
+        filterVal.map(j => {
+          if (j === 'stuCreateTime' || j === 'stuLastLoginTime') {
+            if (v[j] !== null) {
+              return parseTime(v[j])
+            } else {
+              return '暂无最近登录记录'
+            }
+          } else if (j === 'stuStatus') {
+            return v[j] === '1' ? '启用状态' : '禁用状态'
+          } else if (j === 'stuEmail') {
+            return v[j] || '暂无绑定邮箱'
+          } else if (j === 'stuPhone') {
+            return v[j] || '暂无绑定手机号'
+          } else {
+            return v[j]
           }
-          else {
-            return '暂无最近登录记录'
-          }
-        } else if (j === 'stuStatus') {
-          return v[j] === '1' ? '启用状态' : '禁用状态'
-        } else if (j === 'stuEmail') {
-          return v[j] || '暂无绑定邮箱'
-        } else if (j === 'stuPhone') {
-          return v[j] || '暂无绑定手机号'
-        } else {
-          return v[j]
-        }
-      }))
+        })
+      )
     }
   }
 }

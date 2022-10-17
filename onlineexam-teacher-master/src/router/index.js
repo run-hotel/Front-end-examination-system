@@ -23,8 +23,16 @@ import Layout from '../views/layout/Layout'
   }
 **/
 export const constantRouterMap = [
-  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
-  { path: '/404', component: () => import('@/views/404'), hidden: true },
+  {
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
+  },
 
   {
     path: '/',
@@ -32,10 +40,12 @@ export const constantRouterMap = [
     redirect: '/dashboard',
     name: 'Dashboard',
     hidden: true,
-    children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index')
-    }]
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index')
+      }
+    ]
   },
   {
     path: '',
@@ -119,6 +129,18 @@ export const constantRouterMap = [
       }
     ]
   },
+  {
+    path: '/subject',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Subject',
+        component: () => import('@/views/subject/subjectTable'),
+        meta: { title: '科目管理', icon: 'subject' }
+      }
+    ]
+  },
 
   {
     path: '/bank',
@@ -143,7 +165,8 @@ export const constantRouterMap = [
           {
             path: 'single-upload',
             name: 'SingleUpload',
-            component: () => import('@/views/bankManage/bankSingle/singleUpload'),
+            component: () =>
+              import('@/views/bankManage/bankSingle/singleUpload'),
             meta: { title: '上传单选题', icon: 'excel' }
           }
         ]
@@ -158,13 +181,18 @@ export const constantRouterMap = [
           {
             path: 'multiple-info',
             name: 'MultipleInfo',
-            component: () => import('@/views/bankManage/bankMultiple/multipleInfo'),
-            meta: { title: '多选题信息管理', icon: 'multiple-info' }
+            component: () =>
+              import('@/views/bankManage/bankMultiple/multipleInfo'),
+            meta: {
+              title: '多选题信息管理',
+              icon: 'multiple-info'
+            }
           },
           {
             path: 'multiple-upload',
             name: 'MultipleUpload',
-            component: () => import('@/views/bankManage/bankMultiple/multipleUpload'),
+            component: () =>
+              import('@/views/bankManage/bankMultiple/multipleUpload'),
             meta: { title: '上传多选题', icon: 'excel' }
           }
         ]

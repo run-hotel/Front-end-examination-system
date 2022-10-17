@@ -1,16 +1,63 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.langName" placeholder="搜索科目名称" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.langDesc" placeholder="搜索科目描述" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-input v-model="listQuery.langCreatedBy" placeholder="搜索科目创建者" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.isRecommend" placeholder="搜索科目是否被推荐" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in recommendOptions" :key="item.key" :label="item.label" :value="item.key" />
+      <el-input
+        v-model="listQuery.langName"
+        placeholder="搜索科目名称"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-input
+        v-model="listQuery.langDesc"
+        placeholder="搜索科目描述"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-input
+        v-model="listQuery.langCreatedBy"
+        placeholder="搜索科目创建者"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-select
+        v-model="listQuery.isRecommend"
+        placeholder="搜索科目是否被推荐"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="item in recommendOptions"
+          :key="item.key"
+          :label="item.label"
+          :value="item.key"
+        />
       </el-select>
-      <el-button v-waves class="filter-item" style="margin-right: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button
+        v-waves
+        class="filter-item"
+        style="margin-right: 10px;"
+        type="primary"
+        icon="el-icon-search"
+        @click="handleFilter"
+      >
         搜索
       </el-button>
-      <el-button v-waves class="filter-item" style="margin-left: 0;margin-right: 10px;" type="primary" icon="el-icon-circle-plus-outline" @click="handleCreate">
+      <el-button
+        v-waves
+        class="filter-item"
+        style="margin-left: 0;margin-right: 10px;"
+        type="primary"
+        icon="el-icon-circle-plus-outline"
+        @click="handleCreate"
+      >
         添加
       </el-button>
     </div>
@@ -19,13 +66,19 @@
       v-loading="listLoading"
       :key="tableKey"
       :data="list"
-      :default-sort = "{prop: 'tno', order: 'ascending'}"
+      :default-sort="{ prop: 'tno', order: 'ascending' }"
       border
       fit
       highlight-current-row
       style="width: 100%;"
     >
-      <el-table-column label="序号" prop="tno" sortable align="center" width="100">
+      <el-table-column
+        label="序号"
+        prop="tno"
+        sortable
+        align="center"
+        width="100"
+      >
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
@@ -43,7 +96,7 @@
       <el-table-column label="科目图像" align="center" width="100">
         <template slot-scope="scope">
           <viewer>
-            <img :src="scope.row.langImgSrc" style="width: 40px;height: 40px">
+            <img :src="scope.row.langImgSrc" style="width: 40px;height: 40px" />
           </viewer>
         </template>
       </el-table-column>
@@ -57,9 +110,17 @@
           <span>{{ scope.row.langLastChanger || '暂无更新记录' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="imgCreateTime" sortable label="科目最后更新时间" align="center" width="160">
+      <el-table-column
+        prop="imgCreateTime"
+        sortable
+        label="科目最后更新时间"
+        align="center"
+        width="160"
+      >
         <template slot-scope="scope">
-          <span v-if="scope.row.langChangeTime">{{ scope.row.langChangeTime | date-format }}</span>
+          <span v-if="scope.row.langChangeTime">{{
+            scope.row.langChangeTime | date_format
+          }}</span>
           <span v-else>暂无更新记录</span>
         </template>
       </el-table-column>
@@ -68,27 +129,63 @@
           <span>{{ scope.row.isRecommend === '1' ? '是' : '否' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="paperCount" sortable label="发布试卷数" align="center" width="120">
+      <el-table-column
+        prop="paperCount"
+        sortable
+        label="发布试卷数"
+        align="center"
+        width="120"
+      >
         <template slot-scope="scope">
           <span>{{ scope.row.paperCount }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding" width="200">
-        <template slot-scope="{row}">
-          <el-button v-waves type="primary" icon="el-icon-edit-outline" size="mini" @click="handleUpdate(row)">
+      <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding"
+        width="200"
+      >
+        <template slot-scope="{ row }">
+          <el-button
+            v-waves
+            type="primary"
+            icon="el-icon-edit-outline"
+            size="mini"
+            @click="handleUpdate(row)"
+          >
             编辑
           </el-button>
-          <el-button v-waves type="danger" icon="el-icon-delete" size="mini" @click="confirmDeleteSubject(row)">
+          <el-button
+            v-waves
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            @click="confirmDeleteSubject(row)"
+          >
             删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
 
     <el-dialog :visible.sync="dialogFormVisible" :title="dialogStatus">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="temp"
+        label-position="left"
+        label-width="120px"
+        style="width: 400px; margin-left:50px;"
+      >
         <el-form-item label="科目名称" prop="langName">
           <el-input v-model="temp.langName" />
         </el-form-item>
@@ -101,17 +198,30 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
             class="avatar-uploader"
-            action="/api/teacher/uploadPicture">
-            <img v-if="temp.langImgSrc" :src="temp.langImgSrc" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"/>
+            action="/api/teacher/uploadPicture"
+          >
+            <img v-if="temp.langImgSrc" :src="temp.langImgSrc" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
-          <el-button v-waves :disabled="!temp.langImgSrc" type="danger" icon="el-icon-delete" size="mini" @click="deletePictureSrc">
+          <el-button
+            v-waves
+            :disabled="!temp.langImgSrc"
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            @click="deletePictureSrc"
+          >
             删除
           </el-button>
         </el-form-item>
         <el-form-item label="是否显示推荐" prop="isRecommend">
           <el-select v-model="temp.isRecommend" class="filter-item">
-            <el-option v-for="item in recommendOptions" :key="item.key" :label="item.label" :value="item.key" />
+            <el-option
+              v-for="item in recommendOptions"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -119,8 +229,11 @@
         <el-button @click="dialogFormVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='添加'?createData():updateData()">
-          {{ dialogStatus==='添加'?'确认添加':'确认编辑' }}
+        <el-button
+          type="primary"
+          @click="dialogStatus === '添加' ? createData() : updateData()"
+        >
+          {{ dialogStatus === '添加' ? '确认添加' : '确认编辑' }}
         </el-button>
       </div>
     </el-dialog>
@@ -128,13 +241,18 @@
     <!--可自定义按钮的样式、show/hide临界点、返回的位置  -->
     <!--如需文字提示，可在外部添加element的<el-tooltip></el-tooltip>元素  -->
     <el-tooltip placement="top" content="返回顶部">
-      <back-to-top :custom-style="myBackToTopStyle" :visibility-height="300" :back-position="50" transition-name="fade" />
+      <back-to-top
+        :custom-style="myBackToTopStyle"
+        :visibility-height="300"
+        :back-position="50"
+        transition-name="fade"
+      />
     </el-tooltip>
 
     <el-dialog :visible.sync="dialogRotationImgVisible" title="轮播图预览">
       <el-carousel :interval="4000">
         <el-carousel-item v-for="item in list" :key="item.imgId">
-          <img :src="item.imgSrc" style="width: 100%;height: 100%">
+          <img :src="item.imgSrc" style="width: 100%;height: 100%" />
           <h3>{{ item.imgTitle }}</h3>
         </el-carousel-item>
       </el-carousel>
@@ -143,7 +261,13 @@
 </template>
 
 <script>
-import { reqGetSubjectsList, reqSearchSubjectsList, reqDeleteSubject, reqInsertSubjectInfo, reqUpdateSubjectInfo } from '@/api/subject'
+import {
+  reqGetSubjectsList,
+  reqSearchSubjectsList,
+  reqDeleteSubject,
+  reqInsertSubjectInfo,
+  reqUpdateSubjectInfo
+} from '@/api/subject'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import BackToTop from '@/components/BackToTop'
@@ -177,10 +301,18 @@ export default {
       dialogStatus: '',
       dialogRotationImgVisible: false,
       rules: {
-        langName: [{ required: true, message: '科目名称为必填项', trigger: 'change' }],
-        langDesc: [{ required: true, message: '科目描述为必填项', trigger: 'change' }],
-        langImgSrc: [{ required: true, message: '请上传科目图像', trigger: 'change' }],
-        isRecommend: [{ required: true, message: '是否显示推荐为必选项', trigger: 'change' }]
+        langName: [
+          { required: true, message: '科目名称为必填项', trigger: 'change' }
+        ],
+        langDesc: [
+          { required: true, message: '科目描述为必填项', trigger: 'change' }
+        ],
+        langImgSrc: [
+          { required: true, message: '请上传科目图像', trigger: 'change' }
+        ],
+        isRecommend: [
+          { required: true, message: '是否显示推荐为必选项', trigger: 'change' }
+        ]
       },
       myBackToTopStyle: {
         right: '50px',
@@ -189,7 +321,7 @@ export default {
         height: '40px',
         'border-radius': '4px',
         'line-height': '45px', // 请保持与高度一致以垂直居中 Please keep consistent with height to center vertically
-        background: '#e7eaf1'// 按钮的背景颜色 The background color of the button
+        background: '#e7eaf1' // 按钮的背景颜色 The background color of the button
       }
     }
   },
@@ -202,7 +334,11 @@ export default {
       const result = await reqGetSubjectsList()
       if (result.statu === 0) {
         this.total = result.data.length
-        this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+        this.list = result.data.filter(
+          (item, index) =>
+            index < this.listQuery.limit * this.listQuery.page &&
+            index >= this.listQuery.limit * (this.listQuery.page - 1)
+        )
       }
       // 延迟0.5秒等待请求数据
       setTimeout(() => {
@@ -210,21 +346,26 @@ export default {
       }, 500)
     },
     confirmDeleteSubject(row) {
-      this.$confirm('确定删除该科目吗?若该科目下已有发布试卷则无法删除', '提示', {
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        if (row.paperCount > 0) {
-          this.$message({
-            message: '该科目已有发布试卷，无法删除',
-            type: 'error'
-          })
-        } else {
-          this.deleteSubject(row)
+      this.$confirm(
+        '确定删除该科目吗?若该科目下已有发布试卷则无法删除',
+        '提示',
+        {
+          confirmButtonText: '确定删除',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
-      }).catch(() => {
-      })
+      )
+        .then(() => {
+          if (row.paperCount > 0) {
+            this.$message({
+              message: '该科目已有发布试卷，无法删除',
+              type: 'error'
+            })
+          } else {
+            this.deleteSubject(row)
+          }
+        })
+        .catch(() => {})
     },
     async deleteSubject(row) {
       const result = await reqDeleteSubject(row.langId)
@@ -245,13 +386,25 @@ export default {
       this.listQuery.page = 1
       this.listLoading = true
       let isRecommend = this.listQuery.isRecommend
-      if (this.listQuery.isRecommend === null || this.listQuery.isRecommend === undefined) {
+      if (
+        this.listQuery.isRecommend === null ||
+        this.listQuery.isRecommend === undefined
+      ) {
         isRecommend = undefined
       }
-      const result = await reqSearchSubjectsList(this.listQuery.langName, this.listQuery.langDesc, this.listQuery.langCreatedBy, isRecommend)
+      const result = await reqSearchSubjectsList(
+        this.listQuery.langName,
+        this.listQuery.langDesc,
+        this.listQuery.langCreatedBy,
+        isRecommend
+      )
       if (result.statu === 0) {
         this.total = result.data.length
-        this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+        this.list = result.data.filter(
+          (item, index) =>
+            index < this.listQuery.limit * this.listQuery.page &&
+            index >= this.listQuery.limit * (this.listQuery.page - 1)
+        )
       }
       // 延迟一秒等待请求数据
       setTimeout(() => {
@@ -275,7 +428,7 @@ export default {
       })
     },
     updateData() {
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
           this.handleUpdateSubject()
         }
@@ -309,7 +462,7 @@ export default {
       })
     },
     createData() {
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
           this.insertSubjectInfo()
         }
@@ -342,8 +495,12 @@ export default {
       // this.temp.pictureSrc = URL.createObjectURL(file.raw)
       this.temp.langImgSrc = res.data
     },
+
     beforeAvatarUpload(file) {
-      const isType = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif'
+      const isType =
+        file.type === 'image/jpeg' ||
+        file.type === 'image/png' ||
+        file.type === 'image/gif'
       const isLt4M = file.size / 1024 / 1024 < 4
 
       if (!isType) {
@@ -361,27 +518,27 @@ export default {
 }
 </script>
 <style rel="stylesheet/scss" lang="scss" type="text/scss" scoped>
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 80px;
-    height: 80px;
-    line-height: 80px;
-    text-align: center;
-  }
-  .avatar {
-    width: 80px;
-    height: 80px;
-    display: block;
-  }
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+}
+.avatar {
+  width: 80px;
+  height: 80px;
+  display: block;
+}
 </style>
