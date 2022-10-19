@@ -1,4 +1,3 @@
-
 const teacher = {
   state: {
     // 用户信息
@@ -10,13 +9,13 @@ const teacher = {
     RECORD_USER_INFO: (state, { userInfo }) => {
       state.userInfo = userInfo
     },
-    RESET_USER_INFO: (state) => {
+    RESET_USER_INFO: state => {
       state.userInfo = {}
     },
     RECORD_PAPERID: (state, { paperId }) => {
       state.paperId = paperId
     },
-    RESET_PAPERID: (state) => {
+    RESET_PAPERID: state => {
       state.paperId = 1
     }
   },

@@ -10,6 +10,14 @@
         @keyup.enter.native="handleFilter"
       />
       <el-input
+        v-model="listQuery.stuClassName"
+        placeholder="搜索班级"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-input
         v-model="listQuery.stuName"
         placeholder="搜索姓名"
         clearable
@@ -235,6 +243,9 @@
         <el-form-item label="姓名" prop="stuName">
           <el-input v-model="temp.stuName" />
         </el-form-item>
+        <el-form-item label="班级" prop="stuClassNumber">
+          <el-input v-model="temp.stuClassNumber" />
+        </el-form-item>
         <el-form-item label="性别" prop="stuSex">
           <el-select v-model="temp.stuSex" class="filter-item">
             <el-option
@@ -297,14 +308,16 @@ export default {
         limit: 20,
         sno: undefined,
         stuName: undefined,
-        stuSex: undefined
+        stuSex: undefined,
+        stuClassName: undefined
       },
       stuSexOptions: [{ label: '男', key: '男' }, { label: '女', key: '女' }],
       temp: {
         sno: '',
         stuPsw: '123456',
         stuName: '',
-        stuSex: '男'
+        stuSex: '男',
+        stuClassNumber: ''
       },
       dialogFormVisible: false,
       rules: {
@@ -316,6 +329,13 @@ export default {
           {
             required: true,
             message: '密码为必填项，默认设置密码为123456',
+            trigger: 'blur'
+          }
+        ],
+        stuClassNumber: [
+          {
+            required: true,
+            message: '班级为必填项',
             trigger: 'blur'
           }
         ],
@@ -414,7 +434,8 @@ export default {
       let result = await reqSearchStudentsList(
         this.listQuery.sno,
         this.listQuery.stuName,
-        this.listQuery.stuSex
+        this.listQuery.stuSex,
+        this.listQuery.stuClassName
       )
       if (result.statu === 0) {
         this.total = result.data.length

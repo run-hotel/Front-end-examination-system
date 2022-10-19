@@ -132,7 +132,7 @@
       <el-table-column prop="timeUsed" label="花费时间" sortable align="center">
         <template slot-scope="scope">
           <span v-if="scope.row.timeUsed">{{
-            scope.row.timeUsed | (timeUsed - format)
+            scope.row.timeUsed | timeUsed_format
           }}</span>
           <span v-else style="color: #FF0000">00:00:00</span>
         </template>

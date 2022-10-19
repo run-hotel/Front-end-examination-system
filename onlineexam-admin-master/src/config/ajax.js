@@ -30,10 +30,11 @@ export default function ajax(url = '', data = {}, type = 'GET') {
       // 发送 post 请求
       promise = axios.post(url, data)
     }
-    promise.then(response => {
-      // 成功回调resolve()
-      resolve(response.data)
-    })
+    promise
+      .then(response => {
+        // 成功回调resolve()
+        resolve(response.data)
+      })
       .catch(error => {
         // 失败回调reject()
         reject(error)

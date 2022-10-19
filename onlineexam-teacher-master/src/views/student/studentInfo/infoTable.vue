@@ -11,6 +11,14 @@
         @keyup.enter.native="handleFilter"
       />
       <el-input
+        v-model="listQuery.stuClassName"
+        placeholder="搜索班级"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-input
         v-model="listQuery.stuName"
         placeholder="搜索姓名"
         clearable
@@ -42,16 +50,6 @@
         @click="handleFilter"
       >
         搜索
-      </el-button>
-      <el-button
-        v-waves
-        class="filter-item"
-        style="margin-left: 0;margin-right: 10px;"
-        type="primary"
-        icon="el-icon-circle-plus-outline"
-        @click="handleCreate"
-      >
-        添加
       </el-button>
       <el-button
         v-waves
@@ -274,14 +272,14 @@
 /* eslint-disable */
 import {
   reqGetStudentsList,
-  reqUpdateStudentInfo,
+  reqInsertStudentInfo,
   reqSearchStudentsList,
-  reqInsertStudentInfo
+  reqUpdateStudentInfo
 } from '@/api/student'
+import BackToTop from '@/components/BackToTop'
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import BackToTop from '@/components/BackToTop'
 
 export default {
   name: 'InfoTable',
@@ -298,7 +296,8 @@ export default {
         limit: 20,
         sno: undefined,
         stuName: undefined,
-        stuSex: undefined
+        stuSex: undefined,
+        stuClassName: undefined
       },
       stuSexOptions: [{ label: '男', key: '男' }, { label: '女', key: '女' }],
       temp: {
@@ -341,13 +340,17 @@ export default {
       }
     }
   },
-  created() {
-    this.getList()
+  async created() {
+    await this.getList()
   },
   methods: {
     async getList() {
       this.listLoading = true
-      let result = await reqGetStudentsList()
+      console.log('rendered')
+      // 获取老师tno
+      const { tno } = this.$store.state.teacher.userInfo
+      let result = await reqGetStudentsList(tno)
+
       if (result.statu === 0) {
         this.total = result.data.length
         this.list = result.data.filter(
@@ -415,7 +418,8 @@ export default {
       let result = await reqSearchStudentsList(
         this.listQuery.sno,
         this.listQuery.stuName,
-        this.listQuery.stuSex
+        this.listQuery.stuSex,
+        this.listQuery.stuClassName
       )
       if (result.statu === 0) {
         this.total = result.data.length

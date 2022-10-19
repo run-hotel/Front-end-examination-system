@@ -2,10 +2,15 @@
   <div v-loading="listLoading" class="chart-container">
     <div class="chart-select">
       <el-select v-model="paperId" class="filter-item">
-        <el-option v-for="item in paperNameOptions" :key="item.key" :label="item.label" :value="item.key"/>
+        <el-option
+          v-for="item in paperNameOptions"
+          :key="item.key"
+          :label="item.label"
+          :value="item.key"
+        />
       </el-select>
     </div>
-    <chart height="98%" width="100%"/>
+    <chart height="98%" width="100%" />
   </div>
 </template>
 
@@ -55,15 +60,14 @@ export default {
 </script>
 
 <style type="text/scss" rel="stylesheet/scss" lang="scss" scoped>
-  .chart-container {
-    position: relative;
-    width: 100%;
-    height: calc(100vh - 84px);
-    .chart-select {
-      display: flex;
-      justify-content: center;
-      padding: 10px
-    }
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 84px);
+  .chart-select {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
   }
+}
 </style>
-
