@@ -40,9 +40,10 @@ export default {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
         const tHeader = [
-          '(必填)学号(12位数字)',
+          '(必填)学号(8位数字)',
           '(必填)姓名',
-          '(必填)性别(填男或者女)'
+          '(必填)性别(填男或者女)',
+          '(必填)班级(2020**)',
         ]
         excel.export_json_to_excel({
           header: tHeader,
@@ -79,6 +80,9 @@ export default {
           if (key === '(必填)性别(填男或者女)') {
             student.stuSex = item[key]
           }
+          if(key === '(必填)班级(2020**)') {
+            student.stuClassName = (String)(item[key])
+          }
         })
         studentList.push(student)
       })
@@ -88,7 +92,7 @@ export default {
     async insertStudentInfoList(studentList) {
       const result = await reqInsertStudentInfoList(studentList)
       if (result.statu === 0) {
-        this.tableHeader = ['学号', '姓名', '性别', '上传状态']
+        this.tableHeader = ['学号', '姓名', '性别', '班级','上传状态']
         this.tableData = result.data.responseList
         this.allItemCount = result.data.allItemCount
         this.successItemCount = result.data.successItemCount
