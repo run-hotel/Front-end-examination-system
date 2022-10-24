@@ -144,7 +144,7 @@
         label="操作"
         align="center"
         class-name="small-padding"
-        width="200"
+        width="300"
       >
         <template slot-scope="{ row }">
           <el-button
@@ -155,6 +155,15 @@
             @click="handleUpdate(row)"
           >
             编辑
+          </el-button>
+          <el-button
+            v-waves
+            type="primary"
+            icon="el-icon-edit"
+            size="mini"
+            @click="handleDispatchTeacher(row)"
+          >
+            分配
           </el-button>
           <el-button
             v-waves
@@ -238,6 +247,70 @@
       </div>
     </el-dialog>
 
+    <el-dialog :visible.sync="subjectToTeacher" :title="dialogStatus">
+      <el-form
+        ref="dataClassForm"
+        :model="temp"
+        label-position="left"
+        label-width="120px"
+        style="width: 400px; margin-left:50px;"
+      >
+        <el-form-item label="科目名称">
+          <el-tag effect="plain">{{ temp.langName }}</el-tag>
+        </el-form-item>
+        <el-form-item label="科目描述">
+          <el-tag effect="plain">{{ temp.langDesc }}</el-tag>
+        </el-form-item>
+        <el-form-item label="选择分配教师">
+          <el-select
+            v-model="teacherId"
+            filterable
+            remote
+            reserve-keyword
+            placeholder="请输入教师姓名"
+            :remote-method="remoteMethod"
+            :loading="loadingTeacher"
+            class="filter-item"
+          >
+            <el-option
+              v-for="item in teacherOptions"
+              :key="item.teacherId"
+              :label="item.teaName"
+              :value="item.teaName"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="选择分配班级">
+          <el-select
+            v-model="classId"
+            filterable
+            remote
+            reserve-keyword
+            multiple
+            placeholder="请输入班级名称"
+            :remote-method="remoteClassMethod"
+            :loading="loadingClass"
+            class="filter-item"
+          >
+            <el-option
+              v-for="item in classOptions"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="subjectToTeacher = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="dispatchClass">
+          确认分配
+        </el-button>
+      </div>
+    </el-dialog>
+
     <!--可自定义按钮的样式、show/hide临界点、返回的位置  -->
     <!--如需文字提示，可在外部添加element的<el-tooltip></el-tooltip>元素  -->
     <el-tooltip placement="top" content="返回顶部">
@@ -266,8 +339,11 @@ import {
   reqSearchSubjectsList,
   reqDeleteSubject,
   reqInsertSubjectInfo,
-  reqUpdateSubjectInfo
+  reqUpdateSubjectInfo,
+  reqGetAllClasses,
+  reqInsertTeacherToClass
 } from '@/api/subject'
+import { reqGetTeachersList } from '@/api/teacher'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import BackToTop from '@/components/BackToTop'
@@ -290,14 +366,22 @@ export default {
         langCreatedBy: undefined,
         isRecommend: undefined
       },
+      teacherId: null,
+      teacherOptions: [],
+      loadingTeacher: false,
+      loadingClass: false,
+      classId: null,
+      classOptions: [],
       recommendOptions: [{ label: '是', key: '1' }, { label: '否', key: '0' }],
       temp: {
         langName: '',
         langDesc: '',
         langImgSrc: '',
-        isRecommend: ''
+        isRecommend: '',
+        langLastChanger: ''
       },
       dialogFormVisible: false,
+      subjectToTeacher: false,
       dialogStatus: '',
       dialogRotationImgVisible: false,
       rules: {
@@ -344,6 +428,53 @@ export default {
       setTimeout(() => {
         this.listLoading = false
       }, 500)
+    },
+    dispatchClass() {
+      if (this.teacherId && this.classId.length) {
+        this.handleInsertClass()
+      } else {
+        this.$message({
+          message: this.teacherId ? '请选择班级' : '请选择教师',
+          type: 'warning'
+        })
+      }
+    },
+    handleInsertClass() {
+      try {
+        this.classId.forEach(async classId => {
+          await reqInsertTeacherToClass(this.teacherId, classId, this.temp.id)
+        })
+        this.subjectToTeacher = false
+        this.$message({
+          message: '分配成功',
+          type: 'success'
+        })
+      } catch (error) {
+        this.$message({
+          message: '分配失败',
+          type: 'error'
+        })
+      }
+    },
+    async remoteMethod(query) {
+      if (query !== '') {
+        this.loadingTeacher = true
+        const { data } = await reqGetTeachersList()
+        this.loadingTeacher = false
+        this.teacherOptions = data.filter(item => item.teaName.includes(query))
+      } else {
+        this.teacherId = ''
+        this.teacherOptions = []
+      }
+    },
+
+    async remoteClassMethod(query) {
+      if (query !== '') {
+        this.loadingClass = true
+        const { data } = await reqGetAllClasses()
+        this.loadingClass = false
+        this.classOptions = data.filter(item => item && item.includes(query))
+      }
     },
     confirmDeleteSubject(row) {
       this.$confirm(
@@ -416,7 +547,8 @@ export default {
         langName: '',
         langDesc: '',
         langImgSrc: '',
-        isRecommend: ''
+        isRecommend: '',
+        langLastChanger: ''
       }
     },
     handleUpdate(row) {
@@ -426,6 +558,11 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+    },
+    handleDispatchTeacher(row) {
+      this.temp = Object.assign({}, row) // 复制对象
+      this.dialogStatus = '分配教师'
+      this.subjectToTeacher = true
     },
     updateData() {
       this.$refs['dataForm'].validate(valid => {

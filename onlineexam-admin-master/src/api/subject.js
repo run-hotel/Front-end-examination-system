@@ -1,5 +1,6 @@
 import ajax from '@/config/ajax'
 const BASE_URL = process.env.BASE_API + '/admin'
+const CLASS_API = process.env.BASE_API + '/teacher'
 
 // 获取全部科目信息
 export const reqGetSubjectsList = () => ajax(BASE_URL + '/getSubjectsList')
@@ -25,3 +26,18 @@ export const reqUpdateSubjectInfo = row =>
 // 请求删除科目
 export const reqDeleteSubject = langId =>
   ajax(BASE_URL + '/deleteSubject', { langId }, 'POST')
+
+// 获取所有班级
+export const reqGetAllClasses = () => ajax(CLASS_API + '/getStudentClasses')
+
+// 将老师分配给班级
+export const reqInsertTeacherToClass = (teacherId, classId, subjectId) =>
+  ajax(
+    BASE_URL + '/insertConnectTeacherStudentClassInfo',
+    {
+      teacherTno: teacherId,
+      classTno: classId,
+      paperId: subjectId
+    },
+    'POST'
+  )

@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <div class="justify-between page">
     <div ref="Blur" id="pop" style="display: none"></div>
     <LoadingCard ref="Load" style="display: none" />
@@ -108,61 +107,6 @@
         class="image_7 picture image-jjq67nzE"
       />
     </div>
-=======
-  <div class="login-container">
-    <el-form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
-      class="login-form"
-      auto-complete="on"
-      label-position="left"
-    >
-      <h3 class="title">在线考试系统管理员端</h3>
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          v-model="loginForm.username"
-          name="username"
-          type="text"
-          auto-complete="on"
-          placeholder="请输入管理员号"
-        />
-      </el-form-item>
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input
-          :type="pwdType"
-          v-model="loginForm.password"
-          name="password"
-          auto-complete="on"
-          placeholder="请输入密码"
-          @keyup.enter.native="handleLogin"
-        />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          :loading="loading"
-          type="primary"
-          style="width:100%;"
-          @click.native.prevent="handleLogin"
-        >
-          登录
-        </el-button>
-      </el-form-item>
-      <div class="tips">
-        <span style="margin-right:20px;">管理员号: 123456</span>
-        <span> 密码: 123456</span>
-      </div>
-    </el-form>
->>>>>>> main
   </div>
 </template>
     
@@ -260,11 +204,7 @@ export default {
     
 </script>
   
-<<<<<<< HEAD
   <style scoped>
-=======
-<style scoped>
->>>>>>> main
 #pop {
   background: rgba(52, 58, 65, 0.6);
   backdrop-filter: blur(4px);
@@ -528,12 +468,8 @@ input {
     180deg,
     rgba(98, 106, 149, 0.4) 0%,
     rgba(181, 186, 213, 0.25) 100%
-<<<<<<< HEAD
   );
   background-color: #fff !important;
-=======
-  ) !important;
->>>>>>> main
   backdrop-filter: blur(20px);
   font-size: 15px;
   font-family: SF Pro Text;
@@ -795,9 +731,5 @@ input {
 .image-jjq67nzE:checked {
   transform: translateX(100px);
 }
-<<<<<<< HEAD
 </style>
   
-=======
-</style>
->>>>>>> main

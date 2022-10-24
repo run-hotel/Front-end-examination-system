@@ -50,16 +50,6 @@
       >
         搜索
       </el-button>
-      <el-button
-        v-waves
-        class="filter-item"
-        style="margin-left: 0;margin-right: 10px;"
-        type="primary"
-        icon="el-icon-circle-plus-outline"
-        @click="handleCreate"
-      >
-        添加
-      </el-button>
     </div>
 
     <el-table
@@ -155,15 +145,6 @@
             @click="handleUpdate(row)"
           >
             编辑
-          </el-button>
-          <el-button
-            v-waves
-            type="danger"
-            icon="el-icon-delete"
-            size="mini"
-            @click="confirmDeleteSubject(row)"
-          >
-            删除
           </el-button>
         </template>
       </el-table-column>
@@ -344,28 +325,6 @@ export default {
       setTimeout(() => {
         this.listLoading = false
       }, 500)
-    },
-    confirmDeleteSubject(row) {
-      this.$confirm(
-        '确定删除该科目吗?若该科目下已有发布试卷则无法删除',
-        '提示',
-        {
-          confirmButtonText: '确定删除',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      )
-        .then(() => {
-          if (row.paperCount > 0) {
-            this.$message({
-              message: '该科目已有发布试卷，无法删除',
-              type: 'error'
-            })
-          } else {
-            this.deleteSubject(row)
-          }
-        })
-        .catch(() => {})
     },
     async deleteSubject(row) {
       const result = await reqDeleteSubject(row.langId)

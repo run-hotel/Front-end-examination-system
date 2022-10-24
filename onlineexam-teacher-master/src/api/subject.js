@@ -1,5 +1,5 @@
 import ajax from '@/config/ajax'
-const BASE_URL = 'http://localhost:9538/api/admin'
+const BASE_URL = process.env.BASE_API
 
 // 获取全部科目信息
 export const reqGetSubjectsList = () => ajax(BASE_URL + '/getSubjectsList')

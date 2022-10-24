@@ -18,6 +18,14 @@ export const reqSearchStudentsList = (sno, stuName, stuSex, stuClassName) =>
 export const reqInsertStudentInfo = temp =>
   ajax(BASE_URL + '/insertStudentInfo', temp, 'POST')
 
+// 将一个课程分配给一位老师，让其带某个班的学生
+export const reqInsertContecttion = (teacher_tno, class_tno, paper_id) =>
+  ajax(
+    BASE_URL + '/insertConnectTeacherStudentClassInfo',
+    { teacher_tno, class_tno, paper_id },
+    temp
+  )
+
 // 获取全部成绩信息
 export const reqGetScoresList = () => ajax(BASE_URL + '/getScoresList')
 // 请求删除成绩

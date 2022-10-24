@@ -109,7 +109,7 @@
     </div>
   </div>
 </template>
-  
+
 <script>
 import { reqLogin } from '@/api/login'
 import { setStore } from '@/utils/mUtils'
@@ -133,28 +133,26 @@ export default {
     return {
       loginForm: {
         username: '',
-        password: '',
+        password: ''
       },
       loginRules: {
         username: [
-          { required: true, trigger: 'blur', validator: validateUsername },
+          { required: true, trigger: 'blur', validator: validateUsername }
         ],
-        password: [
-          { required: true, trigger: 'blur', validator: validatePass },
-        ],
+        password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       loading: false,
       pwdType: 'password',
-      redirect: undefined,
+      redirect: undefined
     }
   },
   watch: {
     $route: {
-      handler: function (route) {
+      handler: function(route) {
         this.redirect = route.query && route.query.redirect
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   methods: {
     showPwd() {
@@ -165,7 +163,7 @@ export default {
       }
     },
     handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
           this.teacherLogin()
@@ -187,22 +185,22 @@ export default {
         setStore('teacherInfo', result.data)
         this.$message({
           message: result.msg,
-          type: 'success',
+          type: 'success'
         })
         this.$router.push({ path: this.redirect || '/' })
       } else {
         this.loading = false
         this.$message({
           message: result.msg,
-          type: 'warning',
+          type: 'warning'
         })
       }
-    },
-  },
+    }
+  }
 }
 </script>
-  
-  <style scoped>
+
+<style scoped>
 #pop {
   background: rgba(52, 58, 65, 0.6);
   backdrop-filter: blur(4px);
@@ -730,4 +728,3 @@ input {
   transform: translateX(100px);
 }
 </style>
-  
