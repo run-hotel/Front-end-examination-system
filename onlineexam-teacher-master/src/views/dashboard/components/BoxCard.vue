@@ -205,10 +205,12 @@ body * {
   background-color: #fdfeff;
   border-radius: 20.5px;
   box-shadow: 0px 8.23px 49.38px #00518c26;
-  width: 1500px;
+  /* width: 1500px; */
+  width: 300%;
   overflow-y: auto;
   overflow-x: hidden;
-  height: 1000px;
+  /* height: 1000px; */
+  height: 150%;
 }
 .group {
   padding: 6px 0 16px;
