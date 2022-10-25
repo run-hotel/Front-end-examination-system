@@ -1,27 +1,35 @@
 <template>
   <div class="navbar">
-    <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
-    <breadcrumb :class="{ 'mobile-breadcrumb': device !== 'desktop' }"/>
+    <hamburger
+      :toggle-click="toggleSideBar"
+      :is-active="sidebar.opened"
+      class="hamburger-container"
+    />
+    <breadcrumb :class="{ 'mobile-breadcrumb': device !== 'desktop' }" />
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
-        <screenfull id="screenfull" class="right-menu-item hover-effect"/>
+      <template v-if="device !== 'mobile'">
+        <screenfull id="screenfull" class="right-menu-item hover-effect" />
       </template>
 
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <el-dropdown
+        class="avatar-container right-menu-item hover-effect"
+        trigger="click"
+      >
         <div class="avatar-wrapper">
-          <img src="@/assets/images/teacher.jpg" class="user-avatar">
-          <i class="el-icon-caret-bottom"/>
+          <img
+            src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/62b1197a5a7e3f0310471dad/63520f2af9b4a40011dac7c5/16663222219332254738.png"
+            class="user-avatar"
+          />
+          <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link class="inlineBlock" to="/">
-            <el-dropdown-item>
-              首页
-            </el-dropdown-item>
+            <el-dropdown-item> 首页 </el-dropdown-item>
           </router-link>
           <div @click="confirmLogOut">
             <el-dropdown-item divided>
-              <span style="display:block;">退出登录</span>
+              <span style="display: block">退出登录</span>
             </el-dropdown-item>
           </div>
         </el-dropdown-menu>
@@ -42,13 +50,10 @@ export default {
   components: {
     Breadcrumb,
     Hamburger,
-    Screenfull
+    Screenfull,
   },
   computed: {
-    ...mapGetters([
-      'sidebar',
-      'device'
-    ])
+    ...mapGetters(['sidebar', 'device']),
   },
   methods: {
     toggleSideBar() {
@@ -58,15 +63,17 @@ export default {
       this.$confirm('确定退出登录吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.logout()
-      }).catch(() => {
-        /* this.$message({
+        type: 'warning',
+      })
+        .then(() => {
+          this.logout()
+        })
+        .catch(() => {
+          /* this.$message({
            type: 'info',
            message: '已取消删除'
          });*/
-      })
+        })
     },
     async logout() {
       const result = await reqLogOut()
@@ -77,18 +84,18 @@ export default {
         this.$store.dispatch('resetUserInfo')
         this.$message({
           message: result.msg,
-          type: 'success'
+          type: 'success',
         })
         // 为了重新实例化vue-router对象 避免bug
         location.reload()
       } else {
         this.$message({
           message: '系统错误，退出登录失败',
-          type: 'warning'
+          type: 'warning',
         })
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -102,14 +109,14 @@ export default {
 .navbar {
   height: 50px;
   line-height: 50px;
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,.12), 0 0 3px 0 rgba(0,0,0,.04);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
   .hamburger-container {
     line-height: 58px;
     height: 50px;
     float: left;
     padding: 0 10px;
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
   .right-menu {
@@ -126,10 +133,10 @@ export default {
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
+        transition: background 0.3s;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, 0.025);
         }
       }
     }
