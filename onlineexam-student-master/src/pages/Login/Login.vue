@@ -38,7 +38,7 @@
     <!--<transition name="el-fade-in">-->
     <div class="register-wrap" v-show="showRegister">
       <!--<p v-show="showTishi">{{tips}}</p>-->
-      <mt-field label="学号" placeholder="请输入12位数字学号" v-model="newSno" :state="newSnoState"
+      <mt-field label="学号" placeholder="请输入8位数字学号" v-model="newSno" :state="newSnoState"
                 @blur.native.capture="checkNewSno"/>
       <mt-field label="密码" placeholder="请输入至少6位数字密码" type="password" v-model="newPsw" :state="newPswState"
                 @blur.native.capture="checkNewPsw"/>
