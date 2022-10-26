@@ -238,7 +238,28 @@ export const constantRouterMap = [
             meta: { title: '上传填空题', icon: 'excel' }
           }
         ]
-      }
+      },
+      {
+        path: 'bank-short',
+        component: () => import('@/views/bankManage/bankShort/index'),
+        name: 'BankShort',
+        redirect: '/bank/bank-short/short-info',
+        meta: { title: '简答题库管理', icon: 'short-bank' },
+        children: [
+          {
+            path: 'short-info',
+            name: 'ShortInfo',
+            component: () => import('@/views/bankManage/bankShort/shortInfo'),
+            meta: { title: '简答题信息管理', icon: 'short-info' },
+          },
+          {
+            path: 'short-upload',
+            name: 'ShortUpload',
+            component: () => import('@/views/bankManage/bankShort/shortUpload'),
+            meta: { title: '上传简答题',icon: 'excel' },
+          }
+        ]
+      },
     ]
   },
 
