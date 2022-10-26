@@ -87,13 +87,13 @@
         chartDataRingScore: [
           {name: '单选题', value: 20},
           {name: '多选题', value: 10},
-          {name: '判断题', value: 4},
+          {name: '简答题', value: 4},
           {name: '填空题', value: 6},
         ],
         chartDataBarCorrect:[
           {name: '单选题20道', value: 5},
           {name: '多选题5道', value: 2},
-          {name: '判断题5道', value: 1},
+          {name: '简答题5道', value: 1},
           {name: '填空题5道', value: 3},
         ],
         chartDataLineRanking:[],

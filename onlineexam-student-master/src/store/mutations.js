@@ -103,7 +103,7 @@ export default {
     // state.judgeAnswers[currentIndex - state.singleAnswers.length - state.multipleAnswers.length] = judgeAnswer;
   },
   [RECORD_FILL_ANSWERS] (state, {currentIndex, fillAnswer}) {
-    // 注意下标要减去前面单选题数量和多选题数量和判断题数量
+    // 注意下标要减去前面单选题数量和多选题数量和简答题数量
     state.fillAnswers.splice(currentIndex - state.singleAnswers.length - state.multipleAnswers.length - state.judgeAnswers.length, 1, fillAnswer);
     // state.fillAnswers[currentIndex - state.singleAnswers.length - state.multipleAnswers.length - state.judgeAnswers.length] = fillAnswer;
   },

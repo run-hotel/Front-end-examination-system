@@ -71,12 +71,12 @@
         </div>
       </section>
 
-      <!--判断题列表-->
+      <!--简答题列表-->
       <section class="que" v-for="(item, index) in judgeQueList" :key="'judge'+ item.judgeId"
                v-show="(index + queNumInfo.singleNum + queNumInfo.multipleNum) == currentIndex">
         <div class="content">
           <span class="que_type">
-            (判断题)<img :src="isCollect == '0' ? require('../../common/imgs/no-collect.png') : require('../../common/imgs/yes-collect.png')" @click="clickCollect(item.isCollect,index, item.answerId)"/>
+            (简答题)<img :src="isCollect == '0' ? require('../../common/imgs/no-collect.png') : require('../../common/imgs/yes-collect.png')" @click="clickCollect(item.isCollect,index, item.answerId)"/>
           </span>
           <span class="que_content">{{index + 1 + queNumInfo.singleNum + queNumInfo.multipleNum}}.&nbsp;{{item.judgeContent}}<span class="que_score">[{{paperInfo.judgeScore}}分]</span></span>
 
@@ -158,10 +158,10 @@
           </div>
         </div>
 
-        <!--答题卡判断题-->
+        <!--答题卡简答题-->
         <div class="options">
           <div class="options_title" v-if="paperInfo.judgeScore">
-            判断题(每题{{paperInfo.judgeScore}}分)
+            简答题(每题{{paperInfo.judgeScore}}分)
           </div>
 
           <div class="row">
@@ -216,7 +216,7 @@
         singleQueList: [],
         //多选题数组
         multipleQueList: [],
-        //判断题数组
+        //简答题数组
         judgeQueList: [],
         //填空题数组
         fillQueList: [],

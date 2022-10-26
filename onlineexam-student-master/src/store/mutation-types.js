@@ -14,7 +14,7 @@ export const RECEIVE_LANGUAGES_INFO = 'receive_languages_info' // 接收首页�
 
 export const INIT_SINGLE_ANSWERS_LENGTH = 'init_single_answers_length' // 初始化单选题答案数组长度
 export const INIT_MULTIPLE_ANSWERS_LENGTH = 'init_multiple_answers_length' // 初始化多选题答案数组长度
-export const INIT_JUDGE_ANSWERS_LENGTH = 'init_judge_answers_length' // 初始化判断题答案数组长度
+export const INIT_JUDGE_ANSWERS_LENGTH = 'init_judge_answers_length' // 初始化简答题答案数组长度
 export const INIT_FILL_ANSWERS_LENGTH = 'init_fill_answers_length' // 初始化填空题答案数组长度
 
 export const NEXT_QUE = 'next_que' //点击下一题
@@ -24,7 +24,7 @@ export const RECORD_FIRST_CURRENT_TIME = 'record_first_current_time' //记录最
 
 export const RECORD_SINGLE_ANSWERS = 'record_single_answers' // 记录单选题答案到数组，第一个参数为数组下标，第二个参数为当前下标的值
 export const RECORD_MULTIPLE_ANSWERS = 'record_multiple_answers' // 记录多选题答案到数组，第一个参数为数组下标，第二个参数为当前下标的值
-export const RECORD_JUDGE_ANSWERS = 'record_judge_answers' // 记录判断题答案到数组，第一个参数为数组下标，第二个参数为当前下标的值
+export const RECORD_JUDGE_ANSWERS = 'record_judge_answers' // 记录简答题答案到数组，第一个参数为数组下标，第二个参数为当前下标的值
 export const RECORD_FILL_ANSWERS = 'record_fill_answers' // 记录填空题答案到数组，第一个参数为数组下标，第二个参数为当前下标的值
 
 export const REFRESH_CURRENT_INDEX = 'refresh_current_index' //刷新从sessionStorage取出放入

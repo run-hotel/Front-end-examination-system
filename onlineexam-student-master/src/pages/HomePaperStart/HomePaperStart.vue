@@ -133,7 +133,7 @@
         </div>
       </section>
 
-      <!--判断题列表-->
+      <!--简答题列表-->
       <section
         class="que"
         v-for="(item, index) in judgeQueList"
@@ -143,7 +143,7 @@
         "
       >
         <div class="content">
-          <span class="que_type">(判断题)</span>
+          <span class="que_type">(简答题)</span>
           <span class="que_content"
             >{{
               index + 1 + queNumInfo.singleNum + queNumInfo.multipleNum
@@ -298,10 +298,10 @@
           </div>
         </div>
 
-        <!--答题卡判断题-->
+        <!--答题卡简答题-->
         <div class="options">
           <div class="options_title" v-if="paperInfo.judgeScore">
-            判断题(每题{{ paperInfo.judgeScore }}分)
+            简答题(每题{{ paperInfo.judgeScore }}分)
           </div>
 
           <div class="row">
@@ -414,9 +414,9 @@ export default {
       //多选题答案
       multipleAnswer: [],
 
-      //判断题数组
+      //简答题数组
       judgeQueList: [],
-      //判断题答案
+      //简答题答案
       judgeAnswer: '',
 
       //填空题数组
@@ -483,7 +483,7 @@ export default {
         'initMultipleAnswersLength',
         this.queNumInfo.multipleNum
       )
-      //初始化state中判断题答案数组长度
+      //初始化state中简答题答案数组长度
       this.$store.dispatch('initJudgeAnswersLength', this.queNumInfo.judgeNum)
       //初始化state中填空题答案数组长度
       this.$store.dispatch('initFillAnswersLength', this.queNumInfo.fillNum)
@@ -527,7 +527,7 @@ export default {
       'recordFirstCurrentTime', //记录当前花费时间
       'recordSingleAnswers', //记录单选题答案到数组，第一个参数为数组下标，第二个参数为当前下标的值
       'recordMultipleAnswers', //记录多选题答案到数组，第一个参数为数组下标，第二个参数为当前下标的值
-      'recordJudgeAnswers', //记录判断题答案到数组，第一个参数为数组下标，第二个参数为当前下标的值
+      'recordJudgeAnswers', //记录简答题答案到数组，第一个参数为数组下标，第二个参数为当前下标的值
       'recordFillAnswers', //记录填空题答案到数组，第一个参数为数组下标，第二个参数为当前下标的值
       'refreshCurrentIndex',
       'refreshSingleAnswers',
@@ -835,7 +835,7 @@ export default {
       const { currentIndex, multipleAnswer } = this
       this.recordMultipleAnswers({ currentIndex, multipleAnswer })
     },
-    //判断题点击change事件
+    //简答题点击change事件
     judgeChange() {
       const { currentIndex, judgeAnswer } = this
       this.recordJudgeAnswers({ currentIndex, judgeAnswer })
@@ -872,7 +872,7 @@ export default {
           this.recordMultipleAnswers({ currentIndex, multipleAnswer })
         }
       }
-      //获取判断题当前答案
+      //获取简答题当前答案
       else if (
         this.currentIndex <
         this.queNumInfo.singleNum +

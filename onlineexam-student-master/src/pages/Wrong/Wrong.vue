@@ -75,7 +75,7 @@
               >分
             </div>
             <div class="wrong_item">
-              判断题：总共<span class="wrong_important">{{
+              简答题：总共<span class="wrong_important">{{
                 item.judgeNum
               }}</span
               >道，答错<span class="wrong_important">{{

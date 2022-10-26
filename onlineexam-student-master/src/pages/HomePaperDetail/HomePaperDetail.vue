@@ -119,7 +119,7 @@
           paperInfo.singleScore
         }}分，多选题{{ queNumInfo.multipleNum }}道每题{{
           paperInfo.multipleScore
-        }}分，判断题{{ queNumInfo.judgeNum }}道每题{{
+        }}分，简答题{{ queNumInfo.judgeNum }}道每题{{
           paperInfo.judgeScore
         }}分，填空题{{ queNumInfo.fillNum }}道每题{{ paperInfo.fillScore }}分
       </div>

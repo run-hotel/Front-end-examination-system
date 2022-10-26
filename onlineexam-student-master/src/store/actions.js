@@ -121,7 +121,7 @@ export default {
   initMultipleAnswersLength({commit}, multipleNum) {
     commit(INIT_MULTIPLE_ANSWERS_LENGTH, {multipleNum})
   },
-  //初始化判断题答案数组长度
+  //初始化简答题答案数组长度
   initJudgeAnswersLength({commit}, judgeNum) {
     commit(INIT_JUDGE_ANSWERS_LENGTH, {judgeNum})
   },
@@ -154,7 +154,7 @@ export default {
   recordMultipleAnswers({commit}, {currentIndex, multipleAnswer}) {
     commit(RECORD_MULTIPLE_ANSWERS, {currentIndex, multipleAnswer})
   },
-  //记录判断题答案到数组，第一个参数为数组下标，第二个参数为当前下标的值
+  //记录简答题答案到数组，第一个参数为数组下标，第二个参数为当前下标的值
   recordJudgeAnswers({commit}, {currentIndex, judgeAnswer}) {
     commit(RECORD_JUDGE_ANSWERS, {currentIndex, judgeAnswer})
   },

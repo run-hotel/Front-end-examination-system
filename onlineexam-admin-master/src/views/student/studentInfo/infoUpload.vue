@@ -106,7 +106,7 @@ export default {
             student.stuSex = item[key]
           }
           if(key === '(必填)班级(2020**)') {
-            student.stuClassName = item[key]
+            student.stuClassName = (String)(item[key])
           }
         })
         studentList.push(student)

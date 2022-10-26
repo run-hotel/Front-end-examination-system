@@ -9,7 +9,7 @@
     <div class="content_container">
       <div class="content">
             <span class="que_type">
-              (判断题)<img :src="item.isCollect == '0' ? require('../../common/imgs/no-collect.png') : require('../../common/imgs/yes-collect.png')" @click="clickCollect"/>
+              (简答题)<img :src="item.isCollect == '0' ? require('../../common/imgs/no-collect.png') : require('../../common/imgs/yes-collect.png')" @click="clickCollect"/>
             </span>
         <span class="que_content">{{item.judgeContent}}</span>
 

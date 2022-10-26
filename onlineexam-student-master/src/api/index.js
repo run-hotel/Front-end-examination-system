@@ -222,7 +222,7 @@ export const reqSingleByAnswerId = ({ answerId }) =>
 export const reqMultipleByAnswerId = ({ answerId }) =>
   ajax(BASE_URL + '/getMultipleByAnswerId', { answerId })
 /*
-  通过answerId获取收藏判断题目详情
+  通过answerId获取收藏简答题目详情
  */
 export const reqJudgeByAnswerId = ({ answerId }) =>
   ajax(BASE_URL + '/getJudgeByAnswerId', { answerId })
