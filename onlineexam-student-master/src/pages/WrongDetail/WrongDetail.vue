@@ -80,10 +80,10 @@
           </span>
           <span class="que_content">{{index + 1 + queNumInfo.singleNum + queNumInfo.multipleNum}}.&nbsp;{{item.judgeContent}}<span class="que_score">[{{paperInfo.judgeScore}}分]</span></span>
 
-          <div class="judge_option" v-for="(option, optionIndex) in item.options"
+          <!-- <div class="judge_option" v-for="(option, optionIndex) in item.options"
                :key="'judge'+ item.judgeId + optionIndex">
             <mu-radio :value="option.value" v-model="item.judgeAnswer" disabled :label="option.label" v-if="option.label"></mu-radio>
-          </div>
+          </div> -->
 
           <div class="answer_row">正确答案：<span class="correct_answer">{{item.judgeAnswer}}</span></div>
           <div class="answer_row">你的答案：<span :class="[item.isCorrect == '1' ? 'correct_answer' : 'your_answer']">{{item.stuAnswer || '你太优秀了，该题无作答'}}</span></div>
@@ -196,6 +196,7 @@
 </template>
 
 <script>
+<<<<<<< Updated upstream
   import HeaderTop from '../../components/HeaderTop/HeaderTop.vue'
   import {Toast, MessageBox} from 'mint-ui'
   import {reqPapersInfoByWrongPaperId, reqUpdatePaperAnswerIsCollect} from '../../api'
@@ -226,300 +227,456 @@
         showPaperCard: false,
         isCollect:'0',
         percentage:0 //进度条值
+=======
+import HeaderTop from '../../components/HeaderTop/HeaderTop.vue'
+import { Toast, MessageBox } from 'mint-ui'
+import {
+  reqPapersInfoByWrongPaperId,
+  reqUpdatePaperAnswerIsCollect,
+} from '../../api'
+import { mapState, mapActions } from 'vuex'
+export default {
+  name: '',
+  data() {
+    return {
+      //学号
+      sno: this.$store.state.userInfo.sno,
+      //路由传值paperId
+      paperId: this.$route.params.paperId,
+      //试卷信息
+      paperInfo: {},
+      //试卷问题类型数量
+      queNumInfo: {},
+      //单选题数组
+      singleQueList: [],
+      //多选题数组
+      multipleQueList: [],
+      //判断题数组
+      judgeQueList: [],
+      //填空题数组
+      fillQueList: [],
+      //是否显示paperContainer,默认进入页面为true
+      showPaperContainer: true,
+      //是否显示paperCard答题卡，默认进入页面为false，当点击答题卡区域为true
+      showPaperCard: false,
+      isCollect: '0',
+      percentage: 0, //进度条值
+    }
+  },
+  created() {
+    this.getPapersInfoByWrongPaperId()
+  },
+  computed: {
+    ...mapState([
+      'currentIndex', //当前题数
+    ]),
+  },
+  methods: {
+    ...mapActions([
+      'nextQue', //点击下一题
+      'prevQue', //点击上一题
+      'cardQue', //点击答题卡序号
+      'refreshCurrentIndex',
+    ]),
+    async getPapersInfoByWrongPaperId() {
+      const { sno, paperId } = this
+      let result = await reqPapersInfoByWrongPaperId({ sno, paperId })
+      if (result.statu == 0) {
+        this.paperInfo = result.data.paperInfo
+        this.queNumInfo = result.data.queNumInfo
+        this.singleQueList = result.data.singleQueList
+        this.multipleQueList = result.data.multipleQueList
+        this.judgeQueList = result.data.judgeQueList
+        this.fillQueList = result.data.fillQueList
+        // this.isCollect = result.data.singleQueList[0].isCollect;
+        this.percentage = parseInt(
+          ((this.currentIndex + 1) / this.queNumInfo.totalNum) * 100
+        )
+      } else {
+        Toast({
+          message: result.msg,
+          duration: 1500,
+        })
+>>>>>>> Stashed changes
       }
     },
-    created(){
-      this.getPapersInfoByWrongPaperId();
+    async updatePaperAnswerIsCollect(answerId, isCollect) {
+      let result = await reqUpdatePaperAnswerIsCollect(answerId, isCollect)
+      if (result.statu == 0) {
+        return true
+      } else {
+        return false
+      }
     },
-    computed:{
-      ...mapState([
-        'currentIndex'//当前题数
-      ])
-    },
-    methods: {
-      ...mapActions([
-        'nextQue',//点击下一题
-        'prevQue',//点击上一题
-        'cardQue',//点击答题卡序号
-        'refreshCurrentIndex'
-      ]),
-      async getPapersInfoByWrongPaperId(){
-        const {sno, paperId} = this;
-        let result = await reqPapersInfoByWrongPaperId({sno, paperId});
-        if (result.statu == 0) {
-          this.paperInfo = result.data.paperInfo;
-          this.queNumInfo = result.data.queNumInfo;
-          this.singleQueList = result.data.singleQueList;
-          this.multipleQueList = result.data.multipleQueList;
-          this.judgeQueList = result.data.judgeQueList;
-          this.fillQueList = result.data.fillQueList;
-          // this.isCollect = result.data.singleQueList[0].isCollect;
-          this.percentage = parseInt((this.currentIndex+1)/this.queNumInfo.totalNum*100);
+    clickCollect(isCollect, index, answerId) {
+      if (this.isCollect == '0') {
+        this.isCollect = '1'
+        if (this.currentIndex < this.queNumInfo.singleNum) {
+          this.singleQueList[this.currentIndex].isCollect = '1'
+        } else if (
+          this.currentIndex <
+          this.queNumInfo.singleNum + this.queNumInfo.multipleNum
+        ) {
+          this.multipleQueList[
+            this.currentIndex - this.queNumInfo.singleNum
+          ].isCollect = '1'
+        } else if (
+          this.currentIndex <
+          this.queNumInfo.singleNum +
+            this.queNumInfo.multipleNum +
+            this.queNumInfo.judgeNum
+        ) {
+          this.judgeQueList[
+            this.currentIndex -
+              this.queNumInfo.singleNum -
+              this.queNumInfo.multipleNum
+          ].isCollect = '1'
+        } else {
+          this.fillQueList[
+            this.currentIndex -
+              this.queNumInfo.singleNum -
+              this.queNumInfo.multipleNum -
+              this.queNumInfo.judgeNum
+          ].isCollect = '1'
         }
-        else {
+        // this.singleQueList[index].isCollect = '1';
+        // this.$set(this.singleQueList, index, item);
+        // this.singleQueList.splice(index, 1, 1);
+        if (this.updatePaperAnswerIsCollect(answerId, '1')) {
           Toast({
-            message: result.msg,
-            duration: 1500
-          });
+            message: '收藏成功',
+            duration: 1000,
+            position: 'bottom',
+          })
         }
-      },
-      async updatePaperAnswerIsCollect(answerId, isCollect){
-        let result = await reqUpdatePaperAnswerIsCollect(answerId, isCollect);
-        if (result.statu == 0){
-          return true;
+      } else {
+        this.isCollect = '0'
+        if (this.currentIndex < this.queNumInfo.singleNum) {
+          this.singleQueList[this.currentIndex].isCollect = '0'
+        } else if (
+          this.currentIndex <
+          this.queNumInfo.singleNum + this.queNumInfo.multipleNum
+        ) {
+          this.multipleQueList[
+            this.currentIndex - this.queNumInfo.singleNum
+          ].isCollect = '0'
+        } else if (
+          this.currentIndex <
+          this.queNumInfo.singleNum +
+            this.queNumInfo.multipleNum +
+            this.queNumInfo.judgeNum
+        ) {
+          this.judgeQueList[
+            this.currentIndex -
+              this.queNumInfo.singleNum -
+              this.queNumInfo.multipleNum
+          ].isCollect = '0'
+        } else {
+          this.fillQueList[
+            this.currentIndex -
+              this.queNumInfo.singleNum -
+              this.queNumInfo.multipleNum -
+              this.queNumInfo.judgeNum
+          ].isCollect = '0'
         }
-        else {
-          return false;
+        // this.singleQueList[index].isCollect = '0';
+        // this.$set(this.singleQueList, index, item);
+        // this.singleQueList.splice(index, 1, 0);
+        if (this.updatePaperAnswerIsCollect(answerId, '0')) {
+          Toast({
+            message: '已取消收藏',
+            duration: 1000,
+            position: 'bottom',
+          })
         }
-      },
-      clickCollect(isCollect, index, answerId){
-        if (this.isCollect == '0') {
-          this.isCollect = '1';
-          if (this.currentIndex < this.queNumInfo.singleNum){
-            this.singleQueList[this.currentIndex].isCollect = '1';
-          }
-          else if (this.currentIndex < (this.queNumInfo.singleNum + this.queNumInfo.multipleNum)) {
-            this.multipleQueList[this.currentIndex - this.queNumInfo.singleNum].isCollect = '1';
-          }
-          else if (this.currentIndex < (this.queNumInfo.singleNum + this.queNumInfo.multipleNum + this.queNumInfo.judgeNum)) {
-            this.judgeQueList[this.currentIndex - this.queNumInfo.singleNum - this.queNumInfo.multipleNum].isCollect = '1';
-          }
-          else {
-            this.fillQueList[this.currentIndex - this.queNumInfo.singleNum - this.queNumInfo.multipleNum - this.queNumInfo.judgeNum].isCollect = '1';
-          }
-          // this.singleQueList[index].isCollect = '1';
-          // this.$set(this.singleQueList, index, item);
-          // this.singleQueList.splice(index, 1, 1);
-          if (this.updatePaperAnswerIsCollect(answerId, '1')) {
-            Toast({
-              message:'收藏成功',
-              duration: 1000,
-              position:'bottom'
-            });
-          }
-        }
-        else {
-          this.isCollect = '0';
-          if (this.currentIndex < this.queNumInfo.singleNum){
-            this.singleQueList[this.currentIndex].isCollect = '0';
-          }
-          else if (this.currentIndex < (this.queNumInfo.singleNum + this.queNumInfo.multipleNum)) {
-            this.multipleQueList[this.currentIndex - this.queNumInfo.singleNum].isCollect = '0';
-          }
-          else if (this.currentIndex < (this.queNumInfo.singleNum + this.queNumInfo.multipleNum + this.queNumInfo.judgeNum)) {
-            this.judgeQueList[this.currentIndex - this.queNumInfo.singleNum - this.queNumInfo.multipleNum].isCollect = '0';
-          }
-          else {
-            this.fillQueList[this.currentIndex - this.queNumInfo.singleNum - this.queNumInfo.multipleNum - this.queNumInfo.judgeNum].isCollect = '0';
-          }
-          // this.singleQueList[index].isCollect = '0';
-          // this.$set(this.singleQueList, index, item);
-          // this.singleQueList.splice(index, 1, 0);
-          if (this.updatePaperAnswerIsCollect(answerId, '0')) {
-            Toast({
-              message:'已取消收藏',
-              duration: 1000,
-              position:'bottom'
-            });
-          }
-        }
-      },
-      //点击上一题
-      preItem() {
-        this.prevQue();
-      },
-      //点击下一题
-      nextItem() {
-        this.nextQue();
-      },
-      //点击显示答题卡
-      toPaperCard() {
-        this.showPaperContainer = false;
-        this.showPaperCard = true;
-      },
-      //点击显示试卷问题
-      toPaperQue(index) {
-        this.cardQue(index);
-        this.showPaperCard = false;
-        this.showPaperContainer = true;
-      },
-      toBack(){
-        //清除sessionStorage数据
-        sessionStorage.removeItem("currentIndex");
-        //清除vuex数据
-        this.refreshCurrentIndex(0);
-        this.$router.goBack();
       }
     },
-    components: {
-      HeaderTop
+    //点击上一题
+    preItem() {
+      this.prevQue()
     },
-    watch:{
-/*      singleQueList:{
+    //点击下一题
+    nextItem() {
+      this.nextQue()
+    },
+    //点击显示答题卡
+    toPaperCard() {
+      this.showPaperContainer = false
+      this.showPaperCard = true
+    },
+    //点击显示试卷问题
+    toPaperQue(index) {
+      this.cardQue(index)
+      this.showPaperCard = false
+      this.showPaperContainer = true
+    },
+    toBack() {
+      //清除sessionStorage数据
+      sessionStorage.removeItem('currentIndex')
+      //清除vuex数据
+      this.refreshCurrentIndex(0)
+      this.$router.goBack()
+    },
+  },
+  components: {
+    HeaderTop,
+  },
+  watch: {
+    /*      singleQueList:{
         handler: function (newVal) {
           console.log(newVal)
         },
         deep: true    //深度监听
       }*/
-      currentIndex() {
-        this.percentage = parseInt((this.currentIndex+1)/this.queNumInfo.totalNum*100);
-        if (this.currentIndex < this.queNumInfo.singleNum){
-          this.isCollect = this.singleQueList[this.currentIndex].isCollect;
-        }
-        else if (this.currentIndex < (this.queNumInfo.singleNum + this.queNumInfo.multipleNum)) {
-          this.isCollect = this.multipleQueList[this.currentIndex - this.queNumInfo.singleNum].isCollect;
-        }
-        else if (this.currentIndex < (this.queNumInfo.singleNum + this.queNumInfo.multipleNum + this.queNumInfo.judgeNum)) {
-          this.isCollect = this.judgeQueList[this.currentIndex - this.queNumInfo.singleNum - this.queNumInfo.multipleNum].isCollect;
-        }
-        else {
-          this.isCollect = this.fillQueList[this.currentIndex - this.queNumInfo.singleNum - this.queNumInfo.multipleNum - this.queNumInfo.judgeNum].isCollect;
-        }
-        sessionStorage.removeItem("currentIndex");
-        sessionStorage.setItem("currentIndex",this.currentIndex)
+    currentIndex() {
+      this.percentage = parseInt(
+        ((this.currentIndex + 1) / this.queNumInfo.totalNum) * 100
+      )
+      if (this.currentIndex < this.queNumInfo.singleNum) {
+        this.isCollect = this.singleQueList[this.currentIndex].isCollect
+      } else if (
+        this.currentIndex <
+        this.queNumInfo.singleNum + this.queNumInfo.multipleNum
+      ) {
+        this.isCollect =
+          this.multipleQueList[
+            this.currentIndex - this.queNumInfo.singleNum
+          ].isCollect
+      } else if (
+        this.currentIndex <
+        this.queNumInfo.singleNum +
+          this.queNumInfo.multipleNum +
+          this.queNumInfo.judgeNum
+      ) {
+        this.isCollect =
+          this.judgeQueList[
+            this.currentIndex -
+              this.queNumInfo.singleNum -
+              this.queNumInfo.multipleNum
+          ].isCollect
+      } else {
+        this.isCollect =
+          this.fillQueList[
+            this.currentIndex -
+              this.queNumInfo.singleNum -
+              this.queNumInfo.multipleNum -
+              this.queNumInfo.judgeNum
+          ].isCollect
       }
-    }
-  }
+      sessionStorage.removeItem('currentIndex')
+      sessionStorage.setItem('currentIndex', this.currentIndex)
+    },
+  },
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped>
-  .wrong
-    width 100%
-    padding-top 45px
-    background-color #f5f5f5
-    min-height 900px
-    .paper_header
-      background-color lightslategrey
-      .go_back
-        width 40px
-      .header_message
-        display flex
-        flex-direction column
-        justify-content center
-        align-items center
-        > img
-          border-radius 2px
-          height 24px
-          width 24px
-        > span
-          font-size 12px
-    .wrong_sub_title
-      width 100%
-      height 35px
-      display flex
-      flex-direction row-reverse
-      align-items center
-      background-color #4ab8a1
-      font-size 16px
-      > span
-        display inline-block
-        color #f5f5f5
-      .wrong_statistics
-        padding-right 15px
-        .icontongji
-          padding-right 10px
-    .paper_container
-      width 90%
-      margin 15px auto
-      margin-bottom 15px
-      background-color #f5f5f5
-      .que
-        .content
-          height 24px
-          line-height 24px
-          .answer_explain
-            display inline
-            padding-bottom 20px
-          .answer_row
-            height 28px
-            line-height 28px
-            .correct_answer
-              color #4ab8a1
-            .your_answer
-              color #FF0000
-          > span
-            display block
-          .que_type, .que_score
-            color #4ab8a1
-          .que_type
-            display flex
-            justify-content space-between
-            align-items center
-            >img
-              height 18px
-              width 18px
-              padding-right 15px
-          .que_content
-            padding-bottom 10px
-        .single_option,.multiple_option,.judge_option,.fill_option
-          margin-top 25px
-          margin-bottom 25px
-      .paper_button
-        position fixed
-        z-index 100
-        left 0
-        right 0
-        bottom 0
-        width 100%
-        display flex
-        justify-content space-evenly
-        .mint-button
-          width 40%
-          background-color #4ab8a1
-    .paper_card
-      background-color #f5f5f5
-      padding-bottom 50px
-      .card_title
-        width 100%
-        height 35px
-        display flex
-        justify-content center
-        align-items center
-        font-size 16px
-        color #fff
-        background-color #778899
-      .card_options
-        .options
-          .options_title
-            padding-left 15px
-            color #4ab8a1
-          .row
-            display flex
-            align-items center
-            width 100%
-            flex-wrap wrap
-            margin-top 6px
-            .item
-              display flex
-              justify-content center
-              align-items center
-              width 20%
-              padding-top 10px
-              padding-bottom 10px
-              > div
-                display flex
-                justify-content center
-                align-items center
-                width 24px
-                height 24px
-                border 1px solid #778899
-                border-radius 12px
-                color #778899
-              .correct_flag
-                border 1px solid #4ab8a1
-                background-color #4ab8a1
-                color #fff
-              .error_flag
-                border 1px solid #FF0000
-                background-color #FF0000
-                color #fff
-      .card_button
-        .mint-button
-          width 80%
-          position fixed
-          z-index 100
-          left 10%
-          right 0
-          bottom 0
-          background-color #4ab8a1
+.wrong {
+  width: 100%;
+  padding-top: 45px;
+  background-color: #f5f5f5;
+  min-height: 900px;
+
+  .paper_header {
+    background-color: lightslategrey;
+
+    .go_back {
+      width: 40px;
+    }
+
+    .header_message {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      > img {
+        border-radius: 2px;
+        height: 24px;
+        width: 24px;
+      }
+
+      > span {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .wrong_sub_title {
+    width: 100%;
+    height: 35px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    background-color: #4ab8a1;
+    font-size: 16px;
+
+    > span {
+      display: inline-block;
+      color: #f5f5f5;
+    }
+
+    .wrong_statistics {
+      padding-right: 15px;
+
+      .icontongji {
+        padding-right: 10px;
+      }
+    }
+  }
+
+  .paper_container {
+    width: 90%;
+    margin: 15px auto;
+    margin-bottom: 15px;
+    background-color: #f5f5f5;
+
+    .que {
+      .content {
+        height: 24px;
+        line-height: 24px;
+
+        .answer_explain {
+          display: inline;
+          padding-bottom: 20px;
+        }
+
+        .answer_row {
+          height: 28px;
+          line-height: 28px;
+
+          .correct_answer {
+            color: #4ab8a1;
+          }
+
+          .your_answer {
+            color: #FF0000;
+          }
+        }
+
+        > span {
+          display: block;
+        }
+
+        .que_type, .que_score {
+          color: #4ab8a1;
+        }
+
+        .que_type {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          >img {
+            height: 18px;
+            width: 18px;
+            padding-right: 15px;
+          }
+        }
+
+        .que_content {
+          padding-bottom: 10px;
+        }
+      }
+
+      .single_option, .multiple_option, .judge_option, .fill_option {
+        margin-top: 25px;
+        margin-bottom: 25px;
+      }
+    }
+
+    .paper_button {
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+
+      .mint-button {
+        width: 40%;
+        background-color: #4ab8a1;
+      }
+    }
+  }
+
+  .paper_card {
+    background-color: #f5f5f5;
+    padding-bottom: 50px;
+
+    .card_title {
+      width: 100%;
+      height: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      color: #fff;
+      background-color: #778899;
+    }
+
+    .card_options {
+      .options {
+        .options_title {
+          padding-left: 15px;
+          color: #4ab8a1;
+        }
+
+        .row {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          flex-wrap: wrap;
+          margin-top: 6px;
+
+          .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 20%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            > div {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 24px;
+              height: 24px;
+              border: 1px solid #778899;
+              border-radius: 12px;
+              color: #778899;
+            }
+
+            .correct_flag {
+              border: 1px solid #4ab8a1;
+              background-color: #4ab8a1;
+              color: #fff;
+            }
+
+            .error_flag {
+              border: 1px solid #FF0000;
+              background-color: #FF0000;
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+
+    .card_button {
+      .mint-button {
+        width: 80%;
+        position: fixed;
+        z-index: 100;
+        left: 10%;
+        right: 0;
+        bottom: 0;
+        background-color: #4ab8a1;
+      }
+    }
+  }
+}
 </style>

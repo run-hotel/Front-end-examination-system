@@ -153,18 +153,29 @@
             ></span
           >
 
-          <div
+          <!-- <div
             class="judge_option"
             v-for="(option, optionIndex) in item.options"
             :key="'judge' + item.judgeId + optionIndex"
           >
-            <mu-radio
+                        <mu-radio
               :value="option.value"
               v-model="judgeAnswer"
               :label="option.label"
               v-if="option.label"
               @change="judgeChange"
             ></mu-radio>
+          </div> -->
+          <div class="judge_option">
+            <mu-text-field
+              v-model="judgeAnswer"
+              label="答题区域(答案不区分大小写，首尾空格忽略)"
+              full-width
+              multi-line
+              :rows="3"
+              :rows-max="6"
+              @change="judgeChange"
+            ></mu-text-field>
           </div>
         </div>
       </section>
@@ -179,7 +190,7 @@
             queNumInfo.singleNum +
             queNumInfo.multipleNum +
             queNumInfo.judgeNum ==
-            currentIndex
+          currentIndex
         "
       >
         <div class="content">
@@ -187,10 +198,10 @@
           <span class="que_content"
             >{{
               index +
-                1 +
-                queNumInfo.singleNum +
-                queNumInfo.multipleNum +
-                queNumInfo.judgeNum
+              1 +
+              queNumInfo.singleNum +
+              queNumInfo.multipleNum +
+              queNumInfo.judgeNum
             }}.&nbsp;{{ item.fillContent
             }}<span class="que_score">[{{ paperInfo.fillScore }}分]</span></span
           >
@@ -259,7 +270,7 @@
               <div
                 @click="toPaperQue(singleItem)"
                 :class="{
-                  complete_flag: singleAnswers[singleIndex] ? true : false
+                  complete_flag: singleAnswers[singleIndex] ? true : false,
                 }"
               >
                 <span>{{ singleItem }}</span>
@@ -289,7 +300,7 @@
                       undefined &&
                     JSON.stringify(multipleAnswers[multipleIndex]) !== 'null'
                       ? true
-                      : false
+                      : false,
                 }"
               >
                 <span>{{ multipleItem + queNumInfo.singleNum }}</span>
@@ -317,7 +328,7 @@
                   )
                 "
                 :class="{
-                  complete_flag: judgeAnswers[judgeIndex] ? true : false
+                  complete_flag: judgeAnswers[judgeIndex] ? true : false,
                 }"
               >
                 <span>{{
@@ -350,14 +361,14 @@
                   )
                 "
                 :class="{
-                  complete_flag: fillAnswers[fillIndex] ? true : false
+                  complete_flag: fillAnswers[fillIndex] ? true : false,
                 }"
               >
                 <span>{{
                   fillItem +
-                    queNumInfo.singleNum +
-                    queNumInfo.multipleNum +
-                    queNumInfo.judgeNum
+                  queNumInfo.singleNum +
+                  queNumInfo.multipleNum +
+                  queNumInfo.judgeNum
                 }}</span>
               </div>
             </div>
@@ -380,7 +391,7 @@ import { Toast, MessageBox, Indicator } from 'mint-ui'
 import {
   reqPapersInfoByPaperId,
   reqInsertStudentPaperScore,
-  reqSubmitPaper
+  reqSubmitPaper,
 } from '../../api'
 import { getNumberPrefix } from '../../utils/common.js'
 import { mapState, mapActions, mapGetters } from 'vuex'
@@ -428,7 +439,7 @@ export default {
       //是否显示paperCard答题卡，默认进入页面为false，当点击答题卡区域为true
       showPaperCard: false,
       timeUsed: 0, //考试花费时间
-      percentage: 0 //进度条值
+      percentage: 0, //进度条值
     }
   },
   computed: {
@@ -438,9 +449,9 @@ export default {
       'multipleAnswers',
       'judgeAnswers',
       'fillAnswers',
-      'firstCurrentTime'
+      'firstCurrentTime',
     ]),
-    ...mapGetters(['completeNumber'])
+    ...mapGetters(['completeNumber']),
     /*      //答题卡已完成题数
       completeNumber(){
         var number = 0;
@@ -467,7 +478,7 @@ export default {
   created() {
     Indicator.open({
       text: '加载中...',
-      spinnerType: 'fading-circle'
+      spinnerType: 'fading-circle',
     })
 
     //加入callback回调函数保证在异步获取数据后执行this.countTime();
@@ -534,7 +545,7 @@ export default {
       'refreshMultipleAnswers',
       'refreshJudgeAnswers',
       'refreshFillAnswers',
-      'refreshFirstCurrentTime'
+      'refreshFirstCurrentTime',
     ]),
     //插入学生成绩表成绩信息，包含三个字段，考试开始时间、学号和试卷id
     async insertStudentPaperScore() {
@@ -548,7 +559,7 @@ export default {
       } else {
         Toast({
           message: result.msg,
-          duration: 1500
+          duration: 1500,
         })
       }
     },
@@ -569,7 +580,7 @@ export default {
       } else {
         Toast({
           message: result.msg,
-          duration: 2000
+          duration: 2000,
         })
       }
     },
@@ -588,14 +599,14 @@ export default {
         seconds = getNumberPrefix(parseInt((restTime / 1000) % 60, 10))
       vm.restTime = `${hours}:${minutes}:${seconds}`
 
-      vm.timer = setTimeout(function() {
+      vm.timer = setTimeout(function () {
         if (restTime > 0) {
           vm.countTime()
         } else if (restTime <= 0) {
           clearTimeout(vm.timer)
           Toast({
             message: '交卷时间已到，系统将帮您自动交卷',
-            duration: 1000
+            duration: 1000,
           })
           setTimeout(() => {
             let result = vm.handleSubmit()
@@ -603,7 +614,7 @@ export default {
               //等待成绩计算完毕并插入数据库表
               Indicator.open({
                 text: '加载中...',
-                spinnerType: 'fading-circle'
+                spinnerType: 'fading-circle',
               })
               setTimeout(() => {
                 Indicator.close()
@@ -631,7 +642,7 @@ export default {
             } else {
               Toast({
                 message: '交卷失败，数据库错误，请重新开始考试',
-                duration: 1500
+                duration: 1500,
               })
               vm.$router.replace('/home/paper/detail/' + vm.paperId)
             }
@@ -642,19 +653,19 @@ export default {
     //用户手动点击提交试卷按钮，弹出确认框
     clickSubmit() {
       MessageBox.confirm('确定要提交试卷吗?').then(
-        action => {
+        (action) => {
           let result = this.handleSubmit()
           if (result) {
             //等待成绩计算完毕并插入数据库表
             Indicator.open({
               text: '自动计算成绩中...',
-              spinnerType: 'double-bounce'
+              spinnerType: 'double-bounce',
             })
             setTimeout(() => {
               Indicator.close()
               Toast({
                 message: '提交成功，请查看成绩',
-                duration: 1500
+                duration: 1500,
               })
               //清除sessionStorage数据
               sessionStorage.removeItem('currentIndex')
@@ -680,7 +691,7 @@ export default {
           } else {
             Toast({
               message: '交卷失败，数据库错误，请重新开始考试',
-              duration: 1500
+              duration: 1500,
             })
             this.$router.replace('/home/paper/detail/' + this.paperId)
           }
@@ -703,7 +714,7 @@ export default {
         multipleAnswers,
         judgeAnswers,
         fillAnswers,
-        timeUsed
+        timeUsed,
       } = this
       let result = await reqSubmitPaper({
         sno,
@@ -712,7 +723,7 @@ export default {
         multipleAnswers,
         judgeAnswers,
         fillAnswers,
-        timeUsed
+        timeUsed,
       })
       if (result.statu == 0) {
         //交卷成功
@@ -776,10 +787,10 @@ export default {
     //点击返回按钮
     toBack() {
       MessageBox.confirm('系统将自动提交试卷，请确认是否离开考试?').then(
-        action => {
+        (action) => {
           Toast({
             message: '可到我的页面查看成绩',
-            duration: 1500
+            duration: 1500,
           })
           //提交试卷
           let result = this.handleSubmit()
@@ -809,7 +820,7 @@ export default {
           } else {
             Toast({
               message: '交卷失败，数据库错误，请重新开始考试',
-              duration: 1500
+              duration: 1500,
             })
             this.$router.isBack = true
             this.$router.replace('/home/paper/detail/' + this.paperId)
@@ -862,9 +873,8 @@ export default {
         this.currentIndex <
         this.queNumInfo.singleNum + this.queNumInfo.multipleNum
       ) {
-        const currentAnswer = this.multipleAnswers[
-          this.currentIndex - this.queNumInfo.singleNum
-        ]
+        const currentAnswer =
+          this.multipleAnswers[this.currentIndex - this.queNumInfo.singleNum]
         if (currentAnswer) {
           this.multipleAnswer = currentAnswer
         } else {
@@ -879,11 +889,12 @@ export default {
           this.queNumInfo.multipleNum +
           this.queNumInfo.judgeNum
       ) {
-        const currentAnswer = this.judgeAnswers[
-          this.currentIndex -
-            this.queNumInfo.singleNum -
-            this.queNumInfo.multipleNum
-        ]
+        const currentAnswer =
+          this.judgeAnswers[
+            this.currentIndex -
+              this.queNumInfo.singleNum -
+              this.queNumInfo.multipleNum
+          ]
         if (currentAnswer) {
           this.judgeAnswer = currentAnswer
         } else {
@@ -893,12 +904,13 @@ export default {
       }
       //获取填空题当前答案
       else {
-        const currentAnswer = this.fillAnswers[
-          this.currentIndex -
-            this.queNumInfo.singleNum -
-            this.queNumInfo.multipleNum -
-            this.queNumInfo.judgeNum
-        ]
+        const currentAnswer =
+          this.fillAnswers[
+            this.currentIndex -
+              this.queNumInfo.singleNum -
+              this.queNumInfo.multipleNum -
+              this.queNumInfo.judgeNum
+          ]
         if (currentAnswer) {
           this.fillAnswer = currentAnswer
         } else {
@@ -906,10 +918,10 @@ export default {
           this.recordFillAnswers({ currentIndex, fillAnswer })
         }
       }
-    }
+    },
   },
   components: {
-    HeaderTop
+    HeaderTop,
   },
   watch: {
     currentIndex() {
@@ -926,7 +938,7 @@ export default {
         JSON.stringify(this.singleAnswers)
       )
     },
-    multipleAnswers: function() {
+    multipleAnswers: function () {
       sessionStorage.removeItem('multipleAnswers')
       sessionStorage.setItem(
         'multipleAnswers',
@@ -940,169 +952,251 @@ export default {
     fillAnswers() {
       sessionStorage.removeItem('fillAnswers')
       sessionStorage.setItem('fillAnswers', JSON.stringify(this.fillAnswers))
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped>
-@import "../../common/stylus/mixins.styl"
-.paper
-  width 100%
-  height 800px
-  background-color #f5f5f5
-  padding-top 45px
-  .paper_header
-    background-color lightslategrey
-    .go_back
-      width 40px
-    .header_message
-      display flex
-      flex-direction column
-      justify-content center
-      align-items center
-      > img
-        border-radius 2px
-        height 24px
-        width 24px
-      > span
-        font-size 12px
-  .paper_sub_title_first
-    width 100%
-    height 35px
-    display flex
-    justify-content space-between
-    align-items center
-    background-color #4ab8a1
-    font-size 13px
-    > span
-      display inline-block
-      color #f5f5f5
-    .paper_date
-      padding-left 15px
-    .paper_duration
-      padding-right 15px
-  .paper_sub_title_second
-    width 100%
-    height 35px
-    display flex
-    justify-content space-between
-    align-items center
-    background-color rgba(0, 0, 0, .1)
-    > span
-      display inline-block
-      color lightcoral
-    .paper_clock
-      padding-left 15px
-      .iconjishiqi
-        padding-right 10px
-    .paper_statistics
-      padding-right 15px
-      .icontongji
-        padding-right 10px
-  .paper_container
-    width 90%
-    margin 15px auto
-    margin-bottom 15px
-    background-color #f5f5f5
-    .que
-      .content
-        height 24px
-        line-height 24px
-        > span
-          display block
-        .que_type, .que_score
-          color #4ab8a1
-        .que_content
-          padding-bottom 10px
-      .single_option,.multiple_option,.judge_option,.fill_option
-        margin-top 25px
-        margin-bottom 25px
-    .paper_button
-      position fixed
-      z-index 100
-      left 0
-      right 0
-      bottom 0
-      width 100%
-      display flex
-      justify-content space-evenly
-      .mint-button
-        width 40%
-        background-color #4ab8a1
-  .paper_card
-    background-color #f5f5f5
-    padding-bottom 50px
-    .card_title
-      width 100%
-      height 35px
-      display flex
-      justify-content space-between
-      align-items center
-      font-size 16px
-      color #fff
-      background-color #778899
-      > span:nth-child(1)
-        padding-left 15px
-      > span:nth-child(2)
-        padding-right 15px
-    .card_options
-      .options
-        .options_title
-          padding-left 15px
-          color #4ab8a1
-        .row
-          display flex
-          align-items center
-          width 100%
-          flex-wrap wrap
-          margin-top 6px
-          .item
-            display flex
-            justify-content center
-            align-items center
-            width 20%
-            padding-top 10px
-            padding-bottom 10px
-            > div
-              display flex
-              justify-content center
-              align-items center
-              width 24px
-              height 24px
-              border 1px solid #778899
-              border-radius 12px
-              color #778899
-            .complete_flag
-              border 1px solid #4ab8a1
-              background-color #4ab8a1
-              color #fff
-    .card_button
-      .mint-button
-        width 80%
-        position fixed
-        z-index 100
-        left 10%
-        right 0
-        bottom 0
-        background-color #4ab8a1
+@import '../../common/stylus/mixins.styl';
+
+.paper {
+  width: 100%;
+  height: 800px;
+  background-color: #f5f5f5;
+  padding-top: 45px;
+
+  .paper_header {
+    background-color: lightslategrey;
+
+    .go_back {
+      width: 40px;
+    }
+
+    .header_message {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      > img {
+        border-radius: 2px;
+        height: 24px;
+        width: 24px;
+      }
+
+      > span {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .paper_sub_title_first {
+    width: 100%;
+    height: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4ab8a1;
+    font-size: 13px;
+
+    > span {
+      display: inline-block;
+      color: #f5f5f5;
+    }
+
+    .paper_date {
+      padding-left: 15px;
+    }
+
+    .paper_duration {
+      padding-right: 15px;
+    }
+  }
+
+  .paper_sub_title_second {
+    width: 100%;
+    height: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.1);
+
+    > span {
+      display: inline-block;
+      color: lightcoral;
+    }
+
+    .paper_clock {
+      padding-left: 15px;
+
+      .iconjishiqi {
+        padding-right: 10px;
+      }
+    }
+
+    .paper_statistics {
+      padding-right: 15px;
+
+      .icontongji {
+        padding-right: 10px;
+      }
+    }
+  }
+
+  .paper_container {
+    width: 90%;
+    margin: 15px auto;
+    margin-bottom: 15px;
+    background-color: #f5f5f5;
+
+    .que {
+      .content {
+        height: 24px;
+        line-height: 24px;
+
+        > span {
+          display: block;
+        }
+
+        .que_type, .que_score {
+          color: #4ab8a1;
+        }
+
+        .que_content {
+          padding-bottom: 10px;
+        }
+      }
+
+      .single_option, .multiple_option, .judge_option, .fill_option {
+        margin-top: 25px;
+        margin-bottom: 25px;
+      }
+    }
+
+    .paper_button {
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-evenly;
+
+      .mint-button {
+        width: 40%;
+        background-color: #4ab8a1;
+      }
+    }
+  }
+
+  .paper_card {
+    background-color: #f5f5f5;
+    padding-bottom: 50px;
+
+    .card_title {
+      width: 100%;
+      height: 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px;
+      color: #fff;
+      background-color: #778899;
+
+      > span:nth-child(1) {
+        padding-left: 15px;
+      }
+
+      > span:nth-child(2) {
+        padding-right: 15px;
+      }
+    }
+
+    .card_options {
+      .options {
+        .options_title {
+          padding-left: 15px;
+          color: #4ab8a1;
+        }
+
+        .row {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          flex-wrap: wrap;
+          margin-top: 6px;
+
+          .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 20%;
+            padding-top: 10px;
+            padding-bottom: 10px;
+
+            > div {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 24px;
+              height: 24px;
+              border: 1px solid #778899;
+              border-radius: 12px;
+              color: #778899;
+            }
+
+            .complete_flag {
+              border: 1px solid #4ab8a1;
+              background-color: #4ab8a1;
+              color: #fff;
+            }
+          }
+        }
+      }
+    }
+
+    .card_button {
+      .mint-button {
+        width: 80%;
+        position: fixed;
+        z-index: 100;
+        left: 10%;
+        right: 0;
+        bottom: 0;
+        background-color: #4ab8a1;
+      }
+    }
+  }
+}
 </style>
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">
-.mu-radio-wrapper
-  align-items normal
-  .mu-radio-ripple-wrapper
-    position static
-  .mu-radio-label
-    white-space normal
-    word-break break-all
-    word-wrap break-word
+.mu-radio-wrapper {
+  align-items: normal;
 
-.mu-checkbox-wrapper
-  align-items normal
-  .mu-checkbox-ripple-wrapper
-    position static
-  .mu-checkbox-label
-    white-space normal
-    word-break break-all
-    word-wrap break-word
+  .mu-radio-ripple-wrapper {
+    position: static;
+  }
+
+  .mu-radio-label {
+    white-space: normal;
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+}
+
+.mu-checkbox-wrapper {
+  align-items: normal;
+
+  .mu-checkbox-ripple-wrapper {
+    position: static;
+  }
+
+  .mu-checkbox-label {
+    white-space: normal;
+    word-break: break-all;
+    word-wrap: break-word;
+  }
+}
 </style>

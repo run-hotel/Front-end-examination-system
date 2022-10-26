@@ -73,7 +73,7 @@
         <i class="iconfont iconyuyin1" @click="clickVoice"></i>
         <mt-field
           type="text"
-          style="width: 200px;touch-action: none;"
+          style="width: 200px; touch-action: none"
           v-model="feedback"
         ></mt-field>
         <i
@@ -88,7 +88,14 @@
       <div
         v-show="showEmotion"
         id="emotionDiv"
-        style="z-index: 1000;position: fixed;bottom: 50px;right: 0;left: 0;background-color: #f5f5f5"
+        style="
+          z-index: 1000;
+          position: fixed;
+          bottom: 50px;
+          right: 0;
+          left: 0;
+          background-color: #f5f5f5;
+        "
       >
         <emotion @emotion="handleEmotion" :height="200"></emotion>
       </div>
@@ -122,7 +129,7 @@ export default {
       feedback: '',
       path: process.env.BASE_WEBSOCKET + this.$store.state.userInfo.sno,
       socket: '',
-      showEmotion: false
+      showEmotion: false,
     }
   },
   mounted() {
@@ -131,7 +138,7 @@ export default {
     setTimeout(() => {
       this.scrollToBottom()
     }, 300)
-    document.addEventListener('click', e => {
+    document.addEventListener('click', (e) => {
       if (!$(e.target).closest('#emotionBtn,#emotionDiv').length) {
         this.showEmotion = false
       }
@@ -142,12 +149,12 @@ export default {
     this.socket.onclose = this.close()
   },
   computed: {
-    ...mapState(['userInfo', 'feedbackInfo'])
+    ...mapState(['userInfo', 'feedbackInfo']),
   },
   watch: {
     feedbackInfo() {
       this.scrollToBottom()
-    }
+    },
   },
   methods: {
     // 将页面滚动到最底部的方法
@@ -167,7 +174,7 @@ export default {
         Toast({
           message: result.msg,
           iconClass: 'iconfont iconunie045',
-          duration: 1500
+          duration: 1500,
         })
         this.feedbackInfo.push({
           admAnswer: '',
@@ -179,12 +186,12 @@ export default {
           feedbackStatus: 2,
           replyTime: '',
           sno: this.sno,
-          stuName: this.userInfo.stuName
+          stuName: this.userInfo.stuName,
         })
         this.feedback = ''
       } else if (result.msg == '会话失效，请重新登录') {
         MessageBox.confirm('会话失效，是否重新登录？').then(
-          action => {
+          (action) => {
             //点击确定按钮操作
             //清空sessionStorage会话
             sessionStorage.clear()
@@ -201,11 +208,11 @@ export default {
         Toast({
           message: result.msg,
           position: 'bottom',
-          duration: 1500
+          duration: 1500,
         })
       }
     },
-    init: function() {
+    init: function () {
       if (typeof WebSocket === undefined) {
         this.$message.error('您的浏览器不支持socket')
       } else {
@@ -219,13 +226,13 @@ export default {
         this.socket.onmessage = this.getMessage
       }
     },
-    open: function() {
+    open: function () {
       console.log('socket连接成功')
     },
-    error: function() {
+    error: function () {
       console.log('连接错误')
     },
-    getMessage: function(msg) {
+    getMessage: function (msg) {
       console.log(msg.data)
       if (msg.data === '留言' && this.$route.path === '/profile/replydetail') {
         console.log('更新留言状态了')
@@ -236,11 +243,11 @@ export default {
         })
       }
     },
-    send: function(message) {
+    send: function (message) {
       // 群发消息
       this.socket.send(message + '|0')
     },
-    close: function() {
+    close: function () {
       console.log('socket已经关闭')
     },
     async updateFeedbackStatus(callback) {
@@ -259,7 +266,7 @@ export default {
     clickVoice() {
       Toast({
         message: '暂不支持发送语音',
-        duration: 1500
+        duration: 1500,
       })
     },
     handleEmotion(i) {
@@ -373,132 +380,181 @@ export default {
         '街舞',
         '献吻',
         '左太极',
-        '右太极'
+        '右太极',
       ]
       let index = list.indexOf(word)
       return `<img src="https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/${index}.gif" style="position: relative;top: 4px">`
-    }
+    },
   },
   components: {
     HeaderTop,
-    Emotion
-  }
+    Emotion,
+  },
 }
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped>
-@import "../../common/stylus/mixins.styl"
-.profile_reply_detail
-  padding-top 45px
-  .no_reply_detail
-    .no_reply_detail_text
-      width 100%
-      height 50px
-      display flex
-      justify-content center
-      align-items center
-      font-size 20px
-      background-color #fff
-    img
-      margin-bottom 20px
-  .reply_detail
-    list-style none
-    background-color #f5f5f5
-    padding-bottom 80px
-    .input_send
-      background-color #f5f5f5
-      top-border-1px(#e4e4e4)
-      position fixed
-      z-index 1000
-      right 0
-      bottom 0
-      left 0
-      width 100%
-      height 40px
-      padding 5px
-      box-shadow 0px 0px 1px rgba(0,0,0,.5)
-      display flex
-      justify-content space-evenly
-      align-items center
-      i
-        font-size 30px
-      .mint-button
-        background-color #02a774
-        margin-right 5px
-    .reply_detail_ul
-      padding 8px
-      font-size 18px
-      .feedback_time_li
-        width 100%
-        display flex
-        justify-content center
-        padding-top 15px
-        .feedback_time
-          display inline-block
-          padding 5px
-          color #8c8c8c
-          font-size 14px
-          background-color rgba(0,0,0,.1)
-          border-radius 5px
-      .message_li
-        width 100%
-        display flex
-        flex-direction row
-        padding-top 15px
-        i
-          font-weight bold
-        .i_read
-          color #02a774
-        .i_noread
-          color red
-        img
-          width 50px
-          height 50px
-          border-radius 25px
-        span
-          display block
-          max-width 220px
-          line-height 25px
-          /*letter-spacing 2px*/
-          background #fff
-          padding 12px
-          border-radius 10px
-          margin 3px 10px 0 12px
-          box-shadow 0 0 3px #ccc
-          position relative
-          &:after, &:before
-            border solid transparent
-            content ''
-            width 0
-            height 0
-            position absolute
-          &:after
-            border-width 8px
-            border-right-color #fff
-            left -15px
-            top 13px
-          &:before
-            border-width 9px
-            border-right-color #ccc
-            left -18px
-      .message_li_stu
-        flex-direction row-reverse
-        margin-right 50px
-        .span_stu
-          background-color #9eea6a
-          position relative
-          &:after, &:before
-            border solid transparent
-            content ''
-            width 0
-            height 0
-            position absolute
-          &:after
-            border-width 8px
-            border-left-color #9eea6a
-            left 99.5%
-          &:before
-            border-width 9px
-            border-left-color #ccc
-            left 100%
+@import '../../common/stylus/mixins.styl';
+
+.profile_reply_detail {
+  padding-top: 45px;
+
+  .no_reply_detail {
+    .no_reply_detail_text {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      background-color: #fff;
+    }
+
+    img {
+      margin-bottom: 20px;
+    }
+  }
+
+  .reply_detail {
+    list-style: none;
+    background-color: #f5f5f5;
+    padding-bottom: 80px;
+
+    .input_send {
+      background-color: #f5f5f5;
+      top-border-1px(#e4e4e4);
+      position: fixed;
+      z-index: 1000;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      padding: 5px;
+      box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+
+      i {
+        font-size: 30px;
+      }
+
+      .mint-button {
+        background-color: #02a774;
+        margin-right: 5px;
+      }
+    }
+
+    .reply_detail_ul {
+      padding: 8px;
+      font-size: 18px;
+
+      .feedback_time_li {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding-top: 15px;
+
+        .feedback_time {
+          display: inline-block;
+          padding: 5px;
+          color: #8c8c8c;
+          font-size: 14px;
+          background-color: rgba(0, 0, 0, 0.1);
+          border-radius: 5px;
+        }
+      }
+
+      .message_li {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        padding-top: 15px;
+
+        i {
+          font-weight: bold;
+        }
+
+        .i_read {
+          color: #02a774;
+        }
+
+        .i_noread {
+          color: red;
+        }
+
+        img {
+          width: 50px;
+          height: 50px;
+          border-radius: 25px;
+        }
+
+        span {
+          display: block;
+          max-width: 220px;
+          line-height: 25px;
+          /* letter-spacing 2px */
+          background: #fff;
+          padding: 12px;
+          border-radius: 10px;
+          margin: 3px 10px 0 12px;
+          box-shadow: 0 0 3px #ccc;
+          position: relative;
+
+          &:after, &:before {
+            border: solid transparent;
+            content: '';
+            width: 0;
+            height: 0;
+            position: absolute;
+          }
+
+          &:after {
+            border-width: 8px;
+            border-right-color: #fff;
+            left: -15px;
+            top: 13px;
+          }
+
+          &:before {
+            border-width: 9px;
+            border-right-color: #ccc;
+            left: -18px;
+          }
+        }
+      }
+
+      .message_li_stu {
+        flex-direction: row-reverse;
+        margin-right: 50px;
+
+        .span_stu {
+          background-color: #9eea6a;
+          position: relative;
+
+          &:after, &:before {
+            border: solid transparent;
+            content: '';
+            width: 0;
+            height: 0;
+            position: absolute;
+          }
+
+          &:after {
+            border-width: 8px;
+            border-left-color: #9eea6a;
+            left: 99.5%;
+          }
+
+          &:before {
+            border-width: 9px;
+            border-left-color: #ccc;
+            left: 100%;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

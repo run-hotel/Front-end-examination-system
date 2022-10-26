@@ -52,9 +52,7 @@
     </div>
 
     <div v-else class="no_exam_calendar_detail">
-      <div class="no_exam_calendar_detail_text">
-        暂无考试公告
-      </div>
+      <div class="no_exam_calendar_detail_text">暂无考试公告</div>
     </div>
   </section>
 </template>
@@ -75,8 +73,8 @@ export default {
         height: '40px',
         'border-radius': '4px',
         'line-height': '45px', // 请保持与高度一致以垂直居中 Please keep consistent with height to center vertically
-        background: '#e7eaf1' // 按钮的背景颜色 The background color of the button
-      }
+        background: '#e7eaf1', // 按钮的背景颜色 The background color of the button
+      },
     }
   },
   created() {
@@ -85,80 +83,107 @@ export default {
   methods: {},
   components: {
     HeaderTop,
-    BackToTop
+    BackToTop,
   },
   computed: {
-    ...mapState(['examCalendar'])
-  }
+    ...mapState(['examCalendar']),
+  },
 }
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped>
-@import "../../common/stylus/mixins.styl"
-.exam_calendar
-  padding-top 45px
-  .no_exam_calendar_detail
-    .no_exam_calendar_detail_text
-      width 100%
-      height 50px
-      display flex
-      justify-content center
-      align-items center
-      font-size 20px
-      background-color #fff
-  .exam_calendar_detail
-    list-style none
-    background-color #f5f5f5
-    padding-bottom 20px
-    .exam_calendar_detail_ul
-      padding 8px
-      font-size 18px
-      .exam_calendar_time_li
-        width 100%
-        display flex
-        justify-content center
-        padding-top 15px
-        .exam_calendar_time
-          display inline-block
-          padding 5px
-          color #8c8c8c
-          font-size 14px
-          background-color rgba(0,0,0,.1)
-          border-radius 5px
-    .message_li
-      width 100%
-      display flex
-      padding-top 15px
-      i
-        font-weight bold
-        color #02a774
-      img
-        width 50px
-        height 50px
-        border-radius 25px
-      span
-        display block
-        max-width 220px
-        line-height 25px
-        background #fff
-        padding 12px
-        border-radius 10px
-        margin 3px 10px 0 12px
-        box-shadow 0 0 3px #ccc
-        position relative
-        &:after, &:before
-          border solid transparent
-          content ''
-          width 0
-          height 0
-          position absolute
-        &:after
-          border-width 8px
-          border-right-color #fff
-          left -15px
-          top 13px
-        &:before
-          border-width 9px
-          border-right-color #ccc
-          left -18px
+@import '../../common/stylus/mixins.styl';
+
+.exam_calendar {
+  padding-top: 45px;
+
+  .no_exam_calendar_detail {
+    .no_exam_calendar_detail_text {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      background-color: #fff;
+    }
+  }
+
+  .exam_calendar_detail {
+    list-style: none;
+    background-color: #f5f5f5;
+    padding-bottom: 20px;
+
+    .exam_calendar_detail_ul {
+      padding: 8px;
+      font-size: 18px;
+
+      .exam_calendar_time_li {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding-top: 15px;
+
+        .exam_calendar_time {
+          display: inline-block;
+          padding: 5px;
+          color: #8c8c8c;
+          font-size: 14px;
+          background-color: rgba(0, 0, 0, 0.1);
+          border-radius: 5px;
+        }
+      }
+    }
+
+    .message_li {
+      width: 100%;
+      display: flex;
+      padding-top: 15px;
+
+      i {
+        font-weight: bold;
+        color: #02a774;
+      }
+
+      img {
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+      }
+
+      span {
+        display: block;
+        max-width: 220px;
+        line-height: 25px;
+        background: #fff;
+        padding: 12px;
+        border-radius: 10px;
+        margin: 3px 10px 0 12px;
+        box-shadow: 0 0 3px #ccc;
+        position: relative;
+
+        &:after, &:before {
+          border: solid transparent;
+          content: '';
+          width: 0;
+          height: 0;
+          position: absolute;
+        }
+
+        &:after {
+          border-width: 8px;
+          border-right-color: #fff;
+          left: -15px;
+          top: 13px;
+        }
+
+        &:before {
+          border-width: 9px;
+          border-right-color: #ccc;
+          left: -18px;
+        }
+      }
+    }
+  }
+}
 </style>
