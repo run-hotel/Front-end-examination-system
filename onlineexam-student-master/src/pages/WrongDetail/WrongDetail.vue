@@ -196,38 +196,6 @@
 </template>
 
 <script>
-<<<<<<< Updated upstream
-  import HeaderTop from '../../components/HeaderTop/HeaderTop.vue'
-  import {Toast, MessageBox} from 'mint-ui'
-  import {reqPapersInfoByWrongPaperId, reqUpdatePaperAnswerIsCollect} from '../../api'
-  import {mapState, mapActions} from 'vuex'
-  export default {
-    name: "",
-    data() {
-      return {
-        //学号
-        sno: this.$store.state.userInfo.sno,
-        //路由传值paperId
-        paperId: this.$route.params.paperId,
-        //试卷信息
-        paperInfo: {},
-        //试卷问题类型数量
-        queNumInfo: {},
-        //单选题数组
-        singleQueList: [],
-        //多选题数组
-        multipleQueList: [],
-        //简答题数组
-        judgeQueList: [],
-        //填空题数组
-        fillQueList: [],
-        //是否显示paperContainer,默认进入页面为true
-        showPaperContainer: true,
-        //是否显示paperCard答题卡，默认进入页面为false，当点击答题卡区域为true
-        showPaperCard: false,
-        isCollect:'0',
-        percentage:0 //进度条值
-=======
 import HeaderTop from '../../components/HeaderTop/HeaderTop.vue'
 import { Toast, MessageBox } from 'mint-ui'
 import {
@@ -297,7 +265,6 @@ export default {
           message: result.msg,
           duration: 1500,
         })
->>>>>>> Stashed changes
       }
     },
     async updatePaperAnswerIsCollect(answerId, isCollect) {
