@@ -71,11 +71,13 @@ export default {
       results.forEach((item, index) => {
         const student = {}
         Object.keys(item).forEach((key) => {
-          if (key === '(必填)学号(8位数字)') {
+          console.log(key)
+          if (key === '(必填)学号(12位数字)') {
             student.sno = (String)(item[key])
           }
           if (key === '(必填)姓名') {
             student.stuName = item[key]
+            console.log(student.stuName)
           }
           if (key === '(必填)性别(填男或者女)') {
             student.stuSex = item[key]

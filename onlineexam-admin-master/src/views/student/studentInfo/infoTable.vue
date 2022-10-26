@@ -323,7 +323,7 @@ export default {
       rules: {
         sno: [
           { required: true, message: '学号为必填项', trigger: 'blur' },
-          { min: 12, max: 12, message: '学号必须为12位数字', trigger: 'blur' }
+          { min: 12, max: 12, message: '学号必须为8位数字', trigger: 'blur' }
         ],
         stuPsw: [
           {
