@@ -130,6 +130,18 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/exam',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Exam',
+        component: () => import('@/views/exams'),
+        meta: { title: '考试管理', icon: 'single-info' }
+      }
+    ]
+  },
+  {
     path: '/subject',
     component: Layout,
     children: [
@@ -202,19 +214,19 @@ export const constantRouterMap = [
         component: () => import('@/views/bankManage/bankJudge/index'),
         name: 'BankJudge',
         redirect: '/bank/bank-judge/judge-info',
-        meta: { title: '判断题库管理', icon: 'judge-bank' },
+        meta: { title: '简答题库管理', icon: 'judge-bank' },
         children: [
           {
             path: 'judge-info',
             name: 'JudgeInfo',
             component: () => import('@/views/bankManage/bankJudge/judgeInfo'),
-            meta: { title: '判断题信息管理', icon: 'judge-info' }
+            meta: { title: '简答题信息管理', icon: 'judge-info' }
           },
           {
             path: 'judge-upload',
             name: 'JudgeUpload',
             component: () => import('@/views/bankManage/bankJudge/judgeUpload'),
-            meta: { title: '上传判断题', icon: 'excel' }
+            meta: { title: '上传简答题', icon: 'excel' }
           }
         ]
       },
@@ -238,28 +250,7 @@ export const constantRouterMap = [
             meta: { title: '上传填空题', icon: 'excel' }
           }
         ]
-      },
-      {
-        path: 'bank-short',
-        component: () => import('@/views/bankManage/bankShort/index'),
-        name: 'BankShort',
-        redirect: '/bank/bank-short/short-info',
-        meta: { title: '简答题库管理', icon: 'short-bank' },
-        children: [
-          {
-            path: 'short-info',
-            name: 'ShortInfo',
-            component: () => import('@/views/bankManage/bankShort/shortInfo'),
-            meta: { title: '简答题信息管理', icon: 'short-info' },
-          },
-          {
-            path: 'short-upload',
-            name: 'ShortUpload',
-            component: () => import('@/views/bankManage/bankShort/shortUpload'),
-            meta: { title: '上传简答题',icon: 'excel' },
-          }
-        ]
-      },
+      }
     ]
   },
 

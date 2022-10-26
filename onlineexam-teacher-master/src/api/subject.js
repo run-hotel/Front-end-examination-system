@@ -25,3 +25,5 @@ export const reqUpdateSubjectInfo = row =>
 // 请求删除科目
 export const reqDeleteSubject = langId =>
   ajax(BASE_URL + '/deleteSubject', { langId }, 'POST')
+// 获取所有班级
+export const reqGetAllClasses = () => ajax(BASE_URL + '/getStudentClasses')

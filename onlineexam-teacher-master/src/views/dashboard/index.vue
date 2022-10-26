@@ -2,7 +2,7 @@
   <div
     :class="[
       'dashboard-container',
-      { 'dashboard-padding': device !== 'mobile' },
+      { 'dashboard-padding': device !== 'mobile' }
     ]"
   >
     <div class="teacher_info">
@@ -35,17 +35,17 @@ export default {
   name: 'Dashboard',
   components: {
     PanThumb,
-    BoxCard,
+    BoxCard
   },
   data() {
     return {
-      teaImg: require('@/assets/images/teacher.jpg'),
+      teaImg: require('@/assets/images/teacher.jpg')
       // emptyGif: require('@/assets/images/home_img.png')
     }
   },
   computed: {
-    ...mapGetters(['userInfo', 'device']),
-  },
+    ...mapGetters(['userInfo', 'device'])
+  }
 }
 </script>
 

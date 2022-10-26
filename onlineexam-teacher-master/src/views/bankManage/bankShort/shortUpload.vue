@@ -1,13 +1,34 @@
 <template>
   <div class="app-container">
     <div style="display: flex;justify-content: center;margin-bottom: 20px">
-      <el-button v-waves :loading="downloadLoading" style="background-color: #4ab7bd;border-color: #4ab7bd" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
+      <el-button
+        v-waves
+        :loading="downloadLoading"
+        style="background-color: #4ab7bd;border-color: #4ab7bd"
+        class="filter-item"
+        type="primary"
+        icon="el-icon-download"
+        @click="handleDownload"
+      >
         请先下载简答题上传模板
       </el-button>
     </div>
-    <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
-    <el-table :data="tableData" border highlight-current-row style="width: 100%;margin-top:20px;">
-      <el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" />
+    <upload-excel-component
+      :on-success="handleSuccess"
+      :before-upload="beforeUpload"
+    />
+    <el-table
+      :data="tableData"
+      border
+      highlight-current-row
+      style="width: 100%;margin-top:20px;"
+    >
+      <el-table-column
+        v-for="item of tableHeader"
+        :key="item"
+        :prop="item"
+        :label="item"
+      />
     </el-table>
   </div>
 </template>
@@ -15,7 +36,7 @@
 <script>
 import UploadExcelComponent from '@/components/UploadExcel/index.vue'
 import waves from '@/directive/waves' // Waves directive
-import { reqInsertShortList } from '@/api/bankManage'
+// import { reqInsertShortList } from '@/api/bankManage'
 export default {
   name: 'ShortUpload',
   components: { UploadExcelComponent },
@@ -62,7 +83,7 @@ export default {
       const shortList = []
       results.forEach((item, index) => {
         const short = {}
-        Object.keys(item).forEach((key) => {
+        Object.keys(item).forEach(key => {
           if (key === '(必填)题目内容') {
             short.shortContent = item[key]
           }
@@ -72,7 +93,10 @@ export default {
           if (key === '(选填)答案解析') {
             short.answerExplain = item[key]
           }
-          if (key === '(必填)所属科目(Java填1,C++填2,Android填3,IOS填4,php填5,Python填6,Ruby填7,Go填8,JavaScript填9)') {
+          if (
+            key ===
+            '(必填)所属科目(Java填1,C++填2,Android填3,IOS填4,php填5,Python填6,Ruby填7,Go填8,JavaScript填9)'
+          ) {
             short.langId = item[key]
           }
         })
@@ -84,7 +108,7 @@ export default {
     },
     // 插入数据库填空题表
     async insertShortList(shortList) {
-      const result = await reqInsertShortList(shortList)
+      /*      const result = await reqInsertShortList(shortList)
       if (result.statu === 0) {
         this.$message({
           message: result.msg,
@@ -95,12 +119,10 @@ export default {
           message: result.msg,
           type: 'error'
         })
-      }
+      } */
     }
   }
 }
 </script>
 
-<style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped>
-
-</style>
+<style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped></style>

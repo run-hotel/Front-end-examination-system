@@ -1,17 +1,62 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input v-model="listQuery.content" placeholder="搜索题目内容" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @keyup.enter.native="handleFilter" />
-      <el-select v-model="listQuery.langId" placeholder="搜索科目下的问题" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
+      <el-input
+        v-model="listQuery.content"
+        placeholder="搜索题目内容"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @keyup.enter.native="handleFilter"
+      />
+      <el-select
+        v-model="listQuery.langId"
+        placeholder="搜索科目下的问题"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="item in langOptions"
+          :key="item.key"
+          :label="item.label"
+          :value="item.key"
+        />
       </el-select>
-      <el-select v-model="listQuery.composeFlag" placeholder="搜索是否被组成试卷" clearable style="width: 200px;margin-right: 15px;" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in composeFlagOptions" :key="item.key" :label="item.label" :value="item.key" />
+      <el-select
+        v-model="listQuery.composeFlag"
+        placeholder="搜索是否被组成试卷"
+        clearable
+        style="width: 200px;margin-right: 15px;"
+        class="filter-item"
+        @change="handleFilter"
+      >
+        <el-option
+          v-for="item in composeFlagOptions"
+          :key="item.key"
+          :label="item.label"
+          :value="item.key"
+        />
       </el-select>
-      <el-button v-waves class="filter-item" style="margin-right: 10px;" type="primary" icon="el-icon-search" @click="handleFilter">
+      <el-button
+        v-waves
+        class="filter-item"
+        style="margin-right: 10px;"
+        type="primary"
+        icon="el-icon-search"
+        @click="handleFilter"
+      >
         搜索
       </el-button>
-      <el-button v-waves class="filter-item" style="margin-left: 0;margin-right: 10px;" type="primary" icon="el-icon-circle-plus-outline" @click="handleCreate">
+      <el-button
+        v-waves
+        class="filter-item"
+        style="margin-left: 0;margin-right: 10px;"
+        type="primary"
+        icon="el-icon-circle-plus-outline"
+        @click="handleCreate"
+      >
         添加题目
       </el-button>
     </div>
@@ -20,7 +65,7 @@
       v-loading="listLoading"
       :key="tableKey"
       :data="list"
-      :default-sort = "{prop: 'id', order: 'ascending'}"
+      :default-sort="{ prop: 'id', order: 'ascending' }"
       fit
       highlight-current-row
       style="width: 100%;"
@@ -32,8 +77,8 @@
               <span>{{ scope.row.content }}</span>
             </el-form-item>
             <el-form-item label="">
-              <viewer v-if="scope.row.pictureSrc">
-                <img :src="scope.row.pictureSrc">
+              <viewer v-if="scope.row && scope.row.pictureSrc">
+                <img :src="scope.row.pictureSrc" />
               </viewer>
             </el-form-item>
             <el-form-item v-if="scope.row.choiceA" label="">
@@ -66,7 +111,13 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column label="序号" prop="id" sortable align="center" width="80">
+      <el-table-column
+        label="序号"
+        prop="id"
+        sortable
+        align="center"
+        width="80"
+      >
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
@@ -79,12 +130,20 @@
       <el-table-column label="题目配图" align="center">
         <template slot-scope="scope">
           <viewer v-if="scope.row.pictureSrc">
-            <img :src="scope.row.pictureSrc" style="width: 120px;height: 60px">
+            <img
+              :src="scope.row.pictureSrc"
+              style="width: 120px;height: 60px"
+            />
           </viewer>
           <span v-else>暂无</span>
         </template>
       </el-table-column>
-      <el-table-column prop="composeFlag" sortable label="是否被组成试卷" align="center">
+      <el-table-column
+        prop="composeFlag"
+        sortable
+        label="是否被组成试卷"
+        align="center"
+      >
         <template slot-scope="scope">
           <span>{{ scope.row.composeFlag === '1' ? '是' : '否' }}</span>
         </template>
@@ -92,27 +151,60 @@
       <el-table-column prop="langId" sortable label="所属科目" align="center">
         <template slot-scope="scope">
           <viewer>
-            <img :src="scope.row.langImgSrc" style="width: 40px;height: 40px;border-radius: 20px;">
+            <img
+              :src="scope.row.langImgSrc"
+              style="width: 40px;height: 40px;border-radius: 20px;"
+            />
           </viewer>
           <div>{{ scope.row.langName }}</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding" width="240">
-        <template slot-scope="{row}">
-          <el-button v-waves type="primary" icon="el-icon-edit" size="mini" @click="handleUpdate(row)">
+      <el-table-column
+        label="操作"
+        align="center"
+        class-name="small-padding"
+        width="240"
+      >
+        <template slot-scope="{ row }">
+          <el-button
+            v-waves
+            type="primary"
+            icon="el-icon-edit"
+            size="mini"
+            @click="handleUpdate(row)"
+          >
             编辑题目
           </el-button>
-          <el-button v-waves type="danger" icon="el-icon-delete" size="mini" @click="confirmDeleteQue(row)">
+          <el-button
+            v-waves
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            @click="confirmDeleteQue(row)"
+          >
             删除
           </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="getList"
+    />
 
     <el-dialog :visible.sync="dialogFormVisible" :title="dialogStatus">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
+      <el-form
+        ref="dataForm"
+        :rules="rules"
+        :model="temp"
+        label-position="left"
+        label-width="120px"
+        style="width: 400px; margin-left:50px;"
+      >
         <el-form-item label="题目内容" prop="content">
           <el-input v-model="temp.content" :rows="5" type="textarea" />
         </el-form-item>
@@ -122,50 +214,96 @@
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
             class="avatar-uploader"
-            action="/api/admin/uploadPicture">
-            <img v-if="temp.pictureSrc" :src="temp.pictureSrc" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"/>
+            action="/api/admin/uploadPicture"
+          >
+            <img v-if="temp.pictureSrc" :src="temp.pictureSrc" class="avatar" />
+            <i v-else class="el-icon-plus avatar-uploader-icon" />
           </el-upload>
-          <el-button v-waves :disabled="!temp.pictureSrc" type="danger" icon="el-icon-delete" size="mini" @click="deletePictureSrc">
+          <el-button
+            v-waves
+            :disabled="!temp.pictureSrc"
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            @click="deletePictureSrc"
+          >
             删除
           </el-button>
         </el-form-item>
         <el-form-item label="选项A" prop="choiceA">
-          <el-input v-model="temp.choiceA" placeholder="内容必须以字符A加:开头" />
+          <el-input
+            v-model="temp.choiceA"
+            placeholder="内容必须以字符A加:开头"
+          />
         </el-form-item>
         <el-form-item label="选项B" prop="choiceB">
-          <el-input v-model="temp.choiceB" placeholder="内容必须以字符B加:开头" />
+          <el-input
+            v-model="temp.choiceB"
+            placeholder="内容必须以字符B加:开头"
+          />
         </el-form-item>
         <el-form-item label="选项C" prop="choiceC">
-          <el-input v-model="temp.choiceC" placeholder="内容必须以字符C加:开头" />
+          <el-input
+            v-model="temp.choiceC"
+            placeholder="内容必须以字符C加:开头"
+          />
         </el-form-item>
         <el-form-item label="选项D" prop="choiceD">
-          <el-input v-model="temp.choiceD" placeholder="内容必须以字符D加:开头" />
+          <el-input
+            v-model="temp.choiceD"
+            placeholder="内容必须以字符D加:开头"
+          />
         </el-form-item>
         <el-form-item label="选项E">
-          <el-input v-model="temp.choiceE" placeholder="内容必须以字符E加:开头" />
+          <el-input
+            v-model="temp.choiceE"
+            placeholder="内容必须以字符E加:开头"
+          />
         </el-form-item>
         <el-form-item label="选项F">
-          <el-input v-model="temp.choiceF" placeholder="内容必须以字符F加:开头" />
+          <el-input
+            v-model="temp.choiceF"
+            placeholder="内容必须以字符F加:开头"
+          />
         </el-form-item>
         <el-form-item label="选项G">
-          <el-input v-model="temp.choiceG" placeholder="内容必须以字符G加:开头" />
+          <el-input
+            v-model="temp.choiceG"
+            placeholder="内容必须以字符G加:开头"
+          />
         </el-form-item>
         <el-form-item label="题目答案" prop="singleAnswer">
           <el-radio v-model="temp.singleAnswer" label="A">A</el-radio>
           <el-radio v-model="temp.singleAnswer" label="B">B</el-radio>
           <el-radio v-model="temp.singleAnswer" label="C">C</el-radio>
           <el-radio v-model="temp.singleAnswer" label="D">D</el-radio>
-          <el-radio v-if="temp.choiceE" v-model="temp.singleAnswer" label="E" >E</el-radio>
-          <el-radio v-if="temp.choiceF" v-model="temp.singleAnswer" label="F" >F</el-radio>
-          <el-radio v-if="temp.choiceG" v-model="temp.singleAnswer" label="G" >G</el-radio>
+          <el-radio v-if="temp.choiceE" v-model="temp.singleAnswer" label="E"
+            >E</el-radio
+          >
+          <el-radio v-if="temp.choiceF" v-model="temp.singleAnswer" label="F"
+            >F</el-radio
+          >
+          <el-radio v-if="temp.choiceG" v-model="temp.singleAnswer" label="G"
+            >G</el-radio
+          >
         </el-form-item>
         <el-form-item label="答案解析">
           <el-input v-model="temp.answerExplain" :rows="5" type="textarea" />
         </el-form-item>
         <el-form-item label="所属科目" prop="langId">
-          <el-select v-model="temp.langId" placeholder="请选择科目" clearable style="width: 200px;margin-right: 15px;" class="filter-item" >
-            <el-option v-for="item in langOptions" :key="item.key" :label="item.label" :value="item.key" />
+          <el-select
+            v-model="temp.langId"
+            placeholder="请选择科目"
+            clearable
+            style="width: 200px;margin-right: 15px;"
+            class="filter-item"
+          >
+            <el-option
+              v-for="item in langOptions"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+            />
           </el-select>
         </el-form-item>
       </el-form>
@@ -173,8 +311,11 @@
         <el-button @click="dialogFormVisible = false">
           取消
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='添加题目'?createData():updateData()">
-          {{ dialogStatus==='添加题目'?'确认添加':'确认编辑' }}
+        <el-button
+          type="primary"
+          @click="dialogStatus === '添加题目' ? createData() : updateData()"
+        >
+          {{ dialogStatus === '添加题目' ? '确认添加' : '确认编辑' }}
         </el-button>
       </div>
     </el-dialog>
@@ -182,13 +323,24 @@
     <!--可自定义按钮的样式、show/hide临界点、返回的位置  -->
     <!--如需文字提示，可在外部添加element的<el-tooltip></el-tooltip>元素  -->
     <el-tooltip placement="top" content="返回顶部">
-      <back-to-top :custom-style="myBackToTopStyle" :visibility-height="300" :back-position="50" transition-name="fade" />
+      <back-to-top
+        :custom-style="myBackToTopStyle"
+        :visibility-height="300"
+        :back-position="50"
+        transition-name="fade"
+      />
     </el-tooltip>
   </div>
 </template>
 
 <script>
-import { reqGetSingleList, reqSearchSingleList, reqDeleteSingle, reqInsertSingleInfo, reqUpdateSingleInfo } from '@/api/bankManage'
+import {
+  reqGetSingleList,
+  reqSearchSingleList,
+  reqDeleteSingle,
+  reqInsertSingleInfo,
+  reqUpdateSingleInfo
+} from '@/api/bankManage'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import BackToTop from '@/components/BackToTop'
@@ -210,7 +362,10 @@ export default {
         langId: undefined,
         composeFlag: undefined
       },
-      composeFlagOptions: [{ label: '是', key: '1' }, { label: '否', key: '0' }],
+      composeFlagOptions: [
+        { label: '是', key: '1' },
+        { label: '否', key: '0' }
+      ],
       langOptions: [],
       temp: {
         content: '',
@@ -229,13 +384,27 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       rules: {
-        content: [{ required: true, message: '题目内容为必填项', trigger: 'change' }],
-        choiceA: [{ required: true, message: '选项A为必填项', trigger: 'change' }],
-        choiceB: [{ required: true, message: '选项B为必填项', trigger: 'change' }],
-        choiceC: [{ required: true, message: '选项C为必填项', trigger: 'change' }],
-        choiceD: [{ required: true, message: '选项D为必填项', trigger: 'change' }],
-        singleAnswer: [{ required: true, message: '题目答案为必填项', trigger: 'change' }],
-        langId: [{ required: true, message: '所属科目为必填项', trigger: 'change' }]
+        content: [
+          { required: true, message: '题目内容为必填项', trigger: 'change' }
+        ],
+        choiceA: [
+          { required: true, message: '选项A为必填项', trigger: 'change' }
+        ],
+        choiceB: [
+          { required: true, message: '选项B为必填项', trigger: 'change' }
+        ],
+        choiceC: [
+          { required: true, message: '选项C为必填项', trigger: 'change' }
+        ],
+        choiceD: [
+          { required: true, message: '选项D为必填项', trigger: 'change' }
+        ],
+        singleAnswer: [
+          { required: true, message: '题目答案为必填项', trigger: 'change' }
+        ],
+        langId: [
+          { required: true, message: '所属科目为必填项', trigger: 'change' }
+        ]
       },
       downloadLoading: false,
       myBackToTopStyle: {
@@ -245,7 +414,7 @@ export default {
         height: '40px',
         'border-radius': '4px',
         'line-height': '45px', // 请保持与高度一致以垂直居中 Please keep consistent with height to center vertically
-        background: '#e7eaf1'// 按钮的背景颜色 The background color of the button
+        background: '#e7eaf1' // 按钮的背景颜色 The background color of the button
       }
     }
   },
@@ -259,7 +428,11 @@ export default {
       if (result.statu === 0) {
         this.langOptions = result.data.langOptions
         this.total = result.data.singleList.length
-        this.list = result.data.singleList.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+        this.list = result.data.singleList.filter(
+          (item, index) =>
+            index < this.listQuery.limit * this.listQuery.page &&
+            index >= this.listQuery.limit * (this.listQuery.page - 1)
+        )
       }
       this.listLoading = false
     },
@@ -272,7 +445,7 @@ export default {
       })
     },
     updateData() {
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
           this.handleUpdateSingle()
         }
@@ -298,17 +471,31 @@ export default {
       this.listQuery.page = 1
       this.listLoading = true
       let langId = this.listQuery.langId
-      if (this.listQuery.langId === null || this.listQuery.langId === undefined) {
+      if (
+        this.listQuery.langId === null ||
+        this.listQuery.langId === undefined
+      ) {
         langId = 0
       }
       let composeFlag = this.listQuery.composeFlag
-      if (this.listQuery.composeFlag === null || this.listQuery.composeFlag === undefined) {
+      if (
+        this.listQuery.composeFlag === null ||
+        this.listQuery.composeFlag === undefined
+      ) {
         composeFlag = undefined
       }
-      const result = await reqSearchSingleList(this.listQuery.content, langId, composeFlag)
+      const result = await reqSearchSingleList(
+        this.listQuery.content,
+        langId,
+        composeFlag
+      )
       if (result.statu === 0) {
         this.total = result.data.length
-        this.list = result.data.filter((item, index) => index < this.listQuery.limit * this.listQuery.page && index >= this.listQuery.limit * (this.listQuery.page - 1))
+        this.list = result.data.filter(
+          (item, index) =>
+            index < this.listQuery.limit * this.listQuery.page &&
+            index >= this.listQuery.limit * (this.listQuery.page - 1)
+        )
       }
       this.listLoading = false
     },
@@ -337,7 +524,7 @@ export default {
       })
     },
     createData() {
-      this.$refs['dataForm'].validate((valid) => {
+      this.$refs['dataForm'].validate(valid => {
         if (valid) {
           this.insertSingleInfo()
         }
@@ -368,17 +555,18 @@ export default {
         confirmButtonText: '确定删除',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        if (row.composeFlag === '1') {
-          this.$message({
-            message: '该题目已被组成试卷，无法删除',
-            type: 'error'
-          })
-        } else {
-          this.handleDeleteQue(row)
-        }
-      }).catch(() => {
       })
+        .then(() => {
+          if (row.composeFlag === '1') {
+            this.$message({
+              message: '该题目已被组成试卷，无法删除',
+              type: 'error'
+            })
+          } else {
+            this.handleDeleteQue(row)
+          }
+        })
+        .catch(() => {})
     },
     async handleDeleteQue(row) {
       const singleId = row.singleId
@@ -401,7 +589,10 @@ export default {
       this.temp.pictureSrc = res.data
     },
     beforeAvatarUpload(file) {
-      const isType = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif'
+      const isType =
+        file.type === 'image/jpeg' ||
+        file.type === 'image/png' ||
+        file.type === 'image/gif'
       const isLt4M = file.size / 1024 / 1024 < 4
 
       if (!isType) {
@@ -419,39 +610,39 @@ export default {
 }
 </script>
 <style rel="stylesheet/scss" lang="scss" type="text/scss" scoped>
-  .demo-table-expand {
-    font-size: 0;
-    label {
-      width: 90px;
-      color: #99a9bf;
-    }
-    .el-form-item {
-      margin-right: 0;
-      margin-bottom: 0;
-      width: 100%;
-    }
+.demo-table-expand {
+  font-size: 0;
+  label {
+    width: 90px;
+    color: #99a9bf;
   }
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
+  .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 100%;
   }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 280px;
-    height: 80px;
-    line-height: 80px;
-    text-align: center;
-  }
-  .avatar {
-    width: 280px;
-    height: 80px;
-    display: block;
-  }
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 280px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+}
+.avatar {
+  width: 280px;
+  height: 80px;
+  display: block;
+}
 </style>

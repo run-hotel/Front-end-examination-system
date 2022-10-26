@@ -288,6 +288,26 @@
             />
           </el-select>
         </el-form-item>
+        <el-form-item label="所属班级" prop="classArr">
+          <el-select
+            v-model="temp.classArr"
+            placeholder="选择班级"
+            multiple
+            filterable
+            remote
+            :remote-method="selectClass"
+            reserve-keyword
+            style="width: 200px;margin-right: 15px;"
+            class="filter-item"
+          >
+            <el-option
+              v-for="item in classoptions"
+              :key="item"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
+        </el-form-item>
         <el-form-item label="试卷名称" prop="paperName">
           <el-input v-model="temp.paperName" />
         </el-form-item>
@@ -447,18 +467,18 @@
 <script>
 /* eslint-disable */
 import {
-  reqGetPapersList,
-  reqSearchPapersList,
   reqDeletePaper,
+  reqFixedInsertPaperInfo,
+  reqGetPapersList,
+  reqPaperQueDetailByLangId,
   reqPaperQueDetailByPaperId,
   reqRandomInsertPaperInfo,
-  reqFixedInsertPaperInfo,
-  reqPaperQueDetailByLangId
+  reqSearchPapersList
 } from '@/api/paper'
-import waves from '@/directive/waves' // Waves directive
-import { parseTime } from '@/utils'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import { reqGetAllClasses } from '@/api/subject'
 import BackToTop from '@/components/BackToTop'
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import waves from '@/directive/waves' // Waves directive
 
 export default {
   name: 'PaperInfo',
@@ -466,6 +486,8 @@ export default {
   directives: { waves },
   data() {
     return {
+      classoptions: [],
+      classLoading: false,
       tableKey: 0,
       list: null,
       total: 0,
@@ -484,6 +506,7 @@ export default {
       ],
       temp: {
         paperName: '',
+        classArr: '',
         paperDuration: '',
         paperDifficulty: undefined,
         paperAttention: '',
@@ -514,6 +537,9 @@ export default {
       fixRules: {
         langId: [
           { required: true, message: '试卷名称为必填项', trigger: 'change' }
+        ],
+        classArr: [
+          { required: true, message: '班级为必选项', trigger: 'change' }
         ],
         paperName: [
           { required: true, message: '试卷名称为必填项', trigger: 'change' }
@@ -615,6 +641,12 @@ export default {
       setTimeout(() => {
         this.listLoading = false
       }, 500)
+    },
+    async selectClass(query) {
+      if (query !== '') {
+        const { data } = await reqGetAllClasses()
+        this.classoptions = data.filter(item => item && item.includes(query))
+      }
     },
     async seePaperDetail(row, column, event) {
       // 阻止鼠标右键默认事件
