@@ -1,43 +1,18 @@
 <template>
   <div class="app-container">
     <div style="display: flex;justify-content: center;margin-bottom: 20px">
-      <el-button
-        v-waves
-        :loading="downloadLoading"
-        style="background-color: #4ab7bd;border-color: #4ab7bd"
-        class="filter-item"
-        type="primary"
-        icon="el-icon-download"
-        @click="handleDownload"
-      >
+      <el-button v-waves :loading="downloadLoading" style="background-color: #4ab7bd;border-color: #4ab7bd" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         请先下载学生信息上传模板
       </el-button>
     </div>
-    <upload-excel-component
-      :on-success="handleSuccess"
-      :before-upload="beforeUpload"
-    />
-    <div v-if="allItemCount" style="margin-top: 15px">
+    <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
+    <div v-if="allItemCount" style="margin-top: 15px" >
       <span style="color: #4ab7bd">上传总记录条数：{{ allItemCount }}</span>
-      <span style="color: #67c23a;margin-left: 30px"
-        >成功总记录条数：{{ successItemCount }}</span
-      >
-      <span style="color: #FF0000;margin-left: 30px"
-        >失败总记录条数：{{ failItemCount }}</span
-      >
+      <span style="color: #67c23a;margin-left: 30px">成功总记录条数：{{ successItemCount }}</span>
+      <span style="color: #FF0000;margin-left: 30px">失败总记录条数：{{ failItemCount }}</span>
     </div>
-    <el-table
-      :data="tableData"
-      border
-      highlight-current-row
-      style="width: 100%;margin-top:20px;"
-    >
-      <el-table-column
-        v-for="item of tableHeader"
-        :key="item"
-        :prop="item"
-        :label="item"
-      />
+    <el-table :data="tableData" border highlight-current-row style="width: 100%;margin-top:20px;">
+      <el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" />
     </el-table>
   </div>
 </template>
@@ -95,9 +70,9 @@ export default {
       const studentList = []
       results.forEach((item, index) => {
         const student = {}
-        Object.keys(item).forEach(key => {
+        Object.keys(item).forEach((key) => {
           if (key === '(必填)学号(8位数字)') {
-            student.sno = String(item[key])
+            student.sno = (String)(item[key])
           }
           if (key === '(必填)姓名') {
             student.stuName = item[key]
@@ -137,4 +112,6 @@ export default {
 }
 </script>
 
-<style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped></style>
+<style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped>
+
+</style>
