@@ -1,58 +1,101 @@
 <template>
-  <el-card class="box-card-component">
-    <div slot="header" class="box-card-header">
-      <img src="@/assets/images/info_tab_img.png" />
-    </div>
-    <div style="position:relative;">
-      <pan-thumb :image="admImg" class="panThumb" />
-      <mallki class-name="mallki-text" text="在线考试系统管理员端" />
-      <div style="padding-top:35px;" class="progress-item">
-        <div class="info_item">
-          <span>管理员ID</span>
-          <span>{{ userInfo.ano }}</span>
+  <div class="flex-col page">
+    <div class="flex-row justify-between items-start group">
+      <div class="flex-col space-y-66 group_2">
+        <div class="flex-col">
+          <span class="text_2">管理员ID :{{ userInfo.ano }}</span>
+          <span class="text_2">姓名：{{ userInfo.admName }}</span>
+          <span class="font_1 text_3">Bio</span>
+          <span class="font_2 text_4">
+            <p>冰冻三尺，非一日之寒</p>
+          </span>
         </div>
-        <el-progress :percentage="100" status="success" />
-      </div>
-      <div class="progress-item">
-        <div class="info_item">
-          <span>姓名</span>
-          <span>{{ userInfo.admName }}</span>
-        </div>
-        <el-progress :percentage="100" status="success" />
-      </div>
-      <div class="progress-item">
-        <div class="info_item">
-          <span>性别</span>
-          <span>{{ userInfo.admSex }}</span>
-        </div>
-        <el-progress :percentage="100" status="success" />
-      </div>
-      <div class="progress-item">
-        <div class="info_item">
-          <span>邮箱</span>
-          <span>{{ userInfo.admEmail }}</span>
-        </div>
-        <el-progress :percentage="100" status="success" />
-      </div>
-      <div class="progress-item">
-        <div class="info_item">
-          <span>手机号码</span>
-          <span>{{ userInfo.admPhone }}</span>
-        </div>
-        <el-progress :percentage="100" status="success" />
-      </div>
-      <div class="progress-item">
-        <div class="info_item">
-          <span>最近登录时间</span>
-          <span>{{ userInfo.admLastLoginTime | date_format }}</span>
-        </div>
-        <el-progress :percentage="100" status="success" />
-      </div>
-    </div>
-  </el-card>
-</template>
+        <div class="flex-col space-y-17 group_4">
+          <span class="font_1 text_5">Wants &amp; Needs</span>
+          <span class="font_2 text_6">
+            <p>豫章故郡，洪都新府.</p>
 
-<script>
+            <p>星分翼轸，地接衡庐.</p>
+            <p>物华天宝，龙光射牛斗之墟.</p>
+          </span>
+        </div>
+      </div>
+      <div class="flex-col space-y-62 group_3">
+        <img
+          class="image"
+          src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/62b1197a5a7e3f0310471dad/63520f2af9b4a40011dac7c5/16663222219332254738.png"
+        />
+        <div class="flex-col">
+          <img
+            class="image_2"
+            src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/62b1197a5a7e3f0310471dad/63520f2af9b4a40011dac7c5/16663222219362845532.png"
+          />
+          <span class="font_2 text_7" style="margin-left: 80px">
+            人生有梦，各自精彩!
+          </span>
+          <div class="flex-row space-x-52 group_5">
+            <div class="flex-row">
+              <img
+                class="image_3"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/62b1197a5a7e3f0310471dad/63520f2af9b4a40011dac7c5/16663222219442988051.png"
+              />
+              <span class="font_2 text_8">Email:{{ userInfo.admEmail }}</span>
+            </div>
+            <!-- <div class="flex-row">
+                <img
+                  class="image_4"
+                  src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/62b1197a5a7e3f0310471dad/63520f2af9b4a40011dac7c5/16663222219452842360.png"
+                />
+                <span class="font_2 text_9">Seattle, WA</span>
+              </div> -->
+          </div>
+          <div class="flex-row space-x-52 group_5">
+            <div class="flex-row">
+              <img
+                class="image_4"
+                src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/62b1197a5a7e3f0310471dad/63520f2af9b4a40011dac7c5/16663222219452842360.png"
+              />
+              <span class="font_2 text_8"
+                >Recent:{{ userInfo.admLastLoginTime | date_format }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-col group_6">
+      <span class="font_1 text_10">Emotional Triggers</span>
+      <div class="flex-row justify-between items-start group_7">
+        <span class="font_2 text_12">
+          向前走，绝不后悔，如果你敢于应对平分生命，便会发觉，成绩的伤痛不过是短暂性的多雨季节.
+        </span>
+        <div class="flex-col space-y-38">
+          <span class="font_1 text_11">Favorite Brands</span>
+          <div class="flex-row space-x-32 group_8">
+            <img
+              class="image_6"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/62b1197a5a7e3f0310471dad/63520f2af9b4a40011dac7c5/16663222219392328536.png"
+            />
+            <img
+              class="image_8"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/62b1197a5a7e3f0310471dad/63520f2af9b4a40011dac7c5/16663222219417527579.png"
+            />
+            <img
+              class="image_5"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/62b1197a5a7e3f0310471dad/63520f2af9b4a40011dac7c5/16663222219428001237.png"
+            />
+            <img
+              class="image_7"
+              src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/62b1197a5a7e3f0310471dad/63520f2af9b4a40011dac7c5/16663222219432651897.png"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+  
+  <script>
 import { mapGetters } from 'vuex'
 import PanThumb from '@/components/PanThumb'
 import Mallki from '@/components/TextHoverEffect/Mallki'
@@ -64,93 +107,262 @@ export default {
     statusFilter(status) {
       const statusMap = {
         success: 'success',
-        pending: 'danger'
+        pending: 'danger',
       }
       return statusMap[status]
-    }
+    },
   },
   data() {
     return {
-      admImg: require('@/assets/images/admin.png'),
+      teaImg: require('@/assets/images/teacher.jpg'),
       statisticsData: {
         article_count: 1024,
-        pageviews_count: 1024
-      }
+        pageviews_count: 1024,
+      },
     }
   },
   computed: {
-    ...mapGetters(['userInfo'])
-  }
+    ...mapGetters(['userInfo']),
+  },
 }
 </script>
+  <style>
+/************************************************************
+  ** 请将全局样式拷贝到项目的全局 CSS 文件或者当前页面的顶部 **
+  ** 否则页面将无法正常显示                                  **
+  ************************************************************/
 
-<style lang="scss">
-.box-card-component {
-  .el-card__header {
-    padding: 0px !important;
-  }
+html {
+  font-size: 16px;
 }
-</style>
-<style type="text/scss" lang="scss" scoped>
-.box-card-component {
-  border-radius: 20px;
 
-  .box-card-header {
-    position: relative;
-    height: 220px;
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    'Microsoft Yahei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-    img {
-      width: 100%;
-      height: 100%;
-      transition: all 0.2s linear;
+body * {
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
 
-      &:hover {
-        transform: scale(1.1, 1.1);
-        filter: contrast(130%);
-      }
-    }
-  }
+#app {
+  width: 100vw;
+  height: 100vh;
+}
 
-  .mallki-text {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    font-size: 20px;
-    font-weight: bold;
-  }
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
 
-  .panThumb {
-    z-index: 100;
-    height: 70px !important;
-    width: 70px !important;
-    position: absolute !important;
-    top: -45px;
-    left: 0px;
-    border: 5px solid #ffffff;
-    background-color: #fff;
-    margin: auto;
-    box-shadow: none !important;
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
 
-    /deep/ .pan-info {
-      box-shadow: none !important;
-    }
-  }
+.justify-start {
+  justify-content: flex-start;
+}
 
-  .progress-item {
-    margin-bottom: 10px;
-    font-size: 14px;
+.justify-center {
+  justify-content: center;
+}
 
-    .info_item {
-      display: flex;
-      justify-content: space-between;
-      padding-right: 50px;
-    }
-  }
+.justify-end {
+  justify-content: flex-end;
+}
 
-  /*@media only screen and (max-width: 1510px){
-    .mallki-text{
-      display: none;
-    }
-  }*/
+.justify-evenly {
+  justify-content: space-evenly;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+.page {
+  padding: 20px 43px 0px 52px;
+  background-color: #fdfeff;
+  border-radius: 20.5px;
+  box-shadow: 0px 8.23px 49.38px #00518c26;
+  /* width: 1500px; */
+  width: 300%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* height: 1000px; */
+  height: 150%;
+}
+.group {
+  padding: 6px 0 16px;
+}
+.space-y-66 > *:not(:first-child) {
+  margin-top: 66px;
+}
+.group_2 {
+  width: 428px;
+}
+.text {
+  align-self: flex-start;
+  color: #002139;
+  font-size: 33px;
+  font-family: Inter;
+  font-weight: 700;
+  line-height: 24.5px;
+}
+.text_2 {
+  margin-top: 22px;
+  align-self: flex-start;
+  color: #00508c;
+  font-size: 24.5px;
+  font-family: Inter;
+  line-height: 23.5px;
+}
+.font_1 {
+  font-size: 20.5px;
+  font-family: Inter;
+  line-height: 16px;
+  color: #00508c;
+}
+.text_3 {
+  margin-left: 2px;
+  margin-top: 31px;
+  align-self: flex-start;
+}
+.font_2 {
+  font-size: 24.5px;
+  font-family: Inter;
+  line-height: 30px;
+  color: #002139;
+}
+.text_4 {
+  margin-left: 3px;
+  margin-top: 17px;
+}
+.space-y-17 > *:not(:first-child) {
+  margin-top: 17px;
+}
+.group_4 {
+  align-self: flex-start;
+  width: 371px;
+}
+.text_5 {
+  align-self: flex-start;
+  line-height: 15.5px;
+}
+.text_6 {
+  margin-left: 14px;
+  word-break: break-all;
+}
+.space-y-62 > *:not(:first-child) {
+  margin-top: 62px;
+}
+.group_3 {
+  margin-top: 12px;
+  width: 381px;
+}
+.image {
+  align-self: center;
+  width: 292px;
+  height: 292px;
+}
+.image_2 {
+  align-self: center;
+  width: 41px;
+  height: 41px;
+}
+.text_7 {
+  margin-top: 13px;
+}
+.space-x-52 > *:not(:first-child) {
+  margin-left: 52px;
+}
+.group_5 {
+  margin-top: 31px;
+  padding: 0 39px;
+}
+.image_3 {
+  flex-shrink: 0;
+  width: 31px;
+  height: 31px;
+}
+.text_8 {
+  margin: 6px 0 7px 12px;
+  line-height: 18.5px;
+}
+.image_4 {
+  flex-shrink: 0;
+  width: 23px;
+  height: 31px;
+}
+.text_9 {
+  margin: 6px 0 2px 12px;
+  line-height: 22.5px;
+}
+.group_6 {
+  padding: 12px 2px;
+}
+.text_10 {
+  align-self: flex-start;
+  line-height: 20px;
+}
+.group_7 {
+  margin-left: 13px;
+  margin-right: 6px;
+}
+.text_12 {
+  margin-top: 16px;
+  word-break: break-all;
+  width: 357px;
+}
+.space-y-38 > *:not(:first-child) {
+  margin-top: 38px;
+}
+.text_11 {
+  align-self: flex-start;
+}
+.space-x-32 > *:not(:first-child) {
+  margin-left: 32px;
+}
+.group_8 {
+  padding-left: 38px;
+}
+.image_6 {
+  margin-top: 6px;
+  width: 45px;
+  height: 66px;
+}
+.image_8 {
+  margin-top: 8px;
+  width: 64px;
+  height: 64px;
+}
+.image_5 {
+  width: 64px;
+  height: 72px;
+}
+.image_7 {
+  margin-top: 6px;
+  width: 62px;
+  height: 66px;
 }
 </style>

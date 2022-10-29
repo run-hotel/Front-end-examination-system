@@ -2,7 +2,7 @@
   <div
     :class="[
       'dashboard-container',
-      { 'dashboard-padding': device !== 'mobile' }
+      { 'dashboard-padding': device !== 'mobile' },
     ]"
   >
     <div class="admin_info">
@@ -20,9 +20,9 @@
       </pan-thumb>-->
     </div>
 
-    <div>
+    <!-- <div>
       <img :src="emptyGif" class="emptyGif" />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -35,31 +35,31 @@ export default {
   name: 'Dashboard',
   components: {
     PanThumb,
-    BoxCard
+    BoxCard,
   },
   data() {
     return {
       admImg: require('@/assets/images/admin.png'),
-      emptyGif: require('@/assets/images/home_img.png')
+      // emptyGif: require('@/assets/images/home_img.png')
     }
   },
   computed: {
-    ...mapGetters(['userInfo', 'device'])
-  }
+    ...mapGetters(['userInfo', 'device']),
+  },
 }
 </script>
 
 <style type="text/scss" rel="stylesheet/scss" lang="scss" scoped>
-.emptyGif {
+/* .emptyGif {
   display: block;
   width: 45%;
   margin: 0 auto;
-}
+} */
 .dashboard {
-  &-container {
+  /*  &-container {
     background-color: #e3e3e3;
     min-height: 93vh;
-  }
+  } */
   &-padding {
     padding: 50px 60px 0px;
   }
