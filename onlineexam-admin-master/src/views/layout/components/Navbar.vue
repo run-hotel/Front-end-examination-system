@@ -29,10 +29,7 @@
         trigger="click"
       >
         <div class="avatar-wrapper">
-          <img
-            src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/62b1197a5a7e3f0310471dad/63520f2af9b4a40011dac7c5/16663222219332254738.png"
-            class="user-avatar"
-          />
+          <img src="@/assets/images/admin.jpg" class="user-avatar" />
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">

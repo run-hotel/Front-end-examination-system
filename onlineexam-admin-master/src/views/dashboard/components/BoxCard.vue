@@ -21,10 +21,7 @@
         </div>
       </div>
       <div class="flex-col space-y-62 group_3">
-        <img
-          class="image"
-          src="https://codefun-proj-user-res-1256085488.cos.ap-guangzhou.myqcloud.com/62b1197a5a7e3f0310471dad/63520f2af9b4a40011dac7c5/16663222219332254738.png"
-        />
+        <img class="image" src="@/assets/images/admin.jpg" />
         <div class="flex-col">
           <img
             class="image_2"
