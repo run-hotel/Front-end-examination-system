@@ -107,12 +107,16 @@ export default {
       }
     },
     averTotal() {
+      this.total = 0;
+      this.aver = 0;
       for(let i = 0; i < this.snoData.length; i++) {
         this.total += this.scoreData[i];
       }
       this.aver = this.total / this.snoData.length;
     },
     countPass() {
+      this.passStu = 0;
+      this.unPass = 0;
       for(let i = 0; i < this.snoData.length; i++) {
         if(this.scoreData[i] >= 60) {
           this.passStu++;
