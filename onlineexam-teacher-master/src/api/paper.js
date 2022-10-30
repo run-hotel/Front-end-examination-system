@@ -21,7 +21,10 @@ export const reqFixedInsertPaperInfo = temp =>
 // 请求通过langId获取科目下的所有问题
 export const reqPaperQueDetailByLangId = langId =>
   ajax(BASE_URL + '/getPaperQueDetailByLangId', { langId })
+
+// 通过教师id查询目前以及分配的试卷
 export const reqSearchPaperInfo = tno =>
   ajax(BASE_URL + '/searchclasspaperInfo', { tno })
+
 export const reqGetPaperList = paper_id =>
   ajax(BASE_URL + '/getTeacherPapersListbyid', { paper_id })

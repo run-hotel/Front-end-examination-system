@@ -27,3 +27,6 @@ export const reqDeleteSubject = langId =>
   ajax(BASE_URL + '/deleteSubject', { langId }, 'POST')
 // 获取所有班级
 export const reqGetAllClasses = () => ajax(BASE_URL + '/getStudentClasses')
+// 通过老师 id 获取老师所教的科目
+export const reqGetClassByTeacherId = tno =>
+  ajax(BASE_URL + '/searchclassfromteacherInfo', { tno })
