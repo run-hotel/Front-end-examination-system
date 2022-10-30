@@ -3,6 +3,12 @@ const BASE_URL = process.env.BASE_API
 
 // 获取全部公告信息
 export const reqGetPapersList = () => ajax(BASE_URL + '/getTeacherPapersList')
+// 获取全部公告信息
+export const reqGetHomeWorkList = () =>
+  ajax(BASE_URL + '/getTeacherPapersList2')
+
+export const reqGetPaperList4 = tno =>
+  ajax(BASE_URL + '/getTeacherPapersList4', { tno })
 // 获取搜素公告信息
 export const reqSearchPapersList = (paperName, langId, paperType) =>
   ajax(BASE_URL + '/searchPapersList', { paperName, langId, paperType })

@@ -289,7 +289,14 @@
           </el-select>
         </el-form-item>
         <el-form-item label="所属班级">
-          <el-tag>{{ temp.className }}</el-tag>
+          <el-tag
+            v-for="tag in className"
+            :disable-transitions="false"
+            @close="handleClose(tag)"
+            :key="tag"
+            closable
+            >{{ tag }}</el-tag
+          >
         </el-form-item>
         <el-form-item label="发布时间" prop="startTime">
           <el-date-picker
@@ -391,7 +398,14 @@
           </el-select>
         </el-form-item>
         <el-form-item label="所属班级">
-          <el-tag>{{ temp.className }}</el-tag>
+          <el-tag
+            v-for="tag in className"
+            :disable-transitions="false"
+            @close="handleClose(tag)"
+            :key="tag"
+            closable
+            >{{ tag }}</el-tag
+          >
         </el-form-item>
         <el-form-item label="发布时间" prop="startTime">
           <el-date-picker
@@ -477,7 +491,7 @@
 import {
   reqDeletePaper,
   reqFixedInsertPaperInfo,
-  reqGetPapersList,
+  reqGetHomeWorkList,
   reqPaperQueDetailByLangId,
   reqPaperQueDetailByPaperId,
   reqRandomInsertPaperInfo,
@@ -538,12 +552,12 @@ export default {
         { label: '随机组卷', key: '1' },
         { label: '固定组卷', key: '2' }
       ],
+      className: null,
       temp: {
         kind: 2,
         tno: '',
         startTime: '',
         paperName: '',
-        className: null,
         paperDuration: '',
         paperDifficulty: undefined,
         paperAttention: '',
@@ -668,23 +682,26 @@ export default {
   methods: {
     async getList() {
       this.listLoading = true
-      let result = await reqGetPapersList()
+      let result = await reqGetHomeWorkList()
       const { userInfo } = this.$store.getters
       if (result.statu === 0) {
         this.langOptions = result.data.langOptions
+        this.total = result.data.papersList.length
         this.list = result.data.papersList.filter(
           (item, index) =>
             index < this.listQuery.limit * this.listQuery.page &&
-            index >= this.listQuery.limit * (this.listQuery.page - 1)
+            index >= this.listQuery.limit * (this.listQuery.page - 1) &&
+            item.create_tno === userInfo.tno
         )
-        this.list = this.list.filter(item => item.create_tno === userInfo.tno)
-        this.total = this.list.length
       }
 
       // 延迟0.5秒等待请求数据
       setTimeout(() => {
         this.listLoading = false
       }, 500)
+    },
+    handleClose(tag) {
+      this.className.splice(this.className.indexOf(tag), 1)
     },
     async seePaperDetail(row, column, event) {
       // 阻止鼠标右键默认事件
@@ -827,7 +844,8 @@ export default {
         userInfo: { tno }
       } = this.$store.getters
       const { data } = await reqGetClassByTeacherId(tno)
-      this.temp.className = data[0].classTno
+      const resetArr = [...new Set(data.map(item => item.classTno))]
+      this.className = resetArr
     },
     async fixedLangIdChange() {
       this.fixedPaperData = []
@@ -932,20 +950,25 @@ export default {
       let arr = this.temp.paperDuration.split(':')
       this.temp.paperDuration =
         parseInt(arr[0]) * 60 * 60 + parseInt(arr[1]) * 60
-      let result = await reqFixedInsertPaperInfo(this.temp)
-      if (result.statu === 0) {
+      try {
+        for (let classTno in this.className) {
+          await reqFixedInsertPaperInfo({
+            ...this.temp,
+            className: this.className[classTno]
+          })
+        }
         this.fixedDialogFormVisible = false
         this.$notify({
           title: '成功',
-          message: '发布成功',
+          message: '试卷发布成功',
           type: 'success',
           duration: 2000
         })
         this.getList()
-      } else {
+      } catch (error) {
         this.$notify({
           title: '失败',
-          message: result.msg,
+          message: error.message,
           type: 'error',
           duration: 2000
         })
@@ -957,7 +980,8 @@ export default {
         userInfo: { tno }
       } = this.$store.getters
       const { data } = await reqGetClassByTeacherId(tno)
-      this.temp.className = data[0].classTno
+      const resetArr = [...new Set(data.map(item => item.classTno))]
+      this.className = resetArr
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
