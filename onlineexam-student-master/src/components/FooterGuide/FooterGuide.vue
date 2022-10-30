@@ -70,19 +70,19 @@
 
 <script>
 export default {
-  name: '',
+  name: "",
   data() {
-    return {}
+    return {};
   },
   methods: {
     goto(path) {
-      this.$router.replace(path)
+      this.$router.replace(path);
     },
     isCurrent(path) {
       // console.log(this.$route.path)
-      return this.$route.path === path
-    },
-  },
+      return this.$route.path === path;
+    }
+  }
   /*    watch: {
       '$route' (to, from) {
         console.log(to.path.length);
@@ -94,7 +94,7 @@ export default {
         }
       }
     }*/
-}
+};
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped>

@@ -31,7 +31,7 @@
       <div class="clock">
         <div class="clock-top">
           <i class="iconfont icondaqia"></i>
-          {{ currentDate | date_format('YYYY-MM-DD') }}
+          {{ currentDate | date_format("YYYY-MM-DD") }}
         </div>
         <div class="clock-bottom">打卡</div>
       </div>
@@ -43,7 +43,7 @@
         :class="{
           opacity: curSelect === item.langId,
           recommend: item.isRecommend == '1',
-          first_recommend: item.isRecommend == '1' && index == 0,
+          first_recommend: item.isRecommend == '1' && index == 0
         }"
         v-for="(item, index) in languagesInfo"
         :key="index"
@@ -71,8 +71,8 @@
       <div class="calendar-right" v-if="userInfo.sno">
         <i class="iconfont iconxiazai41"></i>
         最新考试信息：{{ examCalendar[0].teaName
-        }}{{ examCalendar[0].noticeCreateTime | date_format('M') }}月{{
-          examCalendar[0].noticeCreateTime | date_format('D')
+        }}{{ examCalendar[0].noticeCreateTime | date_format("M") }}月{{
+          examCalendar[0].noticeCreateTime | date_format("D")
         }}号发布
       </div>
     </div>
@@ -80,91 +80,86 @@
 </template>
 
 <script>
-import { Toast } from 'mint-ui'
-import HeaderTop from '../../components/HeaderTop/HeaderTop.vue'
-import Swiper from '../../components/Swiper/Swiper.vue'
-import { mapState } from 'vuex'
+import { Toast } from "mint-ui";
+import HeaderTop from "../../components/HeaderTop/HeaderTop.vue";
+import Swiper from "../../components/Swiper/Swiper.vue";
+import { mapState } from "vuex";
 
 export default {
-  name: '',
+  name: "",
   created() {
-    this.$store.dispatch('getRotationImages')
+    this.$store.dispatch("getRotationImages");
     // this.$store.dispatch('getExamCalendar');
-    this.$store.dispatch('getLanguagesInfo')
+    this.$store.dispatch("getLanguagesInfo");
   },
   data() {
     return {
       currentDate: new Date(),
       curSelect: null,
-      alreadyClock: false,
-    }
+      alreadyClock: false
+    };
   },
   computed: {
     //轮播图的数组
-    ...mapState([
-      'examCalendar',
-      'rotationImages',
-      'userInfo',
-      'languagesInfo',
-    ]),
+    ...mapState(["examCalendar", "rotationImages", "userInfo", "languagesInfo"])
   },
   methods: {
-    touchstart: function (e) {
-      var list = this.$store.state.languagesInfo
+    touchstart: function(e) {
+      var list = this.$store.state.languagesInfo;
       for (var i = 0, len = list.length; i < len; i++) {
         if (list[i].langId == e) {
-          this.curSelect = i + 1
+          this.curSelect = i + 1;
         }
       }
       setTimeout(() => {
-        this.curSelect = null
-      }, 500)
+        this.curSelect = null;
+      }, 500);
     },
-    touchend: function () {
-      this.curSelect = null
+    touchend: function() {
+      this.curSelect = null;
     },
     toCalendar() {
       if (!this.$store.state.userInfo.sno) {
         Toast({
-          message: '请先登录系统',
-          duration: 1000,
-        })
+          message: "请先登录系统",
+          duration: 1000
+        });
       } else {
-        this.$router.push('/profile/examcalendar')
+        this.$router.push("/profile/examcalendar");
       }
     },
     toPaper(langId) {
       if (!this.$store.state.userInfo.sno) {
         Toast({
-          message: '请先登录系统',
-          duration: 1000,
-        })
+          message: "请先登录系统",
+          duration: 1000
+        });
       } else {
-        this.$router.push('/home/paper/' + langId)
+        this.$router.push("/home/paper/" + langId);
       }
     },
     clickClock() {
       if (!this.alreadyClock) {
         Toast({
-          message: '恭喜您，打卡成功',
-          iconClass: 'iconfont icondaqia1',
-          duration: 1500,
-        })
-        this.alreadyClock = true
+          message: "恭喜您，打卡成功",
+          iconClass: "iconfont icondaqia1",
+          duration: 1500
+        });
+        this.alreadyClock = true;
       } else {
         Toast({
-          message: '请勿重复打卡',
-          iconClass: 'iconfont iconxinxi',
-          duration: 1500,
-        })
+          message: "请勿重复打卡",
+          iconClass: "iconfont iconxinxi",
+          duration: 1500
+        });
       }
-    },
+    }
   },
   components: {
     HeaderTop,
-    Swiper,
-  },
-}
+    Swiper
+  }
+};
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped>

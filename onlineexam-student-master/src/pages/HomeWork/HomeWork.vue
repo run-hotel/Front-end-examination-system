@@ -77,7 +77,7 @@ export default {
           duration: 1000,
         })
       } else {
-        this.$router.push('/home/paper/' + langId)
+        this.$router.push('/home/paper2/' + langId)
       }
     },
   },

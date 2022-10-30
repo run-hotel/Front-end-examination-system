@@ -51,7 +51,7 @@
           <i class="iconfont iconleixing"></i>
           试卷类型：
         </span>
-        {{ paperInfo.paperType == 1 ? '随机组卷' : '固定组卷' }}
+        {{ paperInfo.paperType == 1 ? "随机组卷" : "固定组卷" }}
       </div>
 
       <div class="paper_create_time">
@@ -141,20 +141,20 @@
         @click.native="toStartPaper"
         :disabled="currentPaperStatus == 1 ? true : false"
       >
-        {{ currentPaperStatus == 1 ? '已完成' : '开始考试' }}
+        {{ currentPaperStatus == 1 ? "已完成" : "开始考试" }}
       </mt-button>
     </div>
   </section>
 </template>
 
 <script>
-import { reqPapersInfoByPaperId, reqCurrentPaperStatus } from '../../api'
-import HeaderTop from '../../components/HeaderTop/HeaderTop.vue'
-import Star from '../../components/Star/Star.vue'
-import { Toast, MessageBox, Indicator } from 'mint-ui'
-import { mapState } from 'vuex'
+import { reqPapersInfoByPaperId, reqCurrentPaperStatus } from "../../api";
+import HeaderTop from "../../components/HeaderTop/HeaderTop.vue";
+import Star from "../../components/Star/Star.vue";
+import { Toast, MessageBox, Indicator } from "mint-ui";
+import { mapState } from "vuex";
 export default {
-  name: '',
+  name: "",
   data() {
     return {
       sno: this.$store.state.userInfo.sno,
@@ -163,15 +163,15 @@ export default {
       queNumInfo: {},
       currentPaperStatus: 0,
       loading: false
-    }
+    };
   },
   created() {
-    this.loading = true
-    this.getPaperInfoByPaperId()
-    this.getCurrentPaperStatus()
+    this.loading = true;
+    this.getPaperInfoByPaperId();
+    this.getCurrentPaperStatus();
     setTimeout(() => {
-      this.loading = false
-    }, 800)
+      this.loading = false;
+    }, 800);
   },
   computed: {
     optionLeft() {
@@ -179,64 +179,64 @@ export default {
         direction: 2,
         limitMoveNum: 2
         // hoverStop: false
-      }
+      };
     },
-    ...mapState(['examCalendar']),
+    ...mapState(["examCalendar"]),
     totalScore() {
       return (
         this.queNumInfo.singleNum * this.paperInfo.singleScore +
         this.queNumInfo.multipleNum * this.paperInfo.multipleScore +
         this.queNumInfo.judgeNum * this.paperInfo.judgeScore +
         this.queNumInfo.fillNum * this.paperInfo.fillScore
-      )
+      );
     }
   },
   methods: {
     // 通过paperId获取试卷详情信息
     async getPaperInfoByPaperId() {
-      const { paperId } = this
-      let result = await reqPapersInfoByPaperId({ paperId })
+      const { paperId } = this;
+      let result = await reqPapersInfoByPaperId({ paperId });
       if (result.statu === 0) {
-        this.paperInfo = result.data.paperInfo
-        this.queNumInfo = result.data.queNumInfo
+        this.paperInfo = result.data.paperInfo;
+        this.queNumInfo = result.data.queNumInfo;
       } else {
         Toast({
           message: result.msg,
           duration: 2000
-        })
+        });
       }
     },
     // 获取当前试卷的状态，判断是否禁用开始考试按钮
     async getCurrentPaperStatus() {
-      const { sno, paperId } = this
-      let result = await reqCurrentPaperStatus({ sno, paperId })
+      const { sno, paperId } = this;
+      let result = await reqCurrentPaperStatus({ sno, paperId });
       if (result.statu === 0) {
-        this.currentPaperStatus = result.data
+        this.currentPaperStatus = result.data;
       } else {
-        this.currentPaperStatus = 0
+        this.currentPaperStatus = 0;
       }
     },
     // 点击开始考试按钮
     toStartPaper() {
-      MessageBox.confirm('确定开始考试吗?').then(
+      MessageBox.confirm("确定开始考试吗?").then(
         action => {
           Toast({
-            message: '请开始作答',
+            message: "请开始作答",
             duration: 1500
-          })
-          this.$router.replace('/home/paper/detail/start/' + this.paperId)
+          });
+          this.$router.replace("/home/paper/detail/start/" + this.paperId);
         },
         () => {
           //点击取消按钮操作
         }
-      )
+      );
     }
   },
   components: {
     HeaderTop,
     Star
   }
-}
+};
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped>

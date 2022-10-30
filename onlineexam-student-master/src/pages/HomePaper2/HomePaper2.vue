@@ -51,7 +51,7 @@
             <span @click="correctSearch">筛选</span>
           </div>
           <div class="popup_item">
-            <span>试卷类型</span>
+            <span>作业类型</span>
             <el-select v-model="paperTypeValue" placeholder="请选择">
               <el-option
                 v-for="(item, index) in paperTypeOptions"
@@ -63,11 +63,11 @@
             </el-select>
           </div>
           <div class="popup_item">
-            <span>最低试卷难度</span>
+            <span>最低作业难度</span>
             <el-rate v-model="minDifficulty"></el-rate>
           </div>
           <div class="popup_item">
-            <span>最高试卷难度</span>
+            <span>最高作业难度</span>
             <el-rate v-model="maxDifficulty"></el-rate>
           </div>
           <div class="popup_item">
@@ -97,9 +97,9 @@
             corner_hot: item.participateNum > 10
           }"
         >
-          <div class="paper_title">试卷名称：{{ item.paperName }}</div>
+          <div class="paper_title">作业名称：{{ item.paperName }}</div>
           <div class="paper_type">
-            试卷类型：{{ item.paperType == 1 ? "随机组卷" : "固定组卷" }}
+            作业类型：{{ item.paperType == 1 ? "随机组卷" : "固定组卷" }}
           </div>
           <div class="paper_create_time">
             发布时间：{{ item.paperCreateTime | date_format }}
@@ -177,11 +177,11 @@ export default {
       loading: false,
       minJoinNum: 0, //筛选最低参加人数
       maxJoinNum: 0, //筛选最高参加人数
-      minDifficulty: 0, //筛选最低试卷难度
-      maxDifficulty: 0, //筛选最高试卷难度
-      paperTypeValue: "", //选中试卷类型
+      minDifficulty: 0, //筛选最低作业难度
+      maxDifficulty: 0, //筛选最高作业难度
+      paperTypeValue: "", //选中作业类型
       paperTypeOptions: [
-        //筛选试卷类型
+        //筛选作业类型
         {
           value: "1",
           label: "随机组卷"
@@ -196,7 +196,7 @@ export default {
         }
       ],
       showPopup: false,
-      noPaperTip: "暂无发布相关试卷",
+      noPaperTip: "暂无发布相关作业",
       showSearchBtn: false
     };
   },
@@ -238,13 +238,13 @@ export default {
       const { langId } = this;
       let result = await reqPapersInfo({ langId });
       if (result.statu == 0) {
-        this.papersInfo = result.data;
+        this.papersInfo = result.data.filter(item => item.kind !== "1");
         if (this.papersInfo.length <= 2) {
           this.showSearchBtn = false;
         } else {
           this.showSearchBtn = true;
         }
-      } else if (result.msg == "试卷列表为空") {
+      } else if (result.msg == "作业列表为空") {
         this.showSearchBtn = false;
         this.isPaperList = true;
       } else {
@@ -292,7 +292,7 @@ export default {
         this.noPaperTip = "该筛选暂无结果";
         this.isPaperList = true;
       } else {
-        this.noPaperTip = "暂无发布相关试卷";
+        this.noPaperTip = "暂无发布相关作业";
         this.isPaperList = false;
       }
     }
