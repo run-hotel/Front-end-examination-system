@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" :class="className" :style="{height:height,width:width}" />
+  <div :id="id" :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
@@ -39,14 +39,15 @@ export default {
       fillData: [],
       scoreData: [],
       timeUsedData: [],
-      paperInfo: {}
+      paperInfo: {},
+      total: 0,
+      aver: 0,
+      passStu: 0,
+      unPass: 0,
     }
   },
   computed: {
-    ...mapGetters([
-      'paperId',
-      'device'
-    ])
+    ...mapGetters(['paperId', 'device'])
   },
   watch: {
     paperId(newValue) {
@@ -54,7 +55,11 @@ export default {
         if (!this.snoData.length) {
           this.titleText = '该试卷暂无人参加考试'
         } else {
-          this.titleText = `${this.paperInfo.paperName}(总分：${this.paperInfo.totalScore}分，考试时长：${this.paperInfo.paperDuration / 60}分钟，难度系数：${this.paperInfo.paperDifficulty})`
+          this.titleText = `${this.paperInfo.paperName}(总分：${
+            this.paperInfo.totalScore
+          }分，考试时长：${this.paperInfo.paperDuration / 60}分钟，难度系数：${
+            this.paperInfo.paperDifficulty
+          }，考试总人数：${this.snoData.length}，平均分：${this.aver})`
         }
         this.chart.clear()
         this.initChart()
@@ -63,7 +68,11 @@ export default {
   },
   mounted() {
     this.getChartData(() => {
-      this.titleText = `${this.paperInfo.paperName}(总分：${this.paperInfo.totalScore}分，考试时长：${this.paperInfo.paperDuration / 60}分钟，难度系数：${this.paperInfo.paperDifficulty})`
+      this.titleText = `${this.paperInfo.paperName}(总分：${
+        this.paperInfo.totalScore
+      }分，考试时长：${this.paperInfo.paperDuration / 60}分钟，难度系数：${
+        this.paperInfo.paperDifficulty
+      }，考试总人数：${this.snoData.length}，平均分：${this.aver})`
       this.initChart()
     })
   },
@@ -86,12 +95,28 @@ export default {
         this.scoreData = result.data.scoreData
         this.timeUsedData = result.data.timeUsedData
         this.paperInfo = result.data.paperInfo
+        this.averTotal()
+        this.countPass()
+        this.unPass = this.snoData.length - this.passStu
         callback && callback()
       } else {
         this.$message({
           message: result.msg,
           type: 'error'
         })
+      }
+    },
+    averTotal() {
+      for(let i = 0; i < this.snoData.length; i++) {
+        this.total += this.scoreData[i];
+      }
+      this.aver = this.total / this.snoData.length;
+    },
+    countPass() {
+      for(let i = 0; i < this.snoData.length; i++) {
+        if(this.scoreData[i] >= 60) {
+          this.passStu++;
+        }
       }
     },
     initChart() {
@@ -135,78 +160,121 @@ export default {
           textStyle: {
             color: '#90979c'
           },
-          data: ['单选题得分', '多选题得分', '判断题得分', '填空题得分', '总分', '花费时间（秒）']
+          data: [
+            '单选题得分',
+            '多选题得分',
+            '判断题得分',
+            '填空题得分',
+            '总分',
+            '花费时间（秒）'
+          ]
         },
         calculable: true,
-        xAxis: [{
-          type: 'category',
-          axisLine: {
-            lineStyle: {
-              color: '#90979c'
-            }
-          },
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          splitArea: {
-            show: false
-          },
-          axisLabel: {
-            interval: 0,
-            rotate: this.device === 'desktop' ? -8 : -16 // 让坐标值旋转一定的角度
-          },
-          data: this.snoData
-        }],
-        yAxis: [{
-          type: 'value',
-          splitLine: {
-            show: false
-          },
-          axisLine: {
-            lineStyle: {
-              color: '#90979c'
-            }
-          },
-          axisTick: {
-            show: false
-          },
-          axisLabel: {
-            interval: 0
-          },
-          splitArea: {
-            show: false
+
+        xAxis: [
+          {
+            type: 'category',
+            axisLine: {
+              lineStyle: {
+                color: '#90979c'
+              }
+            },
+            splitLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+            splitArea: {
+              show: false
+            },
+            axisLabel: {
+              interval: 0,
+              rotate: this.device === 'desktop' ? -8 : -16 // 让坐标值旋转一定的角度
+            },
+            data: this.snoData
           }
-        }],
-        dataZoom: [{
-          show: true,
-          height: 30,
-          xAxisIndex: [
-            0
-          ],
-          bottom: 30,
-          start: 10,
-          end: 80,
-          handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
-          handleSize: '110%',
-          handleStyle: {
-            color: '#d3dee5'
-
+        ],
+        yAxis: [
+          {
+            type: 'value',
+            splitLine: {
+              show: false
+            },
+            axisLine: {
+              lineStyle: {
+                color: '#90979c'
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              interval: 0
+            },
+            splitArea: {
+              show: false
+            }
+          }
+        ],
+        dataZoom: [
+          {
+            show: true,
+            height: 30,
+            xAxisIndex: [0],
+            bottom: 30,
+            start: 10,
+            end: 80,
+            handleIcon:
+              'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+            handleSize: '110%',
+            handleStyle: {
+              color: '#d3dee5'
+            },
+            textStyle: {
+              color: '#fff'
+            },
+            borderColor: '#90979c'
           },
-          textStyle: {
-            color: '#fff' },
-          borderColor: '#90979c'
-
-        }, {
-          type: 'inside',
-          show: true,
-          height: 15,
-          start: 1,
-          end: 35
-        }],
+          {
+            type: 'inside',
+            show: true,
+            height: 15,
+            start: 1,
+            end: 35
+          }
+        ],
         series: [
+          {
+            name: 'passStudent',
+            center: ['80%', '30%'],
+            type: 'pie',
+            radius: ['30%', '40%'],
+            avoidLabelOverlap: false,
+            itemStyle: {
+              borderRadius: 10,
+              borderColor: '#fff',
+              borderWidth: 2
+            },
+            label: {
+              show: false,
+              position: 'right'
+            },
+            emphasis: {
+              label: {
+                show: true,
+                fontSize: '20',
+                fontWeight: 'bold'
+              }
+            },
+            labelLine: {
+              show: false
+            },
+            data: [
+              { value: this.passStu, name: '及格人数：' + this.passStu, itemStyle: {color:'#5470c6'}},
+              { value: this.unPass, name: '不及格人数：' + this.unPass, itemStyle: {color:'#ef6567'}},
+            ]
+          },
           {
             name: '单选题得分',
             type: 'bar',

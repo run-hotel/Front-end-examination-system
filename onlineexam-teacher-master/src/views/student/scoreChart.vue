@@ -49,6 +49,7 @@ export default {
       const result = await reqGetPapersList()
       if (result.statu === 0) {
         this.paperNameOptions = result.data.papersList
+        console.log(this.paperNameOptions[1].reqGetPapersList)
       }
       // 延迟0秒等待请求数据
       setTimeout(() => {
