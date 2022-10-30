@@ -142,7 +142,7 @@ import { mapState } from 'vuex'
 import {
   reqWrongLanguagesInfo,
   reqWrongAllPapers,
-  reqWrongPapersByLangId
+  reqWrongPapersByLangId,
 } from '../../api'
 import { Toast, Indicator } from 'mint-ui'
 export default {
@@ -156,7 +156,7 @@ export default {
         height: '40px',
         'border-radius': '4px',
         'line-height': '45px', // 请保持与高度一致以垂直居中 Please keep consistent with height to center vertically
-        background: '#e7eaf1' // 按钮的背景颜色 The background color of the button
+        background: '#e7eaf1', // 按钮的背景颜色 The background color of the button
       },
       sno: this.$store.state.userInfo.sno,
       selectedId: 0,
@@ -164,10 +164,10 @@ export default {
       options: {
         activeColor: '#1d98bd',
         // 可在这里指定labelKey为你数据里文字对应的字段
-        labelKey: 'langName'
+        labelKey: 'langName',
       },
       wrongPapersList: [],
-      isWrongPapersList: false
+      isWrongPapersList: false,
     }
   },
   created() {
@@ -192,7 +192,7 @@ export default {
       } else {
         Toast({
           message: result.msg,
-          duration: 1500
+          duration: 1500,
         })
       }
     },
@@ -204,7 +204,7 @@ export default {
       } else {
         Toast({
           message: result.msg,
-          duration: 1500
+          duration: 1500,
         })
       }
     },
@@ -215,7 +215,7 @@ export default {
       } else {
         Toast({
           message: result.msg,
-          duration: 1500
+          duration: 1500,
         })
       }
     },
@@ -231,15 +231,15 @@ export default {
     },
     toWrongDetail(paperId) {
       this.$router.push('/wrong/detail/' + paperId)
-    }
+    },
   },
   components: {
     HeaderTop,
     Star,
-    BackToTop
+    BackToTop,
   },
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo']),
   },
   //监听wrongPapersList长度，确定是否显示暂无错题图标
   watch: {
@@ -249,104 +249,142 @@ export default {
       } else {
         this.isWrongPapersList = false
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped>
-@import "../../common/stylus/mixins.styl"
-.wrong  //错题
-  width 100%
-  padding-top 45px
-  padding-bottom 50px
-  background-color #f5f5f5
-  .wrong_no_login
-    padding-top 100px
-    width 60%
-    margin 0 auto
-    text-align center
-    >i
-      display block
-      font-size 180px
-      color #4ab8a1
-    >h3
-      padding 20px 0
-      font-size 17px
-      color #6a6a6a
-    >button
-      display inline-block
-      background #4ab8a1
-      font-size 14px
-      color #fff
-      border 0
-      outline none
-      border-radius 5px
-      padding 10px 20px
-  .no_paper_list
-    display flex
-    padding-top 100px
-    flex-direction column
-    align-items center
-    >img
-      width 250px
-      height 250px
-    >h3
-      font-size 17px
-      color #6a6a6a
-  .wrong_list_container
-    margin-top 20px
-    .wrong_list
-      width 100%
-      display flex
-      flex-direction column
-      .wrong_list_item
-        width 80%
-        margin 0 auto
-        margin-bottom 20px
-        padding 25px 20px 20px 20px
-        background-color #fff
-        background-image url("../../common/imgs/corner-wrong.png"), url("../../common/imgs/paper-right-top.png"), url("../../common/imgs/corner-wrong-join.png")
-        background-size 30px 30px, 40px 40px, 50px 50px
-        background-repeat no-repeat, no-repeat, no-repeat
-        background-position 50% 1%, 100% 0%, 92% 6%
-        border-radius 5px
-        box-shadow 0 0 3px #ccc
-        &.corner_new
-          background-image url("../../common/imgs/corner-wrong.png"), url("../../common/imgs/paper-right-top.png"), url("../../common/imgs/corner-mark-new.png"), url("../../common/imgs/corner-wrong-join.png")
-          background-size 30px 30px, 40px 40px,40px 40px, 50px 50px
-          background-repeat no-repeat, no-repeat, no-repeat, no-repeat
-          background-position 50% 1%, 100% 0%, 0% 0%, 92% 6%
-        .wrong_title
-          height 50px
-          line-height 50px
-          font-size 16px
-          display flex
-          justify-content center
-        .wrong_type
-          height 30px
-          line-height 30px
-          font-size 14px
-          color #999
-        .wrong_item
-          height 30px
-          line-height 30px
-          font-size 14px
-        .wrong_important
-          font-weight bold
-          color #d9534f
-        .wrong_difficulty
-          height 30px
-          line-height 30px
-          font-size 14px
-          color #999
-          .star
-            display inline-block
-            float none
-        .wrong_btn
-          height 50px
-          line-height 50px
-          font-size 16px
-          display flex
-          justify-content space-between
+@import '../../common/stylus/mixins.styl';
+
+.wrong { // 错题
+  width: 100%;
+  padding-top: 45px;
+  padding-bottom: 50px;
+  background-color: #f5f5f5;
+
+  .wrong_no_login {
+    padding-top: 100px;
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+
+    >i {
+      display: block;
+      font-size: 180px;
+      color: #4ab8a1;
+    }
+
+    >h3 {
+      padding: 20px 0;
+      font-size: 17px;
+      color: #6a6a6a;
+    }
+
+    >button {
+      display: inline-block;
+      background: #4ab8a1;
+      font-size: 14px;
+      color: #fff;
+      border: 0;
+      outline: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+    }
+  }
+
+  .no_paper_list {
+    display: flex;
+    padding-top: 100px;
+    flex-direction: column;
+    align-items: center;
+
+    >img {
+      width: 250px;
+      height: 250px;
+    }
+
+    >h3 {
+      font-size: 17px;
+      color: #6a6a6a;
+    }
+  }
+
+  .wrong_list_container {
+    margin-top: 20px;
+
+    .wrong_list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .wrong_list_item {
+        width: 80%;
+        margin: 0 auto;
+        margin-bottom: 20px;
+        padding: 25px 20px 20px 20px;
+        background-color: #fff;
+        background-image: url('../../common/imgs/corner-wrong.png'), url('../../common/imgs/paper-right-top.png'), url('../../common/imgs/corner-wrong-join.png');
+        background-size: 30px 30px, 40px 40px, 50px 50px;
+        background-repeat: no-repeat, no-repeat, no-repeat;
+        background-position: 50% 1%, 100% 0%, 92% 6%;
+        border-radius: 5px;
+        box-shadow: 0 0 3px #ccc;
+
+        &.corner_new {
+          background-image: url('../../common/imgs/corner-wrong.png'), url('../../common/imgs/paper-right-top.png'), url('../../common/imgs/corner-mark-new.png'), url('../../common/imgs/corner-wrong-join.png');
+          background-size: 30px 30px, 40px 40px, 40px 40px, 50px 50px;
+          background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+          background-position: 50% 1%, 100% 0%, 0% 0%, 92% 6%;
+        }
+
+        .wrong_title {
+          height: 50px;
+          line-height: 50px;
+          font-size: 16px;
+          display: flex;
+          justify-content: center;
+        }
+
+        .wrong_type {
+          height: 30px;
+          line-height: 30px;
+          font-size: 14px;
+          color: #999;
+        }
+
+        .wrong_item {
+          height: 30px;
+          line-height: 30px;
+          font-size: 14px;
+        }
+
+        .wrong_important {
+          font-weight: bold;
+          color: #d9534f;
+        }
+
+        .wrong_difficulty {
+          height: 30px;
+          line-height: 30px;
+          font-size: 14px;
+          color: #999;
+
+          .star {
+            display: inline-block;
+            float: none;
+          }
+        }
+
+        .wrong_btn {
+          height: 50px;
+          line-height: 50px;
+          font-size: 16px;
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+  }
+}
 </style>

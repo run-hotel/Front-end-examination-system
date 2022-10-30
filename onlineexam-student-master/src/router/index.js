@@ -3,7 +3,7 @@
 */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-VueRouter.prototype.goBack = function() {
+VueRouter.prototype.goBack = function () {
   this.isBack = true
   window.history.go(-1)
 }
@@ -30,6 +30,7 @@ import HomePaper from '@/pages/HomePaper/HomePaper.vue'
 import HomePaperDetail from '@/pages/HomePaperDetail/HomePaperDetail.vue'
 import HomePaperStart from '@/pages/HomePaperStart/HomePaperStart.vue'
 import WrongDetail from '@/pages/WrongDetail/WrongDetail.vue'
+// import Course from '@/pages/Course/Course.vue'
 /*import PaperContainer from '../pages/HomePaperStart/PaperContainer/PaperContainer.vue'
 import PaperCard from '../pages/HomePaperStart/PaperCard/PaperCard.vue'*/
 
@@ -38,6 +39,8 @@ const Home = () => import('@/pages/Home/Home.vue')
 const Wrong = () => import('@/pages/Wrong/Wrong.vue')
 const Search = () => import('@/pages/Search/Search.vue')
 const Profile = () => import('@/pages/Profile/Profile.vue')
+const Course = () => import('@/pages/Course/Course.vue')
+const HomeWork = () => import('@/pages/HomeWork/HomeWork.vue')
 
 Vue.use(VueRouter)
 
@@ -86,6 +89,25 @@ export default new VueRouter({
         }
       ]*/
     },
+
+    {
+      path: '/course',
+      name: 'Course',
+      component: Course,
+      meta: {
+        showFooter: true
+      }
+    },
+
+    {
+      path: '/homework',
+      name: 'HomeWork',
+      component: HomeWork,
+      meta: {
+        showFooter: true
+      }
+    },
+
 
     {
       path: '/wrong',

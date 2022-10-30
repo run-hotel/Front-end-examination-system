@@ -85,7 +85,7 @@ export default {
       isSelect: false,
       searchPapers: [],
       noSearchPapers: true,
-      tips: '输入关键字即可搜索'
+      tips: '输入关键字即可搜索',
     }
   },
   methods: {
@@ -93,7 +93,7 @@ export default {
       if (!this.$store.state.userInfo.sno) {
         Toast({
           message: '请先登录系统',
-          duration: 1000
+          duration: 1000,
         })
       } else {
         if (!this.keyword) {
@@ -128,7 +128,7 @@ export default {
     },
     toggleSelect() {
       this.isSelect = !this.isSelect
-    }
+    },
   },
   /*    watch: {
       searchPapers (value) {
@@ -141,114 +141,157 @@ export default {
     },*/
   components: {
     HeaderTop,
-    Star
+    Star,
   },
   computed: {
-    ...mapState(['userInfo'])
-  }
+    ...mapState(['userInfo']),
+  },
 }
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped>
-@import "../../common/stylus/mixins.styl"
-.opacity
-  opacity 0.4
-  background #e5e5e5
-.search
-  width 100%
-  overflow hidden
-  padding-bottom 50px
-  padding-top 45px
-  background-color #f5f5f5
-  .search_form
-    clearFix()
-    background-color #fff
-    padding 12px 8px
-    input
-      height 35px
-      padding 0 4px
-      border-radius 2px
-      font-weight bold
-      outline none
-      &.search_input
-        float left
-        width 79%
-        border 4px solid #f2f2f2
-        font-size 14px
-        color #333
-        background-color #f2f2f2
-      &.search_submit
-        float right
-        width 18%
-        border 4px solid #4ab8a1
-        font-size 16px
-        color #fff
-        background-color #4ab8a1
+@import '../../common/stylus/mixins.styl';
 
-  .list
-    .list_container
+.opacity {
+  opacity: 0.4;
+  background: #e5e5e5;
+}
+
+.search {
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 50px;
+  padding-top: 45px;
+  background-color: #f5f5f5;
+
+  .search_form {
+    clearFix();
+    background-color: #fff;
+    padding: 12px 8px;
+
+    input {
+      height: 35px;
+      padding: 0 4px;
+      border-radius: 2px;
+      font-weight: bold;
+      outline: none;
+
+      &.search_input {
+        float: left;
+        width: 79%;
+        border: 4px solid #f2f2f2;
+        font-size: 14px;
+        color: #333;
+        background-color: #f2f2f2;
+      }
+
+      &.search_submit {
+        float: right;
+        width: 18%;
+        border: 4px solid #4ab8a1;
+        font-size: 16px;
+        color: #fff;
+        background-color: #4ab8a1;
+      }
+    }
+  }
+
+  .list {
+    .list_container {
       background-color: #fff;
-      .list_li
+
+      .list_li {
         display: flex;
         justify-content: center;
-        padding: 10px
+        padding: 10px;
         border-bottom: 1px solid $bc;
-        .item_left
-          margin-right: 10px
-          .restaurant_img
-            width 50px
-            height 50px
-            display block
-        .item_right
-          font-size 12px
-          flex 1
-          .item_right_text
-            p
-              line-height 12px
-              margin-bottom 6px
-              display flex
-              justify-content space-between
-              &:last-child
-                margin-bottom 0
-  .search_none
-    margin: 0 auto
-    color: #333
-    background-color: #fff
-    text-align: center
-    margin-top: 0.125rem
-  .search_no_login
-    padding-top 100px
-    width 60%
-    margin 0 auto
-    text-align center
-    >i
-      display block
-      font-size 100px
-      color #4ab8a1
-    >h3
-      padding 20px 0
-      font-size 17px
-      color #6a6a6a
-    >button
-      display inline-block
-      background #4ab8a1
-      font-size 14px
-      color #fff
-      border 0
-      outline none
-      border-radius 5px
-      padding 10px 20px
-  .search__login
-    display flex
-    flex-direction column
-    align-items center
-    padding-top 80px
-    >img
-      width 200px
-      height 200px
-    >h3
-      padding 20px 0
-      font-size 17px
-      color #4ab8a1
-      font-weight bold
+
+        .item_left {
+          margin-right: 10px;
+
+          .restaurant_img {
+            width: 50px;
+            height: 50px;
+            display: block;
+          }
+        }
+
+        .item_right {
+          font-size: 12px;
+          flex: 1;
+
+          .item_right_text {
+            p {
+              line-height: 12px;
+              margin-bottom: 6px;
+              display: flex;
+              justify-content: space-between;
+
+              &:last-child {
+                margin-bottom: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .search_none {
+    margin: 0 auto;
+    color: #333;
+    background-color: #fff;
+    text-align: center;
+    margin-top: 0.125rem;
+  }
+
+  .search_no_login {
+    padding-top: 100px;
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+
+    >i {
+      display: block;
+      font-size: 100px;
+      color: #4ab8a1;
+    }
+
+    >h3 {
+      padding: 20px 0;
+      font-size: 17px;
+      color: #6a6a6a;
+    }
+
+    >button {
+      display: inline-block;
+      background: #4ab8a1;
+      font-size: 14px;
+      color: #fff;
+      border: 0;
+      outline: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+    }
+  }
+
+  .search__login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px;
+
+    >img {
+      width: 200px;
+      height: 200px;
+    }
+
+    >h3 {
+      padding: 20px 0;
+      font-size: 17px;
+      color: #4ab8a1;
+      font-weight: bold;
+    }
+  }
+}
 </style>
