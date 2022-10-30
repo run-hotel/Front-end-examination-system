@@ -539,6 +539,8 @@ export default {
         { label: '固定组卷', key: '2' }
       ],
       temp: {
+        kind: 2,
+        tno: '',
         startTime: '',
         paperName: '',
         className: null,
@@ -660,20 +662,23 @@ export default {
     }
   },
   created() {
+    this.temp.tno = this.$store.getters.userInfo.tno
     this.getList()
   },
   methods: {
     async getList() {
       this.listLoading = true
       let result = await reqGetPapersList()
+      const { userInfo } = this.$store.getters
       if (result.statu === 0) {
         this.langOptions = result.data.langOptions
-        this.total = result.data.papersList.length
         this.list = result.data.papersList.filter(
           (item, index) =>
             index < this.listQuery.limit * this.listQuery.page &&
             index >= this.listQuery.limit * (this.listQuery.page - 1)
         )
+        this.list = this.list.filter(item => item.create_tno === userInfo.tno)
+        this.total = this.list.length
       }
 
       // 延迟0.5秒等待请求数据
@@ -790,6 +795,8 @@ export default {
     },
     resetTemp() {
       this.temp = {
+        kind: 2,
+        tno: '',
         startTime: '',
         paperName: '',
         className: null,
