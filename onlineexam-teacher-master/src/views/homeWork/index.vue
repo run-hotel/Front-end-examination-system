@@ -3,7 +3,7 @@
     <div class="filter-container">
       <el-input
         v-model="listQuery.paperName"
-        placeholder="搜索试卷名称"
+        placeholder="搜索作业名称"
         clearable
         style="width: 200px;margin-right: 15px;"
         class="filter-item"
@@ -26,7 +26,7 @@
       </el-select>
       <el-select
         v-model="listQuery.paperType"
-        placeholder="搜索试卷类型"
+        placeholder="搜索作业类型"
         clearable
         style="width: 200px;margin-right: 15px;"
         class="filter-item"
@@ -57,7 +57,7 @@
         icon="el-icon-edit-outline"
         @click="handleFixedCreate"
       >
-        固定组卷
+        固定作业
       </el-button>
       <el-button
         v-waves
@@ -67,14 +67,14 @@
         icon="el-icon-edit"
         @click="handleCreate"
       >
-        随机组卷
+        随机作业
       </el-button>
       <div>
         <span style="color: #FF0000"
           ><i
             class="el-icon-warning"
             style="margin-right: 10px"
-          />鼠标右键单击选中行可查看试卷详情</span
+          />鼠标右键单击选中行可查看作业详情</span
         >
       </div>
     </div>
@@ -101,7 +101,7 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="试卷名称" align="center">
+      <el-table-column label="作业名称" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.paperName }}</span>
         </template>
@@ -126,7 +126,7 @@
       <el-table-column
         prop="paperDuration"
         sortable
-        label="考试时长"
+        label="作业时长"
         align="center"
         width="110"
       >
@@ -150,15 +150,15 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="考试注意事项" width="120" align="center">
+      <el-table-column label="作业注意事项" width="120" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.paperAttention || '暂无考试注意事项' }}</span>
+          <span>{{ scope.row.paperAttention || '暂无作业注意事项' }}</span>
         </template>
       </el-table-column>
       <el-table-column
         prop="paperType"
         sortable
-        label="试卷类型"
+        label="作业类型"
         align="center"
         width="110"
       >
@@ -169,7 +169,7 @@
       <el-table-column
         prop="totalScore"
         sortable
-        label="试卷总分"
+        label="作业总分"
         align="center"
         width="110"
       >
@@ -180,7 +180,7 @@
       <el-table-column
         prop="participateNum"
         sortable
-        label="已参加人数"
+        label="已完成人数"
         align="center"
         width="120"
       >
@@ -191,7 +191,7 @@
       <el-table-column
         prop="paperCreateTime"
         sortable
-        label="试卷创建时间"
+        label="作业创建时间"
         align="center"
         width="155"
       >
@@ -227,7 +227,7 @@
       @pagination="getList"
     />
 
-    <!--查看试卷详情弹出框-->
+    <!--查看作业详情弹出框-->
     <el-dialog
       :visible.sync="paperDetailDialogFormVisible"
       :title="clickPaperTitle"
@@ -245,7 +245,7 @@
       </div>
       <el-input
         v-model="filterText"
-        placeholder="查找试卷问题关键字"
+        placeholder="查找作业问题关键字"
         style="margin-bottom:30px;"
       />
       <el-tree
@@ -291,7 +291,7 @@
         <el-form-item label="所属班级">
           <el-tag>{{ temp.className }}</el-tag>
         </el-form-item>
-        <el-form-item label="开卷时间" prop="startTime">
+        <el-form-item label="发布时间" prop="startTime">
           <el-date-picker
             v-model="temp.startTime"
             type="datetime"
@@ -302,10 +302,10 @@
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="试卷名称" prop="paperName">
+        <el-form-item label="作业名称" prop="paperName">
           <el-input v-model="temp.paperName" />
         </el-form-item>
-        <el-form-item label="考试时长" prop="paperDuration">
+        <el-form-item label="作业时长" prop="paperDuration">
           <el-time-select
             v-model="temp.paperDuration"
             :picker-options="{
@@ -337,7 +337,7 @@
         <div style="width: 600px">
           <el-input
             v-model="fixedFilterText"
-            placeholder="查找试卷问题关键字"
+            placeholder="查找作业问题关键字"
             style="margin-bottom:30px;"
           />
           <el-tree
@@ -393,7 +393,7 @@
         <el-form-item label="所属班级">
           <el-tag>{{ temp.className }}</el-tag>
         </el-form-item>
-        <el-form-item label="开卷时间" prop="startTime">
+        <el-form-item label="发布时间" prop="startTime">
           <el-date-picker
             v-model="temp.startTime"
             type="datetime"
@@ -404,10 +404,10 @@
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="试卷名称" prop="paperName">
+        <el-form-item label="作业名称" prop="paperName">
           <el-input v-model="temp.paperName" />
         </el-form-item>
-        <el-form-item label="考试时长" prop="paperDuration">
+        <el-form-item label="作业时长" prop="paperDuration">
           <el-time-select
             v-model="temp.paperDuration"
             :picker-options="{
@@ -571,16 +571,16 @@ export default {
       },
       fixRules: {
         langId: [
-          { required: true, message: '试卷名称为必填项', trigger: 'change' }
+          { required: true, message: '作业名称为必填项', trigger: 'change' }
         ],
         startTime: [
           { required: true, message: '开考时间为必选项', trigger: 'change' }
         ],
         paperName: [
-          { required: true, message: '试卷名称为必填项', trigger: 'change' }
+          { required: true, message: '作业名称为必填项', trigger: 'change' }
         ],
         paperDuration: [
-          { required: true, message: '考试时长为必填项', trigger: 'change' }
+          { required: true, message: '作业时长为必填项', trigger: 'change' }
         ],
         paperDifficulty: [
           { required: true, message: '难度系数为必填项', trigger: 'change' }
@@ -600,16 +600,16 @@ export default {
       },
       rules: {
         langId: [
-          { required: true, message: '试卷名称为必填项', trigger: 'change' }
+          { required: true, message: '作业名称为必填项', trigger: 'change' }
         ],
         startTime: [
           { required: true, message: '开考时间为必选项', trigger: 'change' }
         ],
         paperName: [
-          { required: true, message: '试卷名称为必填项', trigger: 'change' }
+          { required: true, message: '作业名称为必填项', trigger: 'change' }
         ],
         paperDuration: [
-          { required: true, message: '考试时长为必填项', trigger: 'change' }
+          { required: true, message: '作业时长为必填项', trigger: 'change' }
         ],
         paperDifficulty: [
           { required: true, message: '难度系数为必填项', trigger: 'change' }
@@ -691,8 +691,8 @@ export default {
       let fillData = result.data.fillData
       //初始化数据
       this.filterText = ''
-      this.clickPaperTitle = `试卷详情：${row.paperName}`
-      this.subPaperTitle = `试卷总分：${row.totalScore}分，试卷总题数：${
+      this.clickPaperTitle = `作业详情：${row.paperName}`
+      this.subPaperTitle = `作业总分：${row.totalScore}分，作业总题数：${
         row.totalNum
       }道。`
       this.minSubPaperTitle = `单选题${row.singleNum}道（每道${
@@ -728,7 +728,7 @@ export default {
       this.paperDetailDialogFormVisible = true
     },
     confirmDeletePaper(row) {
-      this.$confirm('若试卷已有学生考试则无法删除，确定删除该试卷吗?', '提示', {
+      this.$confirm('若作业已有学生作业则无法删除，确定删除该作业吗?', '提示', {
         confirmButtonText: '确定删除',
         cancelButtonText: '取消',
         type: 'warning'
@@ -930,7 +930,7 @@ export default {
         this.fixedDialogFormVisible = false
         this.$notify({
           title: '成功',
-          message: '试卷发布成功',
+          message: '发布成功',
           type: 'success',
           duration: 2000
         })
@@ -972,7 +972,7 @@ export default {
         this.dialogFormVisible = false
         this.$notify({
           title: '成功',
-          message: '试卷发布成功',
+          message: '发布成功',
           type: 'success',
           duration: 2000
         })

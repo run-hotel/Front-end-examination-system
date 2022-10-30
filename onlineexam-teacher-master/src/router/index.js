@@ -118,6 +118,19 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/work',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Work',
+        component: () => import('@/views/homeWork'),
+        meta: { title: '作业管理', icon: 'excel' }
+      }
+    ]
+  },
+
+  {
     path: '/paper',
     component: Layout,
     children: [

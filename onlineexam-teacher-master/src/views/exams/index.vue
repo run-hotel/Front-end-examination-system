@@ -1,11 +1,15 @@
 <template>
   <div class="cards">
     <div
-      v-if="newData"
-      v-for="item in newData"
+      v-if="examsArr"
+      v-for="item in examsArr"
       class="animate__animated animate__pulse"
     >
-      <div class="card dark-card" style="cursor: pointer; z-index: 1000">
+      <div
+        @click="showStudentList(item)"
+        class="card dark-card"
+        style="cursor: pointer; z-index: 1000"
+      >
         <img
           src="@/assets/images/home_img.png"
           class="card-header light-header"
@@ -14,36 +18,82 @@
           {{ item.paperName }}
         </h3>
         <p class="light-text">发放班级: {{ item.classTno }}</p>
-        <el-progress style="padding:10px" :percentage="50" />
       </div>
     </div>
     <div v-else style="margin-left:50%">
       <el-empty description="暂无考试发布"></el-empty>
     </div>
+
+    <el-dialog title="未参考人数" :visible.sync="dialogTableVisible">
+      <el-table ref="filterTable" :data="showStudentsInfo">
+        <el-table-column prop="sno" label="学号"></el-table-column>
+        <el-table-column prop="stuName" label="姓名"></el-table-column>
+        <el-table-column prop="stuStatus" label="">
+          <template slot-scope="scope">
+            <el-tag type="danger" disable-transitions>未参加</el-tag>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { reqSearchPaperInfo, reqGetPaperList } from '@/api/paper'
+import { reqGetStudentsList, reqGetScoresList } from '@/api/student'
 export default {
   data() {
     return {
-      newData: null
+      examsArr: null,
+      allStudentsInfo: null,
+      showStudentsInfo: null,
+      dialogTableVisible: false,
+      allExamedStudent: null,
+      showExamedStudent: null
     }
   },
 
   async created() {
-    const { tno } = this.$store.getters.userInfo
-    const { data } = await reqSearchPaperInfo(tno)
-    const arr = []
-
-    data.forEach(async item => {
+    try {
+      const { tno } = this.$store.getters.userInfo
+      const { data } = await reqSearchPaperInfo(tno)
+      const studentList = await reqGetStudentsList(tno)
       const {
-        data: { paperName }
-      } = await reqGetPaperList(item.paperId)
-      arr.push({ ...item, paperName })
-    })
-    this.newData = arr
+        data: { scoresList }
+      } = await reqGetScoresList()
+      const arr = []
+
+      data.forEach(async item => {
+        const {
+          data: { paperName }
+        } = await reqGetPaperList(item.paperId)
+        arr.push({ ...item, paperName })
+      })
+
+      this.examsArr = arr
+      this.allStudentsInfo = studentList.data
+      this.allExamedStudent = scoresList
+    } catch (error) {
+      console.log(error.message)
+    }
+  },
+
+  methods: {
+    showStudentList(item) {
+      const { paperName } = item
+
+      this.showExamedStudent = this.allExamedStudent.filter(
+        item => item.paperName === paperName
+      )
+
+      this.showStudentsInfo = this.allStudentsInfo.filter(item => {
+        return !this.showExamedStudent.some(
+          examedItem => examedItem.sno === item.sno
+        )
+      })
+
+      this.dialogTableVisible = true
+    }
   }
 }
 </script>
@@ -60,9 +110,7 @@ $light-gray: #f0f3f5;
   color: $color;
   text-align: center;
 }
-* {
-  transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-}
+
 .cards {
   display: flex;
   flex-wrap: wrap;
@@ -84,6 +132,7 @@ $light-gray: #f0f3f5;
   &:hover {
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25), 0 2px 2px rgba(0, 0, 0, 0.25);
   }
+  transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .card-header {

@@ -15,7 +15,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         // 匹配所有以 '/api'开头的请求路径
-        target: "http://49.234.12.39:8080", // 代理目标的基础路径
+        target: 'http://49.234.12.39:8080', // 代理目标的基础路径
         // target: 'http://localhost:8080', // 代理目标的基础路径
         // secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true, // 支持跨域
