@@ -131,6 +131,22 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/bank-experiment',
+    component: Layout,
+    name: 'BankExperiment',
+    meta: { title: '实验管理', icon: 'judge-bank' },
+    children: [
+      {
+        path: 'experiment-info',
+        name: 'ExperimentInfo',
+        component: () =>
+          import('@/views/bankManage/bankExperiment/experimentInfo'),
+        meta: { title: '实验管理', icon: 'judge-info' }
+      }
+    ]
+  },
+
+  {
     path: '/paper',
     component: Layout,
     children: [
@@ -196,6 +212,7 @@ export const constantRouterMap = [
           }
         ]
       },
+
       {
         path: 'bank-multiple',
         component: () => import('@/views/bankManage/bankMultiple/index'),
@@ -243,6 +260,7 @@ export const constantRouterMap = [
           }
         ]
       },
+
       {
         path: 'bank-fill',
         component: () => import('@/views/bankManage/bankFill/index'),
@@ -282,7 +300,7 @@ export const constantRouterMap = [
 ]
 
 export default new Router({
-  // mode: 'history', //后端支持可开
+  mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })

@@ -255,7 +255,7 @@ export default {
       }
     },
     toPaperDetail(paperId) {
-      this.$router.push("/home/paper/detail/" + paperId);
+      this.$router.push("/home/paper2/detail/" + paperId);
     },
     async correctSearch() {
       const { langId } = this;

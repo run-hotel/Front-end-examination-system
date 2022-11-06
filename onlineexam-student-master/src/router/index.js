@@ -29,7 +29,9 @@ import ProfileExamCalendar from "@/pages/ProfileExamCalendar/ProfileExamCalendar
 import HomePaper from "@/pages/HomePaper/HomePaper.vue";
 import HomePaper2 from "@/pages/HomePaper2/HomePaper2.vue";
 import HomePaperDetail from "@/pages/HomePaperDetail/HomePaperDetail.vue";
+import HomePaperDetail2 from "@/pages/HomePaperDetail2/HomePaperDetail.vue";
 import HomePaperStart from "@/pages/HomePaperStart/HomePaperStart.vue";
+import HomePaperStart2 from "@/pages/HomePaperStart2/HomePaperStart.vue";
 import WrongDetail from "@/pages/WrongDetail/WrongDetail.vue";
 // import Course from '@/pages/Course/Course.vue'
 /*import PaperContainer from '../pages/HomePaperStart/PaperContainer/PaperContainer.vue'
@@ -77,22 +79,16 @@ export default new VueRouter({
       component: HomePaperDetail
     },
     {
+      path: "/home/paper2/detail/:paperId",
+      component: HomePaperDetail2
+    },
+    {
       path: "/home/paper/detail/start/:paperId",
       component: HomePaperStart
-      /*      children:[
-        {
-          path:'papercontainer',
-          component:PaperContainer
-        },
-        {
-          path:'papercard',
-          component:PaperCard
-        },
-        {
-          path:'',
-          redirect: 'papercontainer'
-        }
-      ]*/
+    },
+    {
+      path: "/home/paper/detail2/start/:paperId",
+      component: HomePaperStart2
     },
 
     {

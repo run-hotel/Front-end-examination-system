@@ -107,23 +107,23 @@ export default {
     statusFilter(status) {
       const statusMap = {
         success: 'success',
-        pending: 'danger',
+        pending: 'danger'
       }
       return statusMap[status]
-    },
+    }
   },
   data() {
     return {
       teaImg: require('@/assets/images/teacher.jpg'),
       statisticsData: {
         article_count: 1024,
-        pageviews_count: 1024,
-      },
+        pageviews_count: 1024
+      }
     }
   },
   computed: {
-    ...mapGetters(['userInfo']),
-  },
+    ...mapGetters(['userInfo'])
+  }
 }
 </script>
 <style>

@@ -238,7 +238,7 @@ export default {
       const { langId } = this;
       let result = await reqPapersInfo({ langId });
       if (result.statu == 0) {
-        this.papersInfo = result.data;
+        this.papersInfo = result.data.filter(item => item.kind !== "2");
         if (this.papersInfo.length <= 2) {
           this.showSearchBtn = false;
         } else {
